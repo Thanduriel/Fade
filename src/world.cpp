@@ -1,4 +1,5 @@
 #include "world.hpp"
+#include "resourcemanager.hpp"
 
 using namespace sf;
 
@@ -11,7 +12,8 @@ namespace Game{
 		texture.create(16, 16);
 		m_gameObjects.emplace_back(new Actor(sf::Vector2f(10.f, 10.f), texture));
 
-		Pawn* player = new Pawn(sf::Vector2f(10.f, 10.f), texture);
+		Pawn* player = new Pawn(sf::Vector2f(10.f, 10.f),
+			*g_resourceManager.getTexture("player_direction_indicator.png"));
 		m_gameObjects.emplace_back(player);
 		Controller* controller = new Controller();
 		controller->possess(player);

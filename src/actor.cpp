@@ -8,6 +8,8 @@ namespace Game{
 		m_position(_position)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
+
+		m_sprite.setOrigin(sf::Vector2f(_texture.getSize()) * 0.5f);
 	}
 
 	void Actor::draw(sf::RenderWindow& _window)
