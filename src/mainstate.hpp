@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GameState.hpp"
+#include "gamestate.hpp"
+#include "world.hpp"
 
 namespace State{
 	class MainState: public Game::GameState
@@ -12,5 +13,6 @@ namespace State{
 		virtual void draw(sf::RenderWindow& _window) override;
 
 	private:
+		Game::World m_world;
 	};
 }
