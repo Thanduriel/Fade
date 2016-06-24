@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-109.28571"
-     inkscape:cy="520"
+     inkscape:zoom="11.2"
+     inkscape:cx="274.42524"
+     inkscape:cy="596.5954"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -55,5 +55,65 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1" />
+     id="layer1">
+    <circle
+       style="fill:none;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357"
+       cx="262.62668"
+       cy="451.87842"
+       r="9.5"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:none;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6"
+       cx="262.62668"
+       cy="451.87842"
+       r="7"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <path
+       style="fill:#ff0000;stroke:#ff00ff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7"
+       sodipodi:type="arc"
+       sodipodi:cx="262.62668"
+       sodipodi:cy="451.87842"
+       sodipodi:rx="8.25"
+       sodipodi:ry="8.25"
+       sodipodi:start="0"
+       sodipodi:end="0.78539816"
+       d="m 270.87668,451.87842 a 8.25,8.25 0 0 1 -2.41637,5.83363"
+       sodipodi:open="true"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:none;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3"
+       cx="262.62668"
+       cy="451.87842"
+       r="4.5"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:none;stroke:#00ff00;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5"
+       cx="296.62668"
+       cy="452.87842"
+       r="5.75"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <path
+       style="fill:#000000;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5-6"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200"
+       sodipodi:type="arc"
+       sodipodi:cx="297.37668"
+       sodipodi:cy="470.41412"
+       sodipodi:rx="5.75"
+       sodipodi:ry="5.75"
+       sodipodi:start="0"
+       sodipodi:end="3.1415927"
+       d="m 303.12668,470.41412 a 5.75,5.75 0 0 1 -2.875,4.97965 5.75,5.75 0 0 1 -5.75,0 5.75,5.75 0 0 1 -2.875,-4.97965 l 5.75,0 z" />
+  </g>
 </svg>
