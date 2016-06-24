@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include "centeredsprite.hpp"
 
 namespace Game{
+
 	class Actor
 	{
 	public:
@@ -12,7 +13,8 @@ namespace Game{
 		virtual void draw(sf::RenderWindow& _window);
 
 	protected:
-		sf::Sprite m_sprite;
+		Graphic::CenteredSprite m_sprite;
 		sf::Vector2f m_position;
+		float m_dirAngle;
 	};
 }
