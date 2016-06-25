@@ -9,6 +9,7 @@ namespace Game{
 		m_velocity(0.f, 0.f),
 		m_dirAngle(0.f),
 		m_isStatic(true),
+		m_canCollide(true),
 		m_health(100.f),
 		m_healthMax(100.f),
 		m_isDestroyed(false)
@@ -32,6 +33,6 @@ namespace Game{
 		if (m_isStatic) return;
 
 		m_health -= _amount;
-		if (m_health <= 0.f) m_isDestroyed = true;
+		if (m_health <= 0.f) m_isDeath = true;
 	}
 }

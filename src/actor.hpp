@@ -24,7 +24,12 @@ namespace Game{
 		const sf::Vector2f& velocity() { return m_velocity; }
 		float boundingRad() { return m_boundingRad; }
 		bool isStatic() { return m_isStatic; }
+		bool canCollide() { return m_canCollide; }
+
+		void destroy() { m_isDestroyed = true; }
 		bool isDestroyed() { return m_isDestroyed; }
+
+		bool isDeath() { return m_isDeath; }
 	protected:
 		Graphic::CenteredSprite m_sprite;
 		sf::Vector2f m_position;
@@ -36,6 +41,8 @@ namespace Game{
 
 		float m_boundingRad;
 		bool m_isStatic;
+		bool m_canCollide;
 		bool m_isDestroyed;
+		bool m_isDeath;
 	};
 }

@@ -13,7 +13,8 @@ namespace Game{
 		m_fadeFactor(0.992f),
 		m_alpha(1.f),
 		m_cdMax(130),
-		m_damage(10.f)
+		m_damage(10.f),
+		m_item(nullptr)
 	{
 		m_isStatic = false;
 
@@ -30,6 +31,8 @@ namespace Game{
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 	}
 
+	// ********************************************************* //
+
 	void Pawn::process()
 	{
 		Actor::process();
@@ -39,8 +42,17 @@ namespace Game{
 	//	if (m_alpha < 0.1f) m_alpha = 1.f;
 
 		--m_cd;
-		if (m_cd <= 0) fire();
+		if (m_cd <= 0) {
+			fire(); altFire();
+		}
+
+		if (m_item)
+		{
+			m_item->setPosition(m_position);
+		}
 	}
+
+	// ********************************************************* //
 
 	void Pawn::draw(sf::RenderWindow& _window)
 	{
@@ -48,6 +60,7 @@ namespace Game{
 		m_sprite.setColor(sf::Color(255, 255, 255, a));
 		Actor::draw(_window);
 
+		//health bar size depends on current health
 		m_healthBarSprite.setPosition(m_position);
 		m_healthBarSprite.setColor(sf::Color(138, 240, 12, a));
 		m_healthRect.height = m_healthRectDef * m_health / m_healthMax;
@@ -55,6 +68,7 @@ namespace Game{
 
 		_window.draw(m_healthBarSprite);
 
+		// weapon points in the direction the player is facing
 		m_weaponSprite.setPosition(m_position);
 		m_weaponSprite.setColor(sf::Color(228, 10, 255, a));
 		m_weaponSprite.setRotation(m_dirAngle / (2.f*3.1415f) * 360.f);
@@ -65,6 +79,8 @@ namespace Game{
 	{
 		_oth.damage(1.f);
 	}
+
+	// ********************************************************* //
 
 	void Pawn::fire()
 	{
@@ -78,5 +94,19 @@ namespace Game{
 
 			m_cd = m_cdMax;
 		}
+	}
+
+	void Pawn::altFire()
+	{
+		if (!m_item) return;
+
+		m_item->use();
+		m_item = nullptr;
+	}
+
+	void Pawn::takeItem(Item& _itm)
+	{
+		if (m_item) m_item->destroy();
+		m_item = &_itm;
 	}
 }

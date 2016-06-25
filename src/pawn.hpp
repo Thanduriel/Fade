@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.hpp"
+#include "item.hpp"
 
 namespace Game{
 	class Pawn : public Actor
@@ -13,8 +14,10 @@ namespace Game{
 		void collision(Actor& _oth) override;
 
 		void fire();
-		void altFire(){}; //alternative fire mode
+		void altFire(); //alternative fire mode or use item
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
+
+		void takeItem(Item& _itm);
 	private:
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;
@@ -29,5 +32,7 @@ namespace Game{
 		int m_cd; //cooldown in frames (16.67ms)
 
 		float m_damage;
+
+		Item* m_item;
 	};
 }

@@ -6,6 +6,7 @@
 #include "wall.hpp"
 #include "projectile.hpp"
 #include "constants.hpp"
+#include "item.hpp"
 
 using namespace sf;
 
@@ -30,8 +31,7 @@ namespace Game{
 
 		m_gameObjects.emplace_back(new Wall(sf::Vector2f(700.f, 400.f), sf::Vector2f(300.f, 10.f)));
 
-		for (int i = 0; i < 16; ++i)
-			m_gameObjects.emplace_back(new Projectile(sf::Vector2f(i * 10.f, i * 32.f), sf::Vector2f(i * 2.f, i * 1.f), 10.f));
+		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 	}
 
 	void World::process()
@@ -52,6 +52,8 @@ namespace Game{
 			for (size_t j = i+1; j < m_gameObjects.size(); ++j)
 			{
 				auto& second = *m_gameObjects[j];
+				if (!second.canCollide()) return;
+
 				float r2 = first.boundingRad() + second.boundingRad();
 				r2 *= r2;
 				if (distSq(first.position(), second.position()) < r2)
