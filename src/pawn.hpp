@@ -10,10 +10,10 @@ namespace Game{
 
 		void process() override;
 		void draw(sf::RenderWindow& _window) override;
+		void collision(Actor& _oth) override;
 
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
 	private:
-		sf::Vector2f m_velocity;
 		sf::Sprite m_weaponSprite;
 	};
 }

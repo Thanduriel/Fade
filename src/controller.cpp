@@ -27,7 +27,7 @@ namespace Game{
 			movDir += Vector2f(1.f, 0.f);
 		}
 
-		m_pawn->setVelocity(movDir);
+		m_pawn->setVelocity(movDir * 2.f);
 	}
 
 }

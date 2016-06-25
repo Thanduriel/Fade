@@ -6,6 +6,7 @@ const std::string resourcePath = "resources/";
 
 ResourceManager::ResourceManager()
 {
+	getShader("light");
 }
 
 
@@ -59,8 +60,10 @@ sf::Shader* ResourceManager::getShader(const std::string& _fileName, bool _geome
 
 	sf::Shader* shader = new sf::Shader();
 
-	bool b = _geometry ? shader->loadFromFile("shader/" + _fileName + ".vs", "shader/" + _fileName + ".gs", "shader/" + _fileName + ".ps")
-		: shader->loadFromFile("shader/" + _fileName + ".vs", "shader/" + _fileName + ".ps");
+	static std::string path = resourcePath + "shader/";
+
+	bool b = _geometry ? shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".gs", path + _fileName + ".ps")
+		: shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
 	if (!b)
 	{
 		return nullptr;
