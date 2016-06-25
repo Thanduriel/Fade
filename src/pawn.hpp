@@ -17,7 +17,10 @@ namespace Game{
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
 	private:
 		sf::Sprite m_weaponSprite;
-		
+		Graphic::CenteredSprite m_healthBarSprite;
+		sf::IntRect m_healthRect;
+		int m_healthRectDef;
+
 		float m_fadeFactor;
 		float m_alpha;
 

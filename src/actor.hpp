@@ -32,6 +32,7 @@ namespace Game{
 		float m_dirAngle;
 
 		float m_health;
+		float m_healthMax;
 
 		float m_boundingRad;
 		bool m_isStatic;

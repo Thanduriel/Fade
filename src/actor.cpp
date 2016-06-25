@@ -10,6 +10,7 @@ namespace Game{
 		m_dirAngle(0.f),
 		m_isStatic(true),
 		m_health(100.f),
+		m_healthMax(100.f),
 		m_isDestroyed(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
