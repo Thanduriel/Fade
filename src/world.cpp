@@ -29,8 +29,6 @@ namespace Game{
 		m_gameObjects.emplace_back(new Pawn(sf::Vector2f(600.f, 800.f),
 			*g_resourceManager.getTexture("player_main.png")));
 
-		m_gameObjects.emplace_back(new Wall(sf::Vector2f(700.f, 400.f), sf::Vector2f(300.f, 10.f)));
-
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
 	}

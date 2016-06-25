@@ -75,5 +75,6 @@ namespace Game{
 	void ClusterGun::endUse()
 	{
 		m_pawn->setProjType(ProjType::Standard);
+		destroy();
 	}
 }

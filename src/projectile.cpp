@@ -7,9 +7,9 @@ namespace Game{
 	ProjectileFactory g_projectileFactory;
 
 	Projectile::Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg):
-		Actor(_pos, *g_resourceManager.getTexture("wall.png")),
+		Actor(_pos, *g_resourceManager.getTexture("projectile.png")),
 		m_damage(_dmg),
-		m_lifeTime(160)
+		m_lifeTime(360)
 	{
 		m_velocity = _vel;
 		m_boundingRad = 5.f;
@@ -24,6 +24,7 @@ namespace Game{
 	void Projectile::process()
 	{
 		Actor::process();
+		m_sprite.rotate(float(360 - m_lifeTime)/20.f);
 
 		--m_lifeTime;
 		if (m_lifeTime == 0) m_isDestroyed = true;
