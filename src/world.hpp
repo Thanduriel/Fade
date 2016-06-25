@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <memory>
 
-#include "LTBL\Light\LightSystem.h"
+// #include "LTBL\Light\LightSystem.h"
 
 #include "actor.hpp"
 #include "controller.hpp"

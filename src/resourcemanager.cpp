@@ -1,12 +1,11 @@
-#include "ResourceManager.hpp"
+#include "resourcemanager.hpp"
+#include "config.hpp"
 
 ResourceManager g_resourceManager;
 
-const std::string resourcePath = "resources/";
-
 ResourceManager::ResourceManager()
 {
-	getShader("light");
+	// getShader("light");
 }
 
 
@@ -28,6 +27,7 @@ sf::Texture* ResourceManager::getTexture(const std::string& _fileName)
 		return nullptr;
 	}
 
+	texture->setSmooth(true);
 	m_textures.emplace_back(_fileName, texture);
 
 	return m_textures.back().data.get();
@@ -62,12 +62,12 @@ sf::Shader* ResourceManager::getShader(const std::string& _fileName, bool _geome
 
 	static std::string path = resourcePath + "shader/";
 
-	bool b = _geometry ? shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".gs", path + _fileName + ".ps")
-		: shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
-	if (!b)
-	{
-		return nullptr;
-	}
+	// bool b = _geometry ? shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".gs", path + _fileName + ".ps")
+	// 	: shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
+	// if (!b)
+	// {
+	// 	return nullptr;
+	// }
 
 	m_shaders.emplace_back(_fileName, shader);
 

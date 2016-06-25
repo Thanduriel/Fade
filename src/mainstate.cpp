@@ -1,5 +1,6 @@
-#include "mainstate.hpp"
 #include <iostream>
+
+#include "mainstate.hpp"
 
 namespace State{
 	MainState::MainState()

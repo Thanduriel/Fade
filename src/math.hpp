@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML\System\Vector2.hpp>
+#include <SFML/System/Vector2.hpp>
 
 template< typename _T>
 float lenSq(const _T& _vec)
