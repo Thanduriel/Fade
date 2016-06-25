@@ -39,6 +39,11 @@ namespace Game{
 		for (auto& controller : m_controllers) controller->process();
 		for (auto& actor : m_gameObjects) actor->process();
 
+		//collect projectiles
+		for (auto proj : g_projectileFactory.collect())
+			m_gameObjects.emplace_back(proj);
+		g_projectileFactory.clear();
+
 		//test for intersections
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{

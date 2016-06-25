@@ -12,4 +12,19 @@ namespace Game{
 	private:
 		float m_damage;
 	};
+
+	typedef std::vector < Projectile* > ProjCntainer;
+
+	class ProjectileFactory
+	{
+	public:
+		void add(Projectile* _proj) { m_projectiles.push_back(_proj); }
+
+		const ProjCntainer& collect() { return m_projectiles; }
+		void clear() { m_projectiles.clear(); }
+	private:
+		ProjCntainer m_projectiles;
+	};
+
+	extern ProjectileFactory g_projectileFactory;
 }

@@ -1,12 +1,18 @@
 #include "pawn.hpp"
 #include "resourcemanager.hpp"
+#include "projectile.hpp"
+#include "math.hpp"
+
+using namespace sf;
 
 namespace Game{
 	Pawn::Pawn(const sf::Vector2f& _position, sf::Texture& _texture) :
 		Actor(_position, _texture),
 		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
 		m_fadeFactor(0.992f),
-		m_alpha(1.f)
+		m_alpha(1.f),
+		m_cdMax(130),
+		m_damage(10.f)
 	{
 		m_isStatic = false;
 
@@ -22,10 +28,13 @@ namespace Game{
 	void Pawn::process()
 	{
 		Actor::process();
-		
-	//	m_alpha *= m_fadeFactor;
 
-		if (m_alpha < 0.1f) m_alpha = 1.f;
+		//fading
+		m_alpha *= m_fadeFactor;
+	//	if (m_alpha < 0.1f) m_alpha = 1.f;
+
+		--m_cd;
+		if (m_cd <= 0) fire();
 	}
 
 	void Pawn::draw(sf::RenderWindow& _window)
@@ -34,12 +43,26 @@ namespace Game{
 		Actor::draw(_window);
 		m_weaponSprite.setPosition(m_position);
 		m_weaponSprite.setColor(sf::Color(228, 10, 255, (int)(m_alpha*255.f)));
-		m_weaponSprite.setRotation(m_dirAngle);
+		m_weaponSprite.setRotation(m_dirAngle / (2.f*3.1415f) * 360.f);
 		_window.draw(m_weaponSprite);
 	}
 
 	void Pawn::collision(Actor& _oth)
 	{
 		_oth.damage(1.f);
+	}
+
+	void Pawn::fire()
+	{
+		if (m_cd <= 0)
+		{
+			m_alpha = 1.f;
+			//spawn projectile
+			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
+			g_projectileFactory.add(new Projectile(m_position + dir * m_boundingRad * 1.1f,
+				dir * 10.f, m_damage));
+
+			m_cd = m_cdMax;
+		}
 	}
 }

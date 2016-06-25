@@ -24,7 +24,7 @@ namespace Game{
 			lookDir.x = sf::Joystick::getAxisPosition(m_id, sf::Joystick::U);
 			lookDir.y = sf::Joystick::getAxisPosition(m_id, sf::Joystick::R);
 	
-			m_pawn->setDirAngle(atan2(lookDir.y, lookDir.x) / (2.f*3.1415f) * 360.f);
+			m_pawn->setDirAngle(atan2(lookDir.y, lookDir.x));
 
 			if (abs(jDir.x) > 40.f || abs(jDir.y) > 40.f)
 				movDir = jDir * 0.1f;
