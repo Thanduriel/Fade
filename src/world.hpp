@@ -20,6 +20,7 @@ namespace Game{
 
 	private:
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
+		sf::Sprite m_ground;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
 		sf::Clock clock;
 	};

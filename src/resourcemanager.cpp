@@ -5,7 +5,7 @@ ResourceManager g_resourceManager;
 
 ResourceManager::ResourceManager()
 {
-	// getShader("light");
+	 getShader("light");
 }
 
 
@@ -51,7 +51,7 @@ sf::Font* ResourceManager::getFont(const std::string& _fileName)
 	return m_fonts.back().data.get();
 }
 
-sf::Shader* ResourceManager::getShader(const std::string& _fileName, bool _geometry)
+sf::Shader* ResourceManager::getShader(const std::string& _fileName)
 {
 	for (auto& shader : m_shaders)
 	{
@@ -62,12 +62,12 @@ sf::Shader* ResourceManager::getShader(const std::string& _fileName, bool _geome
 
 	static std::string path = resourcePath + "shader/";
 
-	// bool b = _geometry ? shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".gs", path + _fileName + ".ps")
-	// 	: shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
-	// if (!b)
-	// {
-	// 	return nullptr;
-	// }
+	bool b = shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
+//	bool b = shader->loadFromFile(path + _fileName + ".ps", sf::Shader::Type::Fragment);
+	 if (!b)
+	{
+		return nullptr;
+	}
 
 	m_shaders.emplace_back(_fileName, shader);
 

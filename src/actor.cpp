@@ -1,4 +1,5 @@
 #include "actor.hpp"
+#include "constants.hpp"
 
 namespace Game{
 	using namespace sf;
@@ -9,11 +10,13 @@ namespace Game{
 		m_velocity(0.f, 0.f),
 		m_dirAngle(0.f),
 		m_isStatic(true),
+		m_canCollide(true),
 		m_health(100.f),
 		m_healthMax(100.f),
 		m_isDestroyed(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
+		m_sprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
 	}
 
 	void Actor::draw(sf::RenderWindow& _window)
@@ -32,6 +35,6 @@ namespace Game{
 		if (m_isStatic) return;
 
 		m_health -= _amount;
-		if (m_health <= 0.f) m_isDestroyed = true;
+		if (m_health <= 0.f) m_isDeath = true;
 	}
 }
