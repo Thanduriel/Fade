@@ -1,4 +1,5 @@
 #include "actor.hpp"
+#include "constants.hpp"
 
 namespace Game{
 	using namespace sf;
@@ -15,6 +16,7 @@ namespace Game{
 		m_isDestroyed(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
+		m_sprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
 	}
 
 	void Actor::draw(sf::RenderWindow& _window)

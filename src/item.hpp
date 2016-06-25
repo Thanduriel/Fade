@@ -3,6 +3,7 @@
 #include "actor.hpp"
 
 namespace Game{
+	class Pawn;
 	// item that will be taken on collision
 	class Item : public Actor
 	{
@@ -10,7 +11,14 @@ namespace Game{
 		Item(const sf::Vector2f& _pos, sf::Texture& _texture);
 		void collision(Actor& _oth) override;
 
-		virtual void use(){};
+		virtual void use(){ m_cd = m_activeTime; };
+		virtual void endUse(){};
+		void process() override;
+	protected:
+		int m_activeTime;
+		Pawn* m_pawn;
+	private:
+		int m_cd; // countdown or active time
 	};
 
 	class Mine : public Item
@@ -20,11 +28,18 @@ namespace Game{
 
 		void collision(Actor& _oth) override;
 		void use() override;
-		void process() override;
+		void endUse() override;
 	private:
 		enum{
 			Pickable, Ticking, Active
 		}m_state;
-		int m_cd; // countdown
+	};
+
+	class ClusterGun : public Item
+	{
+	public:
+		ClusterGun(const sf::Vector2f& _pos);
+		void use() override;
+		void endUse() override;
 	};
 }

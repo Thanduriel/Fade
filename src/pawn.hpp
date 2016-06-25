@@ -2,6 +2,7 @@
 
 #include "actor.hpp"
 #include "item.hpp"
+#include "projectile.hpp"
 
 namespace Game{
 	class Pawn : public Actor
@@ -12,10 +13,12 @@ namespace Game{
 		void process() override;
 		void draw(sf::RenderWindow& _window) override;
 		void collision(Actor& _oth) override;
+		void onDestroy() override;
 
 		void fire();
 		void altFire(); //alternative fire mode or use item
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
+		void setProjType(ProjType _type){ m_projType = _type; }
 
 		void takeItem(Item& _itm);
 	private:
@@ -32,6 +35,7 @@ namespace Game{
 		int m_cd; //cooldown in frames (16.67ms)
 
 		float m_damage;
+		ProjType m_projType;
 
 		Item* m_item;
 	};

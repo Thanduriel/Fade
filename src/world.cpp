@@ -32,6 +32,7 @@ namespace Game{
 		m_gameObjects.emplace_back(new Wall(sf::Vector2f(700.f, 400.f), sf::Vector2f(300.f, 10.f)));
 
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
+		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
 	}
 
 	void World::process()
@@ -48,11 +49,11 @@ namespace Game{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			auto& first = *m_gameObjects[i];
-			if (first.isStatic()) continue;
+			if (first.isStatic() || !first.canCollide()) continue;
 			for (size_t j = i+1; j < m_gameObjects.size(); ++j)
 			{
 				auto& second = *m_gameObjects[j];
-				if (!second.canCollide()) return;
+				if (!second.canCollide()) continue;
 
 				float r2 = first.boundingRad() + second.boundingRad();
 				r2 *= r2;

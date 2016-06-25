@@ -2,6 +2,7 @@
 #include "resourcemanager.hpp"
 #include "projectile.hpp"
 #include "math.hpp"
+#include "constants.hpp"
 
 using namespace sf;
 
@@ -14,16 +15,17 @@ namespace Game{
 		m_alpha(1.f),
 		m_cdMax(130),
 		m_damage(10.f),
-		m_item(nullptr)
+		m_item(nullptr),
+		m_projType(ProjType::Standard)
 	{
 		m_isStatic = false;
 
 		m_weaponSprite.setOrigin(sf::Vector2f(0.f, m_weaponSprite.getTextureRect().height * 0.5f));//_texture.getSize().x
 		m_healthBarSprite.rotate(180.f);
 
-		m_sprite.setScale(0.4f, 0.4f);
-		m_healthBarSprite.setScale(0.4f, 0.4f);
-		m_weaponSprite.setScale(0.4f, 0.4f);
+	//	m_sprite.setScale(Constants::c_scaleFactor, c_scaleFactor);
+		m_healthBarSprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
+		m_weaponSprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
 
 		m_healthRect = m_healthBarSprite.getTextureRect();
 		m_healthRectDef = m_healthRect.height;
@@ -80,6 +82,12 @@ namespace Game{
 		_oth.damage(1.f);
 	}
 
+	void Pawn::onDestroy()
+	{
+		//destroy stuff depended on this pawn
+		if (m_item) m_item->destroy();
+	}
+
 	// ********************************************************* //
 
 	void Pawn::fire()
@@ -89,8 +97,8 @@ namespace Game{
 			m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
-			g_projectileFactory.add(new Projectile(m_position + dir * m_boundingRad * 1.1f,
-				dir * 10.f, m_damage));
+			g_projectileFactory.spawn(m_position + dir * m_boundingRad * 1.1f,
+				dir, m_projType);
 
 			m_cd = m_cdMax;
 		}

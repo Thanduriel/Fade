@@ -11,6 +11,7 @@ namespace Game{
 
 		virtual void process();
 		virtual void draw(sf::RenderWindow& _window);
+		virtual void onDestroy(){};
 
 		virtual void collision(Actor& _oth){};
 
