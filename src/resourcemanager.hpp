@@ -7,7 +7,7 @@
 
 enum DefaultShader
 {
-	Lighting
+	Light
 };
 
 template< typename _T>
@@ -28,7 +28,7 @@ public:
 
 	sf::Texture* getTexture(const std::string& _fileName);
 	sf::Font* getFont(const std::string& _fileName);
-	sf::Shader* getShader(const std::string& _fileName, bool _geometry = false);
+	sf::Shader* getShader(const std::string& _fileName);
 
 	sf::Shader* getShader(DefaultShader _shader) { return m_shaders[_shader].data.get();  };
 private:

@@ -3,6 +3,7 @@
 #include "actor.hpp"
 #include "item.hpp"
 #include "projectile.hpp"
+#include "lightsys.hpp"
 
 namespace Game{
 	class Pawn : public Actor
@@ -22,6 +23,7 @@ namespace Game{
 
 		void takeItem(Item& _itm);
 	private:
+		Graphic::LightInfo& m_lightInfo;
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;
 		sf::IntRect m_healthRect;

@@ -13,11 +13,16 @@ using namespace sf;
 namespace Game{
 	World::World()
 	{
+		Texture* texture = g_resourceManager.getTexture("ground.png");
+		texture->setRepeated(true);
+		m_ground.setTexture(*texture);
+		IntRect rect;
+		rect.left = 0;
+		rect.top = 0;
+		rect.width = Constants::c_windowSizeX;
+		rect.height = Constants::c_windowSizeY;
+		m_ground.setTextureRect(rect);
 		//test stuff
-
-		sf::Texture texture;
-		texture.create(16, 16);
-		m_gameObjects.emplace_back(new Actor(sf::Vector2f(10.f, 10.f), texture));
 
 		Pawn* player = new Pawn(sf::Vector2f(900.f, 450.f),
 			*g_resourceManager.getTexture("player_main.png"));
@@ -81,6 +86,7 @@ namespace Game{
 
 	void World::draw(sf::RenderWindow& _window)
 	{
+		_window.draw(m_ground);
 		for (auto& actor : m_gameObjects) actor->draw(_window);
 	}
 

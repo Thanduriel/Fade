@@ -18,6 +18,8 @@ namespace Game{
 		void draw(sf::RenderWindow& _window);
 
 	private:
+		sf::Sprite m_ground;
+
 		std::vector< std::unique_ptr < Actor > > m_gameObjects;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
 	};
