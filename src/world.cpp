@@ -1,7 +1,11 @@
+#include <algorithm>
+
 #include "world.hpp"
 #include "resourcemanager.hpp"
 #include "math.hpp"
 #include "wall.hpp"
+#include "projectile.hpp"
+#include "constants.hpp"
 
 using namespace sf;
 
@@ -14,10 +18,10 @@ namespace Game{
 		texture.create(16, 16);
 		m_gameObjects.emplace_back(new Actor(sf::Vector2f(10.f, 10.f), texture));
 
-		Pawn* player = new Pawn(sf::Vector2f(200.f, 200.f),
+		Pawn* player = new Pawn(sf::Vector2f(900.f, 450.f),
 			*g_resourceManager.getTexture("player_main.png"));
 		m_gameObjects.emplace_back(player);
-		Controller* controller = new Controller();
+		Controller* controller = new PlayerController(0);
 		controller->possess(player);
 		m_controllers.emplace_back(controller);
 
@@ -25,6 +29,9 @@ namespace Game{
 			*g_resourceManager.getTexture("player_main.png")));
 
 		m_gameObjects.emplace_back(new Wall(sf::Vector2f(700.f, 400.f), sf::Vector2f(300.f, 10.f)));
+
+		for (int i = 0; i < 16; ++i)
+			m_gameObjects.emplace_back(new Projectile(sf::Vector2f(i * 10.f, i * 32.f), sf::Vector2f(i * 2.f, i * 1.f), 10.f));
 	}
 
 	void World::process()
@@ -48,7 +55,22 @@ namespace Game{
 					second.collision(first);
 				}
 			}
+
+			Vector2f newPos = first.position();
+			//check map boundries
+			if (first.position().x - first.boundingRad() < 0.f) newPos.x = first.boundingRad();
+			else if (first.position().x + first.boundingRad() > Constants::c_windowSizeX) newPos.x = Constants::c_windowSizeX - first.boundingRad();
+			if (first.position().y - first.boundingRad() < 0.f) newPos.y = first.boundingRad();
+			else if (first.position().y + first.boundingRad() > Constants::c_windowSizeY) newPos.y = Constants::c_windowSizeY - first.boundingRad();
+
+			first.setPosition(newPos);
 		}
+		
+		auto it = std::remove_if(m_gameObjects.begin(), m_gameObjects.end(),
+			[](const std::unique_ptr<Actor>& _ptr){return _ptr->isDestroyed(); });
+
+		m_gameObjects.resize(std::distance(m_gameObjects.begin(), it));
+
 	}
 
 	void World::draw(sf::RenderWindow& _window)

@@ -1,6 +1,15 @@
 #pragma once
 
 #include <SFML\System\Vector2.hpp>
+#include <math.h>
+
+template<class T, class Compare>
+const T& clamp(const T& v, const T& lo, const T& hi, Compare comp)
+{
+	return comp(v, hi) ? std::max(v, lo, comp) : std::min(v, hi, comp);
+}
+
+// vector stuff
 
 template< typename _T>
 float lenSq(const _T& _vec)
@@ -35,7 +44,13 @@ float dot(const sf::Vector2<_T>& _first, const sf::Vector2<_T>& _second)
 }
 
 template< typename _T>
-float normalize(const sf::Vector2<_T>& _vec)
+sf::Vector2<_T> normalize(const sf::Vector2<_T>& _vec)
 {
 	return _vec * 1.f / len(_vec);
+}
+
+template< typename _T>
+float angle(const sf::Vector2<_T>& _first, const sf::Vector2<_T>& _second)
+{
+	return acos(dot(_first, _second) / (len(_first)+len(_second)));
 }

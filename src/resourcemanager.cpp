@@ -1,8 +1,7 @@
 #include "ResourceManager.hpp"
+#include "config.hpp"
 
 ResourceManager g_resourceManager;
-
-const std::string resourcePath = "resources/";
 
 ResourceManager::ResourceManager()
 {

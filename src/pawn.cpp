@@ -4,7 +4,9 @@
 namespace Game{
 	Pawn::Pawn(const sf::Vector2f& _position, sf::Texture& _texture) :
 		Actor(_position, _texture),
-		m_weaponSprite(*g_resourceManager.getTexture("player_inner_halfring.png"))
+		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
+		m_fadeFactor(0.992f),
+		m_alpha(1.f)
 	{
 		m_isStatic = false;
 
@@ -13,22 +15,25 @@ namespace Game{
 		m_sprite.setScale(0.4f, 0.4f);
 		m_weaponSprite.setScale(0.4f, 0.4f);
 
-		m_weaponSprite.setColor(sf::Color(128, 240, 0, 255));
-
 		//radius of the final scaled sprite
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 	}
 
 	void Pawn::process()
 	{
-		m_position += m_velocity;
-		m_dirAngle++;
+		Actor::process();
+		
+	//	m_alpha *= m_fadeFactor;
+
+		if (m_alpha < 0.1f) m_alpha = 1.f;
 	}
 
 	void Pawn::draw(sf::RenderWindow& _window)
 	{
+		m_sprite.setColor(sf::Color(255, 255, 255, (int)(m_alpha*255.f)));
 		Actor::draw(_window);
 		m_weaponSprite.setPosition(m_position);
+		m_weaponSprite.setColor(sf::Color(228, 10, 255, (int)(m_alpha*255.f)));
 		m_weaponSprite.setRotation(m_dirAngle);
 		_window.draw(m_weaponSprite);
 	}
