@@ -7,6 +7,7 @@ namespace Game{
 	{
 	public:
 		virtual void process(){};
+		virtual void processEvent(sf::Event& _event){};
 
 		void possess(Pawn* _pawn) { m_pawn = _pawn; }
 	protected:
@@ -19,7 +20,8 @@ namespace Game{
 		PlayerController(int _id) :m_id(_id){}
 
 		void process() override;
+		void processEvent(sf::Event& _event) override;
 	private:
-		int m_id;
+		uint m_id;
 	};
 }

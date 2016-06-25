@@ -21,39 +21,42 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1366, 786), "Fade");
 
 	sf::Clock clock;
-
+	sf::Time elapsed;
 	std::vector< std::unique_ptr< Game::GameState > > states;
 	states.emplace_back(new State::MainState());
 
 	while (window.isOpen())
 	{
+		Game::GameState& state = *states.back();
 		sf::Event event;
 		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
+			state.processEvents(event);
 
-		sf::Time elapsed = clock.restart();
-		if (elapsed.asMilliseconds() < 16.667) sf::sleep((sf::milliseconds(16.667) - elapsed));
+		elapsed = clock.restart();
+		if (elapsed.asMilliseconds() < 16.667)
+			sf::sleep((sf::milliseconds(16.667) - elapsed));
 
-		Game::GameState& state = *states.back();
 		state.process();
 
 		window.clear();
 		state.draw(window);
 		window.display();
 
-		if (state.bFinished) states.pop_back();
-		if (state.newState != Game::States::None)
+		if (state.bFinished)
 		{
-			GameState* newState;
-			switch (state.newState)
-			{
-			case States::Main: newState = new State::MainState(); break;
-			}
-			states.emplace_back(newState);
+			states.pop_back();
+			if (states.size()==0)
+				window.close();
 		}
+		// if (state.newState != Game::States::None)
+		// {
+		// 	GameState* newState;
+		// 	switch (state.newState)
+		// 	{
+		// 	case States::Main: newState = new State::MainState(); break;
+		// 	}
+		// 	states.emplace_back(newState);
+		// }
 	}
 
 	return 0;

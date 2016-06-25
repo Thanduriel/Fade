@@ -18,6 +18,7 @@ namespace Game
 		GameState() : bFinished(false), newState(States::None){}
 
 		virtual void process() = 0;
+		virtual void processEvents(sf::Event& _event) = 0;
 		virtual void draw(sf::RenderWindow& _window) = 0;
 
 		bool bFinished;

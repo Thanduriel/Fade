@@ -15,10 +15,12 @@ namespace Game{
 		World();
 
 		void process();
+		void processEvent(sf::Event& _keyEvent);
 		void draw(sf::RenderWindow& _window);
 
 	private:
-		std::vector< std::unique_ptr < Actor > > m_gameObjects;
+		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
+		sf::Clock clock;
 	};
 }
