@@ -1,6 +1,7 @@
+#include <algorithm>
+
 #include "wall.hpp"
 #include "resourcemanager.hpp"
-#include <algorithm>
 #include "math.hpp"
 
 using namespace sf;
@@ -25,7 +26,7 @@ namespace Game{
 		// Return minimum distance between line segment vw and point p
 		float l2 = lenSq(v - w);  // i.e. |w-v|^2 -  avoid a sqrt
 		// Consider the line extending the segment, parameterized as v + t (w - v).
-		// We find projection of point p onto the line. 
+		// We find projection of point p onto the line.
 		// It falls where t = [(p-v) . (w-v)] / |w-v|^2
 		// We clamp t from [0,1] to handle points outside the segment vw.
 		float t = std::max(0.f, std::min(1.f, dot(p - v, w - v) / l2));

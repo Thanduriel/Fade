@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace Game
 {
@@ -17,8 +17,8 @@ namespace Game
 	public:
 		GameState() : bFinished(false), newState(States::None){}
 
-		virtual void process() abstract;
-		virtual void draw(sf::RenderWindow& _window) abstract;
+		virtual void process() = 0;
+		virtual void draw(sf::RenderWindow& _window) = 0;
 
 		bool bFinished;
 		States newState;

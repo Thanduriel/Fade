@@ -4,17 +4,21 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
+// #include "easylogging++.hpp"
 #include "gamestate.hpp"
 #include "mainstate.hpp"
+
+// #define ELPP_NO_DEFAULT_LOG_FILE
+
+// INITIALIZE_EASYLOGGINGPP
 
 int main()
 {
 	using namespace Game;
 
 	sf::RenderWindow window(sf::VideoMode(1366, 786), "Fade");
-//	window.setMouseCursorVisible(false);
-//	window.setView(Graphics::g_camera);
 
 	sf::Clock clock;
 
@@ -31,7 +35,7 @@ int main()
 		}
 
 		sf::Time elapsed = clock.restart();
-		if (elapsed.asMilliseconds() < 16.667) _sleep(unsigned long(16.667 - elapsed.asMilliseconds()));
+		if (elapsed.asMilliseconds() < 16.667) sf::sleep((sf::milliseconds(16.667) - elapsed));
 
 		Game::GameState& state = *states.back();
 		state.process();
