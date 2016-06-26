@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "lightsys.hpp"
 #include "constants.hpp"
 #include "resourcemanager.hpp"
@@ -42,10 +44,11 @@ namespace Graphic{
 		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
 		states.shader = shader;
 
+		int drawcalls = 0;
 		for (auto& lightInfo : m_lightInfos)
 		{
 			if (lightInfo->radius == 0.f) continue;
-
+			drawcalls++;
 			shader->setParameter("lightPosition", lightInfo->position);
 			shader->setParameter("lightColor", lightInfo->color);
 			shader->setParameter("lightRadius", lightInfo->radius);
@@ -62,7 +65,7 @@ namespace Graphic{
 				lightY + lightInfo->radius);
 			m_offScreen.draw(m_vertices, states);
 		}
-
+		std::cout << drawcalls << std::endl;
 		m_offScreen.display();
 		sf::Sprite sprite(m_offScreen.getTexture());
 	//	sprite.setColor(Color(255, 255, 255, 255));

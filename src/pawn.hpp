@@ -19,6 +19,7 @@ namespace Game{
 		void onDestroy() override;
 		void stopSounds() override;
 		void onDeath() override;
+		void onDamage() override;
 
 		void fire();
 		void altFire(); //alternative fire mode or use item

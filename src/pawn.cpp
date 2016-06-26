@@ -44,7 +44,7 @@ namespace Game{
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 
 		m_lightInfo.color = Color(255, 255, 255, 0);
-		m_lightInfo.radius = m_boundingRad * 8.f;
+		m_lightInfo.radius = m_boundingRad * 6.f;
 	}
 
 	void Pawn::process()
@@ -117,6 +117,8 @@ namespace Game{
 	{
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
+		m_lightInfo.isInUse = false;
+		m_lightInfo.radius = 0.f;
 	}
 
 	void Pawn::onDeath()
@@ -124,10 +126,15 @@ namespace Game{
 		m_soundExplode.play();
 		m_alpha = 1.f;
 		m_fadeFactor = 0.995;
-		m_lightInfo.radius *= 3.f;
+		m_lightInfo.radius *= 1.5f;
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
 		m_canCollide = false;
+	}
+
+	void Pawn::onDamage()
+	{
+		m_alpha = std::max(m_alpha, 0.5f);
 	}
 
 	void Pawn::fire()

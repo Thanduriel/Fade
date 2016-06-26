@@ -34,6 +34,7 @@ namespace Game{
 	void Actor::damage(float _amount)
 	{
 		if (m_isStatic) return;
+		onDamage();
 
 		m_health = std::max(m_health -_amount, 0.f);
 		if (m_health <= 0.f) {

@@ -74,7 +74,16 @@ namespace State{
 
 	void MainState::draw(sf::RenderWindow& _window)
 	{
+	//	auto view = _window.getDefaultView();
+	//	view.zoom(1.5f);
+	//	_window.setView(view);
 		m_world.draw(_window);
 		Graphic::g_lightSystem.draw(_window);
+	}
+
+	void MainState::onActivate()
+	{
+	//	m_world.~World();
+	//	new (&m_world) Game::World();
 	}
 }

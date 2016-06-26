@@ -63,6 +63,7 @@ int main()
 				state.processEvents(event);
 
 			current_state = state.process();
+		//	if (&state != states[current_state].get()) states[current_state]->onActivate();
 			window.clear();
 			state.draw(window);
 			window.display();

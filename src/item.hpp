@@ -18,8 +18,8 @@ namespace Game{
 	protected:
 		int m_activeTime;
 		Pawn* m_pawn;
-	private:
 		Graphic::LightInfo& m_lightInfo;
+	private:
 		int m_cd; // countdown or active time
 		sf::Sound m_soundAppear;
 	};
@@ -38,6 +38,16 @@ namespace Game{
 		enum{
 			Pickable, Ticking, Active
 		}m_state;
+	};
+
+	class Sentinel : public Item
+	{
+	public:
+		Sentinel(const sf::Vector2f& _pos);
+		void collision(Actor& _oth) override;
+		void use() override;
+		void endUse() override;
+	private:
 	};
 
 	// lets the player shoot multiple projectiles at once

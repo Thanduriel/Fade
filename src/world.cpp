@@ -12,6 +12,24 @@
 using namespace sf;
 
 namespace Game{
+
+	//some utils that do not belong here
+
+	inline unsigned int rnd()
+	{
+		static unsigned int num = 0x13624F13;
+		num ^= num << 13;
+		num ^= num >> 17;
+		num ^= num << 5;
+
+		return num;
+	}
+
+	inline uint32_t rand(uint32_t _max, uint32_t _min = 0)
+	{
+		return(rnd() % (_max + 1 - _min)) + _min;
+	}
+
 	World::World()
 	{
 		// determine number of connected joysticks/gamepads with Axis
@@ -45,7 +63,7 @@ namespace Game{
 
 		//test stuff
 
-		m_gameObjects.emplace_back(new SpeedBoost(sf::Vector2f(123.f, 121.f)));
+		m_gameObjects.emplace_back(new Sentinel(sf::Vector2f(123.f, 121.f)));
 		m_gameObjects.emplace_back(new HealthBoost(sf::Vector2f(123.f, 221.f)));
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
@@ -68,7 +86,8 @@ namespace Game{
 	{
 		// game events
 		++m_frameCount;
-		if (m_frameCount % Constants::c_eventFrequency == 0) spawnItem();
+		if (m_frameCount % Constants::c_eventFrequency == 0)
+			for (uint32_t i = 0; i < rand(3, 1); ++i) spawnItem();
 
 		for (auto& controller : m_controllers)
 		{
@@ -133,29 +152,14 @@ namespace Game{
 		for (auto& actor : m_gameObjects) actor->stopSounds();
 	}
 
-	inline unsigned int rnd()
-	{
-		static unsigned int num = 0x13624F13;
-		num ^= num << 13;
-		num ^= num >> 17;
-		num ^= num << 5;
-
-		return num;
-	}
-
-	inline uint32_t rand(uint32_t _max, uint32_t _min = 0)
-	{
-		return(rnd() % (_max + 1 - _min)) + _min;
-	}
-
 	sf::Vector2f World::getDistantPosition(float _minDist)
 	{
 		_minDist *= _minDist; //compare sqr
 		sf::Vector2f pos;
 		bool isValid;
 		do{
-			pos.x = rand(Constants::c_windowSizeX-10, 10);
-			pos.y = rand(Constants::c_windowSizeY-10, 10);
+			pos.x = rand(Constants::c_windowSizeX-50, 50);
+			pos.y = rand(Constants::c_windowSizeY-50, 50);
 
 			isValid = true;
 			for (auto& actor : m_gameObjects)

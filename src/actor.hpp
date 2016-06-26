@@ -10,12 +10,14 @@ namespace Game{
 	{
 	public:
 		Actor(const sf::Vector2f& _position, sf::Texture& _texture);
+		virtual ~Actor(){};
 
 		virtual void process();
 		virtual void draw(sf::RenderWindow& _window);
 		virtual void onDestroy(){};
 		virtual void stopSounds(){};
 		virtual void onDeath(){};
+		virtual void onDamage(){};
 		virtual void collision(Actor& _oth){};
 
 		void damage(float _amount);

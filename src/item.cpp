@@ -35,6 +35,7 @@ namespace Game{
 
 	void Item::process()
 	{
+		m_sprite.rotate(1.f);
 		--m_cd;
 		if (m_cd == 0) endUse();
 	}
@@ -71,6 +72,38 @@ namespace Game{
 		m_sprite.scale(2.2f, 2.2f);
 		m_state = Active;
 		m_canCollide = true;
+	}
+
+	// *********************************************************** //
+
+	Sentinel::Sentinel(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_mine.png"))
+	{
+		m_activeTime = 60*20;
+	}
+
+	void Sentinel::collision(Actor& _oth)
+	{
+		Item::collision(_oth);
+		m_lightInfo.isInUse = true;
+	}
+
+	void Sentinel::use()
+	{
+		Item::use();
+		m_sprite.setColor(sf::Color(0, 0, 255, 255));
+		m_lightInfo.color = sf::Color(255, 255, 255, 255);
+		m_lightInfo.setPosition(m_position);
+		m_lightInfo.radius = 186.f;
+	}
+
+	void Sentinel::endUse()
+	{
+		m_lightInfo.isInUse = false;
+		m_lightInfo.radius = 0;
+		m_sprite.setColor(sf::Color(255, 210, 255, 255));
+		m_sprite.scale(2.2f, 2.2f);
+		destroy();
 	}
 
 	// *********************************************************** //
