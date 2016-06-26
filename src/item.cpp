@@ -94,7 +94,7 @@ namespace Game{
 		m_sprite.setColor(sf::Color(255, 255, 12, 255));
 		m_lightInfo.color = sf::Color(255, 255, 255, 255);
 		m_lightInfo.setPosition(m_position);
-		m_lightInfo.radius = 186.f;
+		m_lightInfo.radius = 256.f;
 	}
 
 	void Sentinel::endUse()
@@ -179,12 +179,12 @@ namespace Game{
 	{
 		Item::use();
 
-		m_pawn->setSpeedFactor(m_pawn->speedFactor() + 2.f);
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() + 1.f);
 	}
 
 	void SpeedBoost::endUse()
 	{
-		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 2.f);
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 1.f);
 		destroy();
 	}
 }

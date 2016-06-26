@@ -36,7 +36,7 @@ int main()
 	Constants::c_windowSizeX = desktop.width;
 	Constants::c_windowSizeY = desktop.height;
 	Graphic::g_lightSystem.refreshSize();
-	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
+	sf::RenderWindow window(desktop, "Fade", sf::Style::None);
 
 	sf::Clock clock;
 	sf::Time elapsed;

@@ -17,7 +17,7 @@ namespace Game{
 
 	inline unsigned int rnd()
 	{
-		static unsigned int num = 0x13624F13;
+		static unsigned int num = rand();
 		num ^= num << 13;
 		num ^= num >> 17;
 		num ^= num << 5;
@@ -62,13 +62,13 @@ namespace Game{
 
 
 		//test stuff
-
+		/*
 		m_gameObjects.emplace_back(new Sentinel(sf::Vector2f(123.f, 121.f)));
 		m_gameObjects.emplace_back(new HealthBoost(sf::Vector2f(123.f, 221.f)));
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
 		m_gameObjects.emplace_back(new LightAura(sf::Vector2f(123.f, 521.f)));
-
+		*/
 		clock.restart();
 	}
 
@@ -180,12 +180,14 @@ namespace Game{
 		sf::Vector2f pos = getDistantPosition(50.f);
 
 		Item* item;
-		switch (rand(3))
+		switch (rand(5))
 		{
 		case 0: item = new Mine(pos); break;
 		case 1: item = new LightAura(pos); break;
 		case 2: item = new HealthBoost(pos); break;
 		case 3: item = new SpeedBoost(pos); break;
+		case 4: item = new ClusterGun(pos); break;
+		case 5: item = new Sentinel(pos); break;
 		}
 
 		assert(item);
