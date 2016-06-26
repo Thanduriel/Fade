@@ -47,12 +47,14 @@ namespace Game{
 		m_lightInfo.radius = m_boundingRad * 8.f;
 	}
 
-	// ********************************************************* //
-
 	void Pawn::process()
 	{
 		if (m_isDeath)
 		{
+			if (alphaVal() < 0.1f)
+			{
+				destroy();
+			}
 			return;
 		}
 
@@ -73,8 +75,6 @@ namespace Game{
 			m_item->setPosition(m_position);
 		}
 	}
-
-	// ********************************************************* //
 
 	void Pawn::draw(sf::RenderWindow& _window)
 	{
@@ -121,15 +121,14 @@ namespace Game{
 
 	void Pawn::onDeath()
 	{
+		m_soundExplode.play();
 		m_alpha = 1.f;
 		m_fadeFactor = 0.997;
 		m_lightInfo.radius *= 3.f;
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
-		m_soundExplode.play();
+		m_canCollide = false;
 	}
-
-	// ********************************************************* //
 
 	void Pawn::fire()
 	{

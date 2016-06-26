@@ -54,6 +54,16 @@ namespace State{
 		{
 			break;
 		}
+		case sf::Event::JoystickConnected:
+		{
+			m_world.addNewPlayer(_event.joystickConnect.joystickId);
+			break;
+		}
+		case sf::Event::JoystickDisconnected:
+		{
+			m_world.removePlayer(_event.joystickConnect.joystickId);
+			break;
+		}
 		// Default case
 		default:
 		{

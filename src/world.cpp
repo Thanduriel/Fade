@@ -196,4 +196,27 @@ namespace Game{
 
 		return player;
 	}
+
+	// *************************************************** //
+
+	void World::addNewPlayer(int _id)
+	{
+		Controller* controller = new PlayerController(_id);
+		controller->possess(spawnPlayer());
+		m_controllers.emplace_back(controller);
+	}
+
+	// *************************************************** //
+
+	void World::removePlayer(int _id)
+	{
+		auto it = std::find_if(m_controllers.begin(), m_controllers.end(),
+			[=](const std::unique_ptr<Controller>& _controller){return _controller->getId() == _id; });
+
+		if (it != m_controllers.end() && (*it)->hasPawn())
+		{
+			(*it)->getPawn()->damage(42000.f); //should definitely kill him
+			m_controllers.erase(it);
+		}
+	}
 }

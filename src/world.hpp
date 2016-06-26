@@ -25,6 +25,8 @@ namespace Game{
 
 		void spawnItem();
 		Pawn* spawnPlayer();
+		void addNewPlayer(int _id);
+		void removePlayer(int _id);
 	private:
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		sf::Sprite m_ground;
