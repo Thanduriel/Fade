@@ -13,11 +13,8 @@ namespace Game{
 
 		if (m_pawn->isDeath())
 		{
-			if (m_pawn->alphaVal() < 0.1f)
-			{
-				m_pawn->destroy();
+			if (m_pawn->alphaVal() < 0.2f)
 				m_pawn = nullptr;
-			}
 			return;
 		}
 

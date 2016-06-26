@@ -51,6 +51,10 @@ namespace Game{
 	{
 		if (m_isDeath)
 		{
+			if (alphaVal() < 0.1f)
+			{
+				destroy();
+			}
 			return;
 		}
 
@@ -124,6 +128,7 @@ namespace Game{
 		m_lightInfo.radius *= 3.f;
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
+		m_canCollide = false;
 	}
 
 	// ********************************************************* //
