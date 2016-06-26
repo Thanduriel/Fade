@@ -9,4 +9,5 @@ namespace Constants{
 
 	const float c_playerBaseSpeed = 2.f;
 	const float c_projectileBaseSpeed = 4.f;
+	const float c_projectileRadius = 5.f;
 }

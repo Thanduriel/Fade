@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.hpp"
+#include "lightsys.hpp"
 
 namespace Game{
 	class Pawn;
@@ -18,6 +19,7 @@ namespace Game{
 		int m_activeTime;
 		Pawn* m_pawn;
 	private:
+		Graphic::LightInfo& m_lightInfo;
 		int m_cd; // countdown or active time
 	};
 

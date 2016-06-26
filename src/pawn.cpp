@@ -111,7 +111,7 @@ namespace Game{
 			m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
-			g_projectileFactory.spawn(m_position + dir * m_boundingRad * 1.1f,
+			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
 				dir, m_projType);
 
 			m_cd = m_cdMax;

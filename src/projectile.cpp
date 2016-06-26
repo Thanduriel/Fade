@@ -13,7 +13,7 @@ namespace Game{
 		m_lifeTime(360)
 	{
 		m_velocity = _vel * Constants::c_projectileBaseSpeed;
-		m_boundingRad = 5.f;
+		m_boundingRad = Constants::c_projectileRadius;
 	}
 
 	void Projectile::collision(Actor& _oth)

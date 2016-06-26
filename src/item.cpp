@@ -6,9 +6,14 @@ namespace Game{
 	Item::Item(const sf::Vector2f& _pos, sf::Texture& _texture):
 		Actor(_pos, _texture),
 		m_cd(0xfffffff),
-		m_pawn(nullptr)
+		m_pawn(nullptr),
+		m_lightInfo(Graphic::g_lightSystem.createLight())
 	{
 		m_boundingRad = 10.f;
+
+		m_lightInfo.color = sf::Color(100, 255, 12, 255);
+		m_lightInfo.radius = 80.f;
+		m_lightInfo.setPosition(_pos);
 	};
 
 	void Item::collision(Actor& _oth)
@@ -17,6 +22,9 @@ namespace Game{
 		m_canCollide = false;
 		pawn.takeItem(*this);
 		m_pawn = &pawn;
+		
+		m_lightInfo.radius = 0.f;
+		m_lightInfo.isInUse = false;
 	}
 
 	void Item::process()
