@@ -13,7 +13,8 @@ namespace Game{
 		m_canCollide(true),
 		m_health(100.f),
 		m_healthMax(100.f),
-		m_isDestroyed(false)
+		m_isDestroyed(false),
+		m_isDeath(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
 		m_sprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);

@@ -11,6 +11,16 @@ namespace Game{
 	{
 		if (!m_pawn) return;
 
+		if (m_pawn->isDeath())
+		{
+			if (m_pawn->alphaVal() < 0.1f)
+			{
+				m_pawn->destroy();
+				m_pawn = nullptr;
+			}
+			return;
+		}
+
 		sf::Vector2f movDir(0.f, 0.f);
 
 		if (sf::Joystick::isConnected(m_id))
