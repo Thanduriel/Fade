@@ -1,4 +1,4 @@
-// yalasg.cpp : Defines the entry point for the console application.
+// yalasg.cpp : Defines the entry point fo{r the console application.
 //
 #include <SFML/Graphics.hpp>
 
@@ -34,6 +34,12 @@ int main()
 
 	while (window.isOpen())
 	{
+		if (current_state > states.size())
+		{
+			window.close();
+			break;
+		}
+
 		Game::GameState& state = *states[current_state];
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -43,15 +49,10 @@ int main()
 		if (elapsed.asMilliseconds() < 16.667)
 			sf::sleep((sf::milliseconds(16.667) - elapsed));
 
-		if (current_state<states.size())
-		{
-			current_state = state.process();
-			window.clear();
-			state.draw(window);
-			window.display();
-		}
-		else
-			window.close();
+		current_state = state.process();
+		window.clear();
+		state.draw(window);
+		window.display();
 	}
 
 	return 0;
