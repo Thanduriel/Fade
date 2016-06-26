@@ -36,7 +36,7 @@ namespace Game{
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;
 		sf::IntRect m_healthRect;
-		sf::Sound m_hoverSound;
+		sf::Sound m_soundFire, m_soundAltFire, m_soundCollision;
 		int m_healthRectDef;
 
 		float m_fadeFactor;

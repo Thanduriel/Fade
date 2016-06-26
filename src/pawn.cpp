@@ -23,8 +23,9 @@ namespace Game{
 	{
 		m_isStatic = false;
 
-		m_hoverSound.setBuffer(*g_resourceManager.getSound("sound_pawn"));
-		m_hoverSound.setLoop(true);
+		m_soundFire.setBuffer(*g_resourceManager.getSound("sound_shot"));
+		m_soundAltFire.setBuffer(*g_resourceManager.getSound("sound_altShot"));
+		m_soundCollision.setBuffer(*g_resourceManager.getSound("sound_collision"));
 
 		m_weaponSprite.setOrigin(sf::Vector2f(0.f, m_weaponSprite.getTextureRect().height * 0.5f));//_texture.getSize().x
 		m_healthBarSprite.rotate(180.f);
@@ -69,9 +70,6 @@ namespace Game{
 		{
 			m_item->setPosition(m_position);
 		}
-		if (m_hoverSound.getStatus() != sf::Sound::Status::Playing)
-			m_hoverSound.play();
-		m_hoverSound.setVolume(m_alpha*100);
 	}
 
 	// ********************************************************* //
@@ -106,16 +104,15 @@ namespace Game{
 	void Pawn::collision(Actor& _oth)
 	{
 		_oth.damage(1.f);
+		m_soundCollision.play();
 	}
 
 	void Pawn::stopSounds()
 	{
-		m_hoverSound.stop();
 	}
 
 	void Pawn::onDestroy()
 	{
-		m_hoverSound.stop();
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
 	}
@@ -140,6 +137,7 @@ namespace Game{
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
 			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
 				dir, m_projType);
+			m_soundFire.play();
 
 			m_cd = m_cdMax;
 		}
@@ -148,9 +146,9 @@ namespace Game{
 	void Pawn::altFire()
 	{
 		if (!m_item) return;
-
 		m_item->use();
 		m_item = nullptr;
+		m_soundAltFire.play();
 	}
 
 	void Pawn::takeItem(Item& _itm)
