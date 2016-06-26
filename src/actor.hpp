@@ -31,7 +31,7 @@ namespace Game{
 		bool isStatic() { return m_isStatic; }
 		bool canCollide() { return m_canCollide; }
 
-		void destroy() { m_isDestroyed = true; }
+		void destroy() { m_isDestroyed = true; onDestroy(); }
 		bool isDestroyed() { return m_isDestroyed; }
 
 		bool isDeath() { return m_isDeath; }

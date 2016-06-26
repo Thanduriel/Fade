@@ -101,8 +101,10 @@ namespace Game{
 				}
 			}
 
-			Vector2f newPos = first.position();
 			//check map boundries
+			if (first.isStatic()) continue;
+			Vector2f newPos = first.position();
+
 			if (first.position().x - first.boundingRad() < 0.f) newPos.x = first.boundingRad();
 			else if (first.position().x + first.boundingRad() > Constants::c_windowSizeX) newPos.x = Constants::c_windowSizeX - first.boundingRad();
 			if (first.position().y - first.boundingRad() < 0.f) newPos.y = first.boundingRad();

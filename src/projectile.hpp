@@ -1,6 +1,7 @@
 #pragma once
 
 #include "actor.hpp"
+#include "lightsys.hpp"
 
 namespace Game{
 	class Projectile : public Actor
@@ -11,9 +12,11 @@ namespace Game{
 		void collision(Actor& _oth) override;
 
 		void process() override;
+		void onDestroy() override;
 	private:
 		float m_damage;
 		int m_lifeTime;
+		Graphic::LightInfo& m_lightInfo;
 	};
 
 	typedef std::vector < Projectile* > ProjCntainer;

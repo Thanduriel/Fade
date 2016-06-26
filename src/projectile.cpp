@@ -10,25 +10,38 @@ namespace Game{
 	Projectile::Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg):
 		Actor(_pos, *g_resourceManager.getTexture("projectile.png")),
 		m_damage(_dmg),
-		m_lifeTime(360)
+		m_lifeTime(360),
+		m_lightInfo(Graphic::g_lightSystem.createLight())
 	{
 		m_velocity = _vel * Constants::c_projectileBaseSpeed;
 		m_boundingRad = Constants::c_projectileRadius;
+
+		m_lightInfo.color = Color(50, 120, 255, 255);
+		m_lightInfo.radius = m_boundingRad * 8.f;
 	}
 
 	void Projectile::collision(Actor& _oth)
 	{
 		_oth.damage(m_damage);
-		m_isDestroyed = true;
+		destroy();
 	}
 
 	void Projectile::process()
 	{
 		Actor::process();
+
+		m_lightInfo.setPosition(m_position);
+
 		m_sprite.rotate(float(360 - m_lifeTime)/20.f);
 
 		--m_lifeTime;
-		if (m_lifeTime == 0) m_isDestroyed = true;
+		if (m_lifeTime == 0) destroy();
+	}
+
+	void Projectile::onDestroy()
+	{
+		m_lightInfo.isInUse = false;
+		m_lightInfo.radius = 0.f;
 	}
 
 	// ******************************************************** //
