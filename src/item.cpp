@@ -1,6 +1,7 @@
 #include "item.hpp"
 #include "pawn.hpp"
 #include "resourcemanager.hpp"
+#include "constants.hpp"
 
 namespace Game{
 	Item::Item(const sf::Vector2f& _pos, sf::Texture& _texture):
@@ -61,7 +62,8 @@ namespace Game{
 
 	void Mine::endUse()
 	{
-		m_sprite.setColor(sf::Color(255, 0, 255, 255));
+		m_sprite.setColor(sf::Color(255, 210, 255, 255));
+		m_sprite.scale(2.2f, 2.2f);
 		m_state = Active;
 		m_canCollide = true;	
 	}

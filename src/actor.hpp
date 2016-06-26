@@ -15,11 +15,11 @@ namespace Game{
 		virtual void draw(sf::RenderWindow& _window);
 		virtual void onDestroy(){};
 		virtual void stopSounds(){};
-
+		virtual void onDeath(){};
 		virtual void collision(Actor& _oth){};
 
 		void damage(float _amount);
-		void addHealth(float _amount) { m_health = std::max(m_health + _amount, m_healthMax); };
+		void addHealth(float _amount) { m_health = std::min(m_health + _amount, m_healthMax); };
 
 		void setPosition(const sf::Vector2f& _pos) { m_position = _pos; }
 		//set angle in radients

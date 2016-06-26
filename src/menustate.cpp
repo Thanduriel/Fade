@@ -2,24 +2,26 @@
 
 #include "menustate.hpp"
 #include "resourcemanager.hpp"
+#include "constants.hpp"
 
 namespace State{
     MenuState::MenuState()
     {
         font = *g_resourceManager.getFont("suburbia");
 
+		uint32_t left = Constants::c_windowSizeX / 2 - 200;
 
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(400,50);
+        title.setPosition(left-100,50);
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
-        m_gui.emplace_back(new GUI::Gui("Play", 400, 300));
-        m_gui.emplace_back(new GUI::Gui("Options", 400, 400));
-        m_gui.emplace_back(new GUI::Gui("Credits", 400, 500));
-        m_gui.emplace_back(new GUI::Gui("Quit", 400, 600));
+		m_gui.emplace_back(new GUI::Gui("Play", left, 300));
+		m_gui.emplace_back(new GUI::Gui("Options", left, 400));
+		m_gui.emplace_back(new GUI::Gui("Credits", left, 500));
+		m_gui.emplace_back(new GUI::Gui("Quit", left, 600));
 
         m_state = 0; // internal state
         m_ID = 0;

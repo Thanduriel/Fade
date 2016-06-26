@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <assert.h>
 
 #include "world.hpp"
 #include "resourcemanager.hpp"
@@ -24,8 +25,8 @@ namespace Game{
 					sf::Joystick::hasAxis(i, sf::Joystick::U) &&
 					sf::Joystick::hasAxis(i, sf::Joystick::R))
 				{
-					Pawn* player = new Pawn(sf::Vector2f(500.f, 500.f),
-						*g_resourceManager.getTexture("player_main.png"));
+					Pawn* player = new Pawn(getDistantPosition(200.f),
+							*g_resourceManager.getTexture("player_main.png"));
 					Controller* controller = new PlayerController(i);
 					controller->possess(player);
 					m_gameObjects.emplace_back(player);
@@ -47,9 +48,6 @@ namespace Game{
 
 		//test stuff
 
-		m_gameObjects.emplace_back(new Pawn(sf::Vector2f(600.f, 800.f),
-			*g_resourceManager.getTexture("player_main.png")));
-
 		m_gameObjects.emplace_back(new SpeedBoost(sf::Vector2f(123.f, 121.f)));
 		m_gameObjects.emplace_back(new HealthBoost(sf::Vector2f(123.f, 221.f)));
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
@@ -67,6 +65,10 @@ namespace Game{
 
 	void World::process()
 	{
+		// game events
+		++m_frameCount;
+		if (m_frameCount % Constants::c_eventFrequency == 0) spawnItem();
+
 		for (auto& controller : m_controllers) controller->process();
 		for (auto& actor : m_gameObjects) actor->process();
 
@@ -122,4 +124,56 @@ namespace Game{
 		for (auto& actor : m_gameObjects) actor->stopSounds();
 	}
 
+	inline unsigned int rnd()
+	{
+		static unsigned int num = 0x13624F13;
+		num ^= num << 13;
+		num ^= num >> 17;
+		num ^= num << 5;
+
+		return num;
+	}
+
+	inline uint32_t rand(uint32_t _max, uint32_t _min = 0)
+	{
+		return(rnd() % (_max + 1 - _min)) + _min;
+	}
+
+	sf::Vector2f World::getDistantPosition(float _minDist)
+	{
+		_minDist *= _minDist; //compare sqr
+		sf::Vector2f pos;
+		bool isValid;
+		do{
+			pos.x = rand(Constants::c_windowSizeX-10, 10);
+			pos.y = rand(Constants::c_windowSizeY-10, 10);
+
+			isValid = true;
+			for (auto& actor : m_gameObjects)
+				if (!actor->isStatic() && distSq(actor->position(), pos) < _minDist)
+				{
+					isValid = false;
+					break;
+				}
+		}while(!isValid);
+
+		return pos;
+	}
+
+	void World::spawnItem()
+	{
+		sf::Vector2f pos = getDistantPosition(50.f);
+
+		Item* item;
+		switch (rand(3))
+		{
+		case 0: item = new Mine(pos); break;
+		case 1: item = new LightAura(pos); break;
+		case 2: item = new HealthBoost(pos); break;
+		case 3: item = new SpeedBoost(pos); break;
+		}
+
+		assert(item);
+		m_gameObjects.emplace_back(item);
+	}
 }

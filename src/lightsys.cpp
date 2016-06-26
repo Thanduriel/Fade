@@ -16,13 +16,6 @@ namespace Graphic{
 	LightSystem::LightSystem():
 		m_vertices(Quads)
 	{
-		m_vertices.append(Vertex(Vector2f(0.f,0.f)));
-		m_vertices.append(Vertex(Vector2f(Constants::c_windowSizeX, 0.f)));
-		m_vertices.append(Vertex(Vector2f(Constants::c_windowSizeX, Constants::c_windowSizeY)));
-		m_vertices.append(Vertex(Vector2f(0.f, Constants::c_windowSizeY)));
-		m_offScreen.create(Constants::c_windowSizeX, Constants::c_windowSizeY);
-	//	m_offScreen.
-
 	}
 
 	LightInfo& LightSystem::createLight()
@@ -31,7 +24,10 @@ namespace Graphic{
 			[](const std::unique_ptr<LightInfo>& _info){return !_info->isInUse; });
 
 		if (it != m_lightInfos.end())
+		{
+			(*it)->isInUse = true;
 			return **it;
+		}
 
 		m_lightInfos.emplace_back(new LightInfo());
 
@@ -48,9 +44,22 @@ namespace Graphic{
 
 		for (auto& lightInfo : m_lightInfos)
 		{
+			if (lightInfo->radius == 0.f) continue;
+
 			shader->setParameter("lightPosition", lightInfo->position);
 			shader->setParameter("lightColor", lightInfo->color);
 			shader->setParameter("lightRadius", lightInfo->radius);
+
+			float lightY = (float)Constants::c_windowSizeY - lightInfo->position.y;
+
+			m_vertices[0].position = Vector2f(lightInfo->position.x - lightInfo->radius,
+				lightY + lightInfo->radius);
+			m_vertices[1].position = Vector2f(lightInfo->position.x - lightInfo->radius,
+				lightY - lightInfo->radius);
+			m_vertices[2].position = Vector2f(lightInfo->position.x + lightInfo->radius,
+				lightY - lightInfo->radius);
+			m_vertices[3].position = Vector2f(lightInfo->position.x + lightInfo->radius,
+				lightY + lightInfo->radius);
 			m_offScreen.draw(m_vertices, states);
 		}
 
@@ -60,5 +69,15 @@ namespace Graphic{
 		sf::RenderStates states2;
 		states2.blendMode = sf::BlendMultiply;
 		_window.draw(sprite, states2);
+	}
+
+	void LightSystem::refreshSize()
+	{
+		m_offScreen.create(Constants::c_windowSizeX, Constants::c_windowSizeY);
+
+		m_vertices.append(Vertex(Vector2f(0.f, 0.f)));
+		m_vertices.append(Vertex(Vector2f(Constants::c_windowSizeX, 0.f)));
+		m_vertices.append(Vertex(Vector2f(Constants::c_windowSizeX, Constants::c_windowSizeY)));
+		m_vertices.append(Vertex(Vector2f(0.f, Constants::c_windowSizeY)));
 	}
 }

@@ -19,6 +19,11 @@
 
 // INITIALIZE_EASYLOGGINGPP
 
+namespace Constants{
+	int c_windowSizeX;
+	int c_windowSizeY;
+}
+
 int main()
 {
 	using namespace Game;
@@ -27,8 +32,11 @@ int main()
 	track = g_resourceManager.getTrack("menu");
     track->play();
 
-	sf::RenderWindow window(sf::VideoMode(1366, 786), "Fade");
-
+	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
+	Constants::c_windowSizeX = desktop.width;
+	Constants::c_windowSizeY = desktop.height;
+	Graphic::g_lightSystem.refreshSize();
+	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
 
 	sf::Clock clock;
 	sf::Time elapsed;
@@ -54,14 +62,14 @@ int main()
 			while (window.pollEvent(event))
 				state.processEvents(event);
 
-			elapsed = clock.restart();
-			if (elapsed.asMilliseconds() < 16.667)
-				sf::sleep((sf::milliseconds(16.667) - elapsed));
-
 			current_state = state.process();
 			window.clear();
 			state.draw(window);
 			window.display();
+
+			elapsed = clock.restart();
+			if (elapsed.asMilliseconds() < 16.667)
+				sf::sleep((sf::milliseconds(16.667) - elapsed));
 		}
 	}
 	track = NULL;

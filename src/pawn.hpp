@@ -18,6 +18,7 @@ namespace Game{
 		void collision(Actor& _oth) override;
 		void onDestroy() override;
 		void stopSounds() override;
+		void onDeath() override;
 
 		void fire();
 		void altFire(); //alternative fire mode or use item

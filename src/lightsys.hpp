@@ -23,6 +23,7 @@ namespace Graphic{
 
 		LightInfo& createLight();
 		void draw(sf::RenderWindow& _window);
+		void refreshSize();
 	private:
 		sf::RenderTexture m_offScreen;
 		std::vector<std::unique_ptr<LightInfo>> m_lightInfos;
