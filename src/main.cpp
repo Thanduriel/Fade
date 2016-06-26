@@ -1,6 +1,7 @@
 // yalasg.cpp : Defines the entry point fo{r the console application.
 //
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include <vector>
 #include <memory>
@@ -12,6 +13,7 @@
 #include "menustate.hpp"
 #include "optionstate.hpp"
 #include "creditstate.hpp"
+#include "resourcemanager.hpp"
 
 // #define ELPP_NO_DEFAULT_LOG_FILE
 
@@ -21,7 +23,12 @@ int main()
 {
 	using namespace Game;
 
+	sf::Music *track;
+	track = g_resourceManager.getTrack("menu");
+    track->play();
+
 	sf::RenderWindow window(sf::VideoMode(1366, 786), "Fade");
+
 
 	sf::Clock clock;
 	sf::Time elapsed;
@@ -35,25 +42,29 @@ int main()
 	while (window.isOpen())
 	{
 		if (current_state > states.size())
-		{
 			window.close();
-			break;
+		else
+		{
+			if (track->getStatus() == sf::Music::Status::Playing && current_state==1)
+				track->stop();
+			else if (track->getStatus() == sf::Music::Status::Stopped && current_state!=1)
+				track->play();
+			Game::GameState& state = *states[current_state];
+			sf::Event event;
+			while (window.pollEvent(event))
+				state.processEvents(event);
+
+			elapsed = clock.restart();
+			if (elapsed.asMilliseconds() < 16.667)
+				sf::sleep((sf::milliseconds(16.667) - elapsed));
+
+			current_state = state.process();
+			window.clear();
+			state.draw(window);
+			window.display();
 		}
-
-		Game::GameState& state = *states[current_state];
-		sf::Event event;
-		while (window.pollEvent(event))
-			state.processEvents(event);
-
-		elapsed = clock.restart();
-		if (elapsed.asMilliseconds() < 16.667)
-			sf::sleep((sf::milliseconds(16.667) - elapsed));
-
-		current_state = state.process();
-		window.clear();
-		state.draw(window);
-		window.display();
 	}
+	track = NULL;
 
 	return 0;
 }

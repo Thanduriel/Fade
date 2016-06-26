@@ -43,8 +43,8 @@ namespace Game{
 		rect.width = Constants::c_windowSizeX;
 		rect.height = Constants::c_windowSizeY;
 		m_ground.setTextureRect(rect);
-	
-		
+
+
 		//test stuff
 
 		m_gameObjects.emplace_back(new Pawn(sf::Vector2f(600.f, 800.f),
@@ -115,6 +115,11 @@ namespace Game{
 	{
 		_window.draw(m_ground);
 		for (auto& actor : m_gameObjects) actor->draw(_window);
+	}
+
+	void World::stopSounds()
+	{
+		for (auto& actor : m_gameObjects) actor->stopSounds();
 	}
 
 }

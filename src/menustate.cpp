@@ -8,6 +8,7 @@ namespace State{
     {
         font = *g_resourceManager.getFont("suburbia");
 
+
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");

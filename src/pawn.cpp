@@ -23,6 +23,9 @@ namespace Game{
 	{
 		m_isStatic = false;
 
+		m_hoverSound.setBuffer(*g_resourceManager.getSound("sound_pawn"));
+		m_hoverSound.setLoop(true);
+
 		m_weaponSprite.setOrigin(sf::Vector2f(0.f, m_weaponSprite.getTextureRect().height * 0.5f));//_texture.getSize().x
 		m_healthBarSprite.rotate(180.f);
 		m_healthBarSprite.setColor(sf::Color(138, 240, 12, 255));
@@ -61,6 +64,9 @@ namespace Game{
 		{
 			m_item->setPosition(m_position);
 		}
+		if (m_hoverSound.getStatus() != sf::Sound::Status::Playing)
+			m_hoverSound.play();
+		m_hoverSound.setVolume(m_alpha*100);
 	}
 
 	// ********************************************************* //
@@ -96,8 +102,14 @@ namespace Game{
 		_oth.damage(1.f);
 	}
 
+	void Pawn::stopSounds()
+	{
+		m_hoverSound.stop();
+	}
+
 	void Pawn::onDestroy()
 	{
+		m_hoverSound.stop();
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
 	}

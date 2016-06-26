@@ -17,6 +17,7 @@ namespace Game{
 		void process();
 		void processEvent(sf::Event& _keyEvent);
 		void draw(sf::RenderWindow& _window);
+		void stopSounds();
 
 	private:
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;

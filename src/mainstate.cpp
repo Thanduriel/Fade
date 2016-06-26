@@ -15,6 +15,7 @@ namespace State{
 		m_world.process();
 		if (m_nextGameState!=m_ID)
         {
+        	this->m_world.stopSounds();
             uint32_t tempGameState(m_nextGameState);
             m_nextGameState = m_ID;
             return tempGameState;
@@ -31,7 +32,9 @@ namespace State{
 		case sf::Event::KeyPressed:
 		{
 			if (_event.key.code == sf::Keyboard::Escape)
+			{
 				m_nextGameState = 0;
+			}
 			break;
 		}
 		case sf::Event::MouseButtonPressed:

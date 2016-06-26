@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <string>
 #include <vector>
 #include <memory>
@@ -28,6 +29,8 @@ public:
 
 	sf::Texture* getTexture(const std::string& _fileName);
 	sf::Font* getFont(const std::string& _fileName);
+	sf::Music* getTrack(const std::string& _fileName);
+	sf::SoundBuffer* getSound(const std::string& _fileName);
 	sf::Shader* getShader(const std::string& _fileName);
 
 	sf::Shader* getShader(DefaultShader _shader) { return m_shaders[_shader].data.get();  };
@@ -35,7 +38,10 @@ private:
 	std::vector < Resource< sf::Texture > > m_textures;
 	std::vector < Resource< sf::Font > > m_fonts;
 	std::vector < Resource< sf::Shader > > m_shaders;
+	std::vector < Resource< sf::Music > > m_tracks;
+	std::vector < Resource< sf::SoundBuffer > > m_soundBuffers;
 };
 
 
 extern ResourceManager g_resourceManager;
+

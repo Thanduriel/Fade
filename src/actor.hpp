@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
+
 #include "centeredsprite.hpp"
 
 namespace Game{
@@ -12,6 +14,7 @@ namespace Game{
 		virtual void process();
 		virtual void draw(sf::RenderWindow& _window);
 		virtual void onDestroy(){};
+		virtual void stopSounds(){};
 
 		virtual void collision(Actor& _oth){};
 

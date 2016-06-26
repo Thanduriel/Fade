@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
+
 #include "actor.hpp"
 #include "item.hpp"
 #include "projectile.hpp"
@@ -15,6 +17,7 @@ namespace Game{
 		void draw(sf::RenderWindow& _window) override;
 		void collision(Actor& _oth) override;
 		void onDestroy() override;
+		void stopSounds() override;
 
 		void fire();
 		void altFire(); //alternative fire mode or use item
@@ -31,6 +34,7 @@ namespace Game{
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;
 		sf::IntRect m_healthRect;
+		sf::Sound m_hoverSound;
 		int m_healthRectDef;
 
 		float m_fadeFactor;

@@ -51,6 +51,40 @@ sf::Font* ResourceManager::getFont(const std::string& _fileName)
 	return m_fonts.back().data.get();
 }
 
+sf::Music* ResourceManager::getTrack(const std::string& _fileName)
+{
+	for (auto& track : m_tracks)
+	{
+		if (track.name == _fileName) return track.data.get();
+	}
+
+	sf::Music* track = new sf::Music();
+	if (!track->openFromFile(resourcePath + _fileName + ".ogg"))
+	{
+		return nullptr;
+	}
+
+	m_tracks.emplace_back(_fileName, track);
+
+	return m_tracks.back().data.get();
+}
+
+sf::SoundBuffer* ResourceManager::getSound(const std::string& _fileName)
+{
+	for (auto& soundBuffer : m_soundBuffers)
+	{
+		if (soundBuffer.name == _fileName) return soundBuffer.data.get();
+	}
+
+	sf::SoundBuffer* soundBuffer = new sf::SoundBuffer();
+	if (!soundBuffer->loadFromFile(resourcePath + _fileName + ".ogg"))
+		return nullptr;
+
+	m_soundBuffers.emplace_back(_fileName, soundBuffer);
+
+	return m_soundBuffers.back().data.get();
+}
+
 sf::Shader* ResourceManager::getShader(const std::string& _fileName)
 {
 	for (auto& shader : m_shaders)
