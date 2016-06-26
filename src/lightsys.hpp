@@ -13,6 +13,7 @@ namespace Graphic{
 		sf::Color color;
 		sf::Vector2f position;
 		float radius;
+		bool isInUse;
 	};
 
 	class LightSystem

@@ -6,9 +6,14 @@ namespace Game{
 	Item::Item(const sf::Vector2f& _pos, sf::Texture& _texture):
 		Actor(_pos, _texture),
 		m_cd(0xfffffff),
-		m_pawn(nullptr)
+		m_pawn(nullptr),
+		m_lightInfo(Graphic::g_lightSystem.createLight())
 	{
 		m_boundingRad = 10.f;
+
+		m_lightInfo.color = sf::Color(100, 255, 12, 255);
+		m_lightInfo.radius = 80.f;
+		m_lightInfo.setPosition(_pos);
 	};
 
 	void Item::collision(Actor& _oth)
@@ -17,6 +22,9 @@ namespace Game{
 		m_canCollide = false;
 		pawn.takeItem(*this);
 		m_pawn = &pawn;
+		
+		m_lightInfo.radius = 0.f;
+		m_lightInfo.isInUse = false;
 	}
 
 	void Item::process()
@@ -75,6 +83,68 @@ namespace Game{
 	void ClusterGun::endUse()
 	{
 		m_pawn->setProjType(ProjType::Standard);
+		destroy();
+	}
+
+	// *********************************************************** //
+
+	LightAura::LightAura(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_aura.png"))
+	{
+		m_activeTime = 60 * 10;
+	}
+
+	void LightAura::use()
+	{
+		Item::use();
+
+		m_pawn->getLightInfo().radius += 200.f;
+	}
+
+	void LightAura::endUse()
+	{
+		m_pawn->getLightInfo().radius -= 200;
+		destroy();
+	}
+
+	// *********************************************************** //
+
+	HealthBoost::HealthBoost(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
+	{
+		m_activeTime = 1;
+	}
+
+	void HealthBoost::use()
+	{
+		Item::use();
+
+		m_pawn->addHealth(100.f);
+	}
+
+	void HealthBoost::endUse()
+	{
+		destroy();
+	}
+
+	// *********************************************************** //
+
+	SpeedBoost::SpeedBoost(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_laser.png"))
+	{
+		m_activeTime = 60 * 8;
+	}
+
+	void SpeedBoost::use()
+	{
+		Item::use();
+
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() + 2.f);
+	}
+
+	void SpeedBoost::endUse()
+	{
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 2.f);
 		destroy();
 	}
 }

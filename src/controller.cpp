@@ -1,5 +1,7 @@
 #include "controller.hpp"
 #include "math.hpp"
+#include "constants.hpp"
+
 #include <iostream>
 using namespace sf;
 
@@ -24,9 +26,9 @@ namespace Game{
 			m_pawn->setDirAngle(atan2(lookDir.y, lookDir.x));
 
 			if (abs(jDir.x) > 40.f || abs(jDir.y) > 40.f)
-				movDir = jDir * 0.1f;
+				movDir = normalize(jDir);
 		}
-		m_pawn->setVelocity(movDir);
+		m_pawn->setVelocity(Constants::c_playerBaseSpeed * movDir * m_pawn->speedFactor());
 	}
 
 	void PlayerController::processEvent(sf::Event &_event)

@@ -27,6 +27,12 @@ namespace Graphic{
 
 	LightInfo& LightSystem::createLight()
 	{
+		auto it = std::find_if(m_lightInfos.begin(), m_lightInfos.end(),
+			[](const std::unique_ptr<LightInfo>& _info){return !_info->isInUse; });
+
+		if (it != m_lightInfos.end())
+			return **it;
+
 		m_lightInfos.emplace_back(new LightInfo());
 
 		return *m_lightInfos.back();

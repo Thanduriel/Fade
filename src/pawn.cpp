@@ -18,7 +18,8 @@ namespace Game{
 		m_cdMax(130),
 		m_damage(10.f),
 		m_item(nullptr),
-		m_projType(ProjType::Standard)
+		m_projType(ProjType::Standard),
+		m_speedFactor(1.f)
 	{
 		m_isStatic = false;
 
@@ -37,7 +38,7 @@ namespace Game{
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 
 		m_lightInfo.color = Color(255, 255, 255, 0);
-		m_lightInfo.radius = m_boundingRad * 3.f;
+		m_lightInfo.radius = m_boundingRad * 8.f;
 	}
 
 	// ********************************************************* //
@@ -47,13 +48,14 @@ namespace Game{
 		Actor::process();
 
 		//fading
+		//handled in the light shader now
 	//	m_alpha *= m_fadeFactor;
 	//	if (m_alpha < 0.1f) m_alpha = 1.f;
 
 		--m_cd;
-		if (m_cd <= 0) {
-			fire(); altFire();
-		}
+	//	if (m_cd <= 0) {
+	//		fire(); altFire();
+	//	}
 
 		if (m_item)
 		{
@@ -109,7 +111,7 @@ namespace Game{
 			m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
-			g_projectileFactory.spawn(m_position + dir * m_boundingRad * 1.1f,
+			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
 				dir, m_projType);
 
 			m_cd = m_cdMax;

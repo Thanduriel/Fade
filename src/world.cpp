@@ -33,6 +33,7 @@ namespace Game{
 				}
 			}
 		}
+		//ground texture
 		Texture* texture = g_resourceManager.getTexture("ground.png");
 		texture->setRepeated(true);
 		m_ground.setTexture(*texture);
@@ -42,27 +43,18 @@ namespace Game{
 		rect.width = Constants::c_windowSizeX;
 		rect.height = Constants::c_windowSizeY;
 		m_ground.setTextureRect(rect);
+	
+		
 		//test stuff
-
-		Pawn* player = new Pawn(sf::Vector2f(900.f, 450.f),
-			*g_resourceManager.getTexture("player_main.png"));
-		m_gameObjects.emplace_back(player);
-		Controller* controller = new PlayerController(0);
-		controller->possess(player);
-		m_controllers.emplace_back(controller);
 
 		m_gameObjects.emplace_back(new Pawn(sf::Vector2f(600.f, 800.f),
 			*g_resourceManager.getTexture("player_main.png")));
 
+		m_gameObjects.emplace_back(new SpeedBoost(sf::Vector2f(123.f, 121.f)));
+		m_gameObjects.emplace_back(new HealthBoost(sf::Vector2f(123.f, 221.f)));
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
-		// Pawn* player = new Pawn(sf::Vector2f(900.f, 450.f),
-		// 	*g_resourceManager.getTexture("player_main.png"));
-		// Controller* controller = new PlayerController(0);
-		// controller->possess(player);
-		// m_gameObjects.emplace_back(player);
-		// m_controllers.emplace_back(controller);
-		// m_gameObjects.emplace_back(new Wall(sf::Vector2f(700.f, 400.f), sf::Vector2f(300.f, 10.f)));
+		m_gameObjects.emplace_back(new LightAura(sf::Vector2f(123.f, 521.f)));
 
 		clock.restart();
 	}
