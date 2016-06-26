@@ -71,7 +71,8 @@ namespace Game{
 
 		m_alpha *= m_fadeFactor;
 		uint8_t a = (uint8_t)(m_alpha * 255.f);
-		m_lightInfo.color = Color(255, 255, 255, a);
+
+		m_lightInfo.color.a = a;
 
 	//	m_sprite.setColor(sf::Color(255, 255, 255, a));
 		Actor::draw(_window);
@@ -100,6 +101,15 @@ namespace Game{
 	{
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
+	}
+
+	void Pawn::onDeath()
+	{
+		m_alpha = 1.f;
+		m_fadeFactor = 0.997;
+		m_lightInfo.radius *= 3.f;
+		m_lightInfo.color.g = 20;
+		m_lightInfo.color.b = 20;
 	}
 
 	// ********************************************************* //

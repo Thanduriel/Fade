@@ -34,7 +34,10 @@ namespace Game{
 	{
 		if (m_isStatic) return;
 
-		m_health -= _amount;
-		if (m_health <= 0.f) m_isDeath = true;
+		m_health = std::max(m_health -_amount, 0.f);
+		if (m_health <= 0.f) {
+			m_isDeath = true;
+			onDeath();
+		}
 	}
 }

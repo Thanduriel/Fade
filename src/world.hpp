@@ -18,10 +18,16 @@ namespace Game{
 		void processEvent(sf::Event& _keyEvent);
 		void draw(sf::RenderWindow& _window);
 
+		// returns a position distant to existing game objects
+		// @param _minDist minimum distance to dynamic game objects
+		sf::Vector2f getDistantPosition(float _minDist);
+
+		void spawnItem();
 	private:
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		sf::Sprite m_ground;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
 		sf::Clock clock;
+		int m_frameCount;
 	};
 }

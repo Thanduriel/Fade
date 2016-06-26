@@ -15,6 +15,7 @@ namespace Game{
 		void draw(sf::RenderWindow& _window) override;
 		void collision(Actor& _oth) override;
 		void onDestroy() override;
+		void onDeath() override;
 
 		void fire();
 		void altFire(); //alternative fire mode or use item
