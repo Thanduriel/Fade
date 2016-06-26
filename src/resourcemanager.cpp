@@ -41,7 +41,7 @@ sf::Font* ResourceManager::getFont(const std::string& _fileName)
 	}
 
 	sf::Font* font = new sf::Font();
-	if (!font->loadFromFile(resourcePath + "fonts/" + _fileName + ".ttf"))
+	if (!font->loadFromFile(resourcePath + _fileName + ".ttf"))
 	{
 		return nullptr;
 	}

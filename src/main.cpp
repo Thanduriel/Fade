@@ -9,6 +9,7 @@
 // #include "easylogging++.hpp"
 #include "gamestate.hpp"
 #include "mainstate.hpp"
+#include "menustate.hpp"
 
 // #define ELPP_NO_DEFAULT_LOG_FILE
 
@@ -24,6 +25,7 @@ int main()
 	sf::Time elapsed;
 	std::vector< std::unique_ptr< Game::GameState > > states;
 	states.emplace_back(new State::MainState());
+	states.emplace_back(new State::MenuState());
 
 	while (window.isOpen())
 	{
