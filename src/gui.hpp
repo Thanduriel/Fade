@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <stdint.h>
 
 namespace GUI
 {
@@ -8,7 +9,7 @@ namespace GUI
    {
 
    public:
-      Gui(const sf::String& _name, uint _x, uint _y);
+	   Gui(const sf::String& _name, uint32_t _x, uint32_t _y);
       ~Gui(){};
 
       void draw(sf::RenderWindow& _window);

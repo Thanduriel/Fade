@@ -44,6 +44,7 @@ namespace Graphic{
 		{
 			shader->setParameter("lightPosition", lightInfo->position);
 			shader->setParameter("lightColor", lightInfo->color);
+			shader->setParameter("lightRadius", lightInfo->radius);
 			m_offScreen.draw(m_vertices, states);
 		}
 

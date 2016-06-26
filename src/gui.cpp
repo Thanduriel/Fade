@@ -4,7 +4,7 @@
 namespace GUI
 {
 
-    Gui::Gui(const sf::String& _name, uint _x, uint _y)
+	Gui::Gui(const sf::String& _name, uint32_t _x, uint32_t _y)
     {
         m_font = *g_resourceManager.getFont("suburbia");
 

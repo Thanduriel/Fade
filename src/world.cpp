@@ -14,7 +14,7 @@ namespace Game{
 	World::World()
 	{
 		// determine number of connected joysticks/gamepads with Axis
-		for (uint i(0); i<5; i++)
+		for (uint32_t i(0); i<5; i++)
 		{
 			if (sf::Joystick::isConnected(i))
 			{

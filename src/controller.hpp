@@ -22,6 +22,6 @@ namespace Game{
 		void process() override;
 		void processEvent(sf::Event& _event) override;
 	private:
-		uint m_id;
+		uint32_t m_id;
 	};
 }

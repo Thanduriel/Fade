@@ -37,6 +37,7 @@ namespace Game{
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 
 		m_lightInfo.color = Color(255, 255, 255, 0);
+		m_lightInfo.radius = m_boundingRad * 3.f;
 	}
 
 	// ********************************************************* //

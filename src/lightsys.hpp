@@ -8,9 +8,11 @@ namespace Graphic{
 
 	struct LightInfo
 	{
+		//transforms the position to gpu pixel coords
 		void setPosition(const sf::Vector2f& _vec);
 		sf::Color color;
 		sf::Vector2f position;
+		float radius;
 	};
 
 	class LightSystem

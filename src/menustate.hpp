@@ -19,6 +19,6 @@ namespace State{
         sf::Font font;
         sf::Text title;
         std::vector < std::unique_ptr < GUI::Gui > > m_gui;
-        uint m_state;
+        uint32_t m_state;
     };
 }
