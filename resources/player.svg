@@ -17,7 +17,78 @@
    inkscape:version="0.91 r13725"
    sodipodi:docname="player.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotS"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4253"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#00ff00;stroke-width:1pt;stroke-opacity:1;fill:#00ff00;fill-opacity:1"
+         transform="scale(0.2) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Send"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path4201"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#00ff00;stroke-width:1pt;stroke-opacity:1;fill:#00ff00;fill-opacity:1"
+         transform="scale(0.2) rotate(180) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotM"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4250"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#ffffff;stroke-width:1pt;stroke-opacity:1;fill:#ffffff;fill-opacity:1"
+         transform="scale(0.4) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondSend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DiamondSend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4289"
+         d="M 0,-7.0710768 L -7.0710894,0 L 0,7.0710589 L 7.0710462,0 L 0,-7.0710768 z "
+         style="fill-rule:evenodd;stroke:#ffffff;stroke-width:1pt;stroke-opacity:1;fill:#ffffff;fill-opacity:1"
+         transform="scale(0.2) translate(-6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4247"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#00ff00;stroke-width:1pt;stroke-opacity:1;fill:#00ff00;fill-opacity:1"
+         transform="scale(0.8) translate(7.4, 1)" />
+    </marker>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#808080"
@@ -25,9 +96,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.2"
-     inkscape:cx="274.42524"
-     inkscape:cy="596.5954"
+     inkscape:zoom="7.919596"
+     inkscape:cx="257.19999"
+     inkscape:cy="586.19869"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -48,7 +119,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -94,14 +165,15 @@
        r="4.5"
        inkscape:export-xdpi="1200"
        inkscape:export-ydpi="1200" />
-    <circle
-       style="fill:none;stroke:#00ff00;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+    <ellipse
+       style="fill:none;stroke:#ffffff;stroke-width:0.40000001;stroke-miterlimit:0;stroke-dasharray:0.40000001,0.40000001;stroke-dashoffset:0;marker-mid:url(#DotM)"
        id="path3357-3-6-7-5-5"
-       cx="296.62668"
-       cy="452.87842"
-       r="5.75"
+       cx="293.9584"
+       cy="455.55344"
        inkscape:export-xdpi="1200"
-       inkscape:export-ydpi="1200" />
+       inkscape:export-ydpi="1200"
+       rx="3.0817165"
+       ry="3.075" />
     <path
        style="fill:#000000;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="path3357-3-6-7-5-5-6"
@@ -115,5 +187,37 @@
        sodipodi:start="0"
        sodipodi:end="3.1415927"
        d="m 303.12668,470.41412 a 5.75,5.75 0 0 1 -2.875,4.97965 5.75,5.75 0 0 1 -5.75,0 5.75,5.75 0 0 1 -2.875,-4.97965 l 5.75,0 z" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5-3"
+       cx="222.81259"
+       cy="485.20203"
+       r="5.75"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5-3-6"
+       cx="227.81259"
+       cy="500.20203"
+       r="5.75"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5-3-7"
+       cx="242.81259"
+       cy="510.20203"
+       r="5.75"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
+    <circle
+       style="fill:#ffffff;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3357-3-6-7-5-5-3-5"
+       cx="262.81259"
+       cy="510.20203"
+       r="5.75"
+       inkscape:export-xdpi="1200"
+       inkscape:export-ydpi="1200" />
   </g>
 </svg>
