@@ -26,6 +26,8 @@ namespace Game{
 		m_soundFire.setBuffer(*g_resourceManager.getSound("sound_shot"));
 		m_soundAltFire.setBuffer(*g_resourceManager.getSound("sound_altShot"));
 		m_soundCollision.setBuffer(*g_resourceManager.getSound("sound_collision"));
+		m_soundExplode.setBuffer(*g_resourceManager.getSound("sound_explode"));
+		m_soundTakeItem.setBuffer(*g_resourceManager.getSound("sound_item_collect"));
 
 		m_weaponSprite.setOrigin(sf::Vector2f(0.f, m_weaponSprite.getTextureRect().height * 0.5f));//_texture.getSize().x
 		m_healthBarSprite.rotate(180.f);
@@ -124,6 +126,7 @@ namespace Game{
 		m_lightInfo.radius *= 3.f;
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
+		m_soundExplode.play();
 	}
 
 	// ********************************************************* //
@@ -155,5 +158,6 @@ namespace Game{
 	{
 		if (m_item) m_item->destroy();
 		m_item = &_itm;
+		m_soundTakeItem.play();
 	}
 }

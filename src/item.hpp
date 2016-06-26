@@ -21,6 +21,7 @@ namespace Game{
 	private:
 		Graphic::LightInfo& m_lightInfo;
 		int m_cd; // countdown or active time
+		sf::Sound m_soundAppear;
 	};
 
 	// can be placed

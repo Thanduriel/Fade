@@ -1,3 +1,5 @@
+#include <SFML/Audio.hpp>
+
 #include "item.hpp"
 #include "pawn.hpp"
 #include "resourcemanager.hpp"
@@ -15,6 +17,9 @@ namespace Game{
 		m_lightInfo.color = sf::Color(100, 255, 12, 255);
 		m_lightInfo.radius = 80.f;
 		m_lightInfo.setPosition(_pos);
+
+		m_soundAppear.setBuffer(*g_resourceManager.getSound("sound_itemAppear"));
+		m_soundAppear.play();
 	};
 
 	void Item::collision(Actor& _oth)
@@ -23,7 +28,7 @@ namespace Game{
 		m_canCollide = false;
 		pawn.takeItem(*this);
 		m_pawn = &pawn;
-		
+
 		m_lightInfo.radius = 0.f;
 		m_lightInfo.isInUse = false;
 	}
@@ -36,7 +41,7 @@ namespace Game{
 
 	// *********************************************************** //
 
-	Mine::Mine(const sf::Vector2f& _pos) : 
+	Mine::Mine(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("powerup_mine.png")),
 		m_state(Pickable)
 	{
@@ -65,7 +70,7 @@ namespace Game{
 		m_sprite.setColor(sf::Color(255, 210, 255, 255));
 		m_sprite.scale(2.2f, 2.2f);
 		m_state = Active;
-		m_canCollide = true;	
+		m_canCollide = true;
 	}
 
 	// *********************************************************** //
