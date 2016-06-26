@@ -44,9 +44,9 @@ namespace Game{
 
 		if (_event.joystickButton.joystickId == m_id)
 			{
-			if (_event.joystickButton.button == 0)
+			if (_event.joystickButton.button == 5)
 				m_pawn->fire();
-			else if (_event.joystickButton.button == 1)
+			else if (_event.joystickButton.button == 4)
 				m_pawn->altFire();
 			}
 	}

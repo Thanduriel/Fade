@@ -13,7 +13,7 @@ namespace Game{
 		m_lightInfo(Graphic::g_lightSystem.createLight()),
 		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
 		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
-		m_fadeFactor(0.992f),
+		m_fadeFactor(0.985f),
 		m_alpha(1.f),
 		m_cdMax(5),//130
 		m_damage(10.f),
@@ -123,7 +123,7 @@ namespace Game{
 	{
 		m_soundExplode.play();
 		m_alpha = 1.f;
-		m_fadeFactor = 0.997;
+		m_fadeFactor = 0.995;
 		m_lightInfo.radius *= 3.f;
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
