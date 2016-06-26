@@ -77,7 +77,7 @@ namespace Game{
 	// *********************************************************** //
 
 	Sentinel::Sentinel(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_mine.png"))
+		Item(_pos, *g_resourceManager.getTexture("sentinel.png"))
 	{
 		m_activeTime = 60*20;
 	}
@@ -91,7 +91,7 @@ namespace Game{
 	void Sentinel::use()
 	{
 		Item::use();
-		m_sprite.setColor(sf::Color(0, 0, 255, 255));
+		m_sprite.setColor(sf::Color(255, 255, 12, 255));
 		m_lightInfo.color = sf::Color(255, 255, 255, 255);
 		m_lightInfo.setPosition(m_position);
 		m_lightInfo.radius = 186.f;
