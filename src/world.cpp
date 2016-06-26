@@ -25,11 +25,8 @@ namespace Game{
 					sf::Joystick::hasAxis(i, sf::Joystick::U) &&
 					sf::Joystick::hasAxis(i, sf::Joystick::R))
 				{
-					Pawn* player = new Pawn(getDistantPosition(200.f),
-							*g_resourceManager.getTexture("player_main.png"));
 					Controller* controller = new PlayerController(i);
-					controller->possess(player);
-					m_gameObjects.emplace_back(player);
+					controller->possess(spawnPlayer());
 					m_controllers.emplace_back(controller);
 				}
 			}
@@ -57,11 +54,15 @@ namespace Game{
 		clock.restart();
 	}
 
+	// *************************************************** //
+
 	void World::processEvent(sf::Event& _event)
 	{
 		if (_event.type == sf::Event::JoystickButtonPressed)
 			for (auto& controller : m_controllers) controller->processEvent(_event);
 	}
+
+	// *************************************************** //
 
 	void World::process()
 	{
@@ -69,7 +70,11 @@ namespace Game{
 		++m_frameCount;
 		if (m_frameCount % Constants::c_eventFrequency == 0) spawnItem();
 
-		for (auto& controller : m_controllers) controller->process();
+		for (auto& controller : m_controllers)
+		{
+			controller->process();
+			if (!controller->hasPawn()) controller->possess(spawnPlayer());
+		}
 		for (auto& actor : m_gameObjects) actor->process();
 
 		//collect projectiles
@@ -81,11 +86,11 @@ namespace Game{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			auto& first = *m_gameObjects[i];
-			if (first.isStatic() || !first.canCollide()) continue;
+			if (!first.canCollide()) continue;
 			for (size_t j = i+1; j < m_gameObjects.size(); ++j)
 			{
 				auto& second = *m_gameObjects[j];
-				if (!second.canCollide()) continue;
+				if (first.isStatic() && second.isStatic() || !second.canCollide()) continue;
 
 				float r2 = first.boundingRad() + second.boundingRad();
 				r2 *= r2;
@@ -112,6 +117,8 @@ namespace Game{
 		m_gameObjects.resize(std::distance(m_gameObjects.begin(), it));
 
 	}
+
+	// *************************************************** //
 
 	void World::draw(sf::RenderWindow& _window)
 	{
@@ -160,6 +167,8 @@ namespace Game{
 		return pos;
 	}
 
+	// *************************************************** //
+
 	void World::spawnItem()
 	{
 		sf::Vector2f pos = getDistantPosition(50.f);
@@ -175,5 +184,16 @@ namespace Game{
 
 		assert(item);
 		m_gameObjects.emplace_back(item);
+	}
+
+	// *************************************************** //
+
+	Pawn* World::spawnPlayer()
+	{
+		Pawn* player = new Pawn(getDistantPosition(200.f),
+			*g_resourceManager.getTexture("player_main.png"));
+		m_gameObjects.emplace_back(player);
+
+		return player;
 	}
 }

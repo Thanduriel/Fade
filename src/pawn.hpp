@@ -28,6 +28,7 @@ namespace Game{
 		Graphic::LightInfo& getLightInfo() { return m_lightInfo; }
 		float speedFactor() { return m_speedFactor; }
 		void setSpeedFactor(float _factor) { m_speedFactor = _factor; }
+		float alphaVal() { return m_alpha; }
 
 		void takeItem(Item& _itm);
 	private:

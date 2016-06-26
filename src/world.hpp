@@ -24,6 +24,7 @@ namespace Game{
 		sf::Vector2f getDistantPosition(float _minDist);
 
 		void spawnItem();
+		Pawn* spawnPlayer();
 	private:
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		sf::Sprite m_ground;

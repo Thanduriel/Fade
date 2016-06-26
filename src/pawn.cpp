@@ -48,6 +48,11 @@ namespace Game{
 
 	void Pawn::process()
 	{
+		if (m_isDeath)
+		{
+			return;
+		}
+
 		Actor::process();
 
 		//fading
@@ -120,8 +125,8 @@ namespace Game{
 		m_alpha = 1.f;
 		m_fadeFactor = 0.997;
 		m_lightInfo.radius *= 3.f;
-		m_lightInfo.color.g = 20;
-		m_lightInfo.color.b = 20;
+		m_lightInfo.color.g = 50;
+		m_lightInfo.color.b = 50;
 	}
 
 	// ********************************************************* //
