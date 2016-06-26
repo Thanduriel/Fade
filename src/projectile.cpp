@@ -1,5 +1,6 @@
 #include "projectile.hpp"
 #include "resourcemanager.hpp"
+#include "constants.hpp"
 
 using namespace sf;
 
@@ -11,7 +12,7 @@ namespace Game{
 		m_damage(_dmg),
 		m_lifeTime(360)
 	{
-		m_velocity = _vel;
+		m_velocity = _vel * Constants::c_projectileBaseSpeed;
 		m_boundingRad = 5.f;
 	}
 

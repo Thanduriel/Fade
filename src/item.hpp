@@ -21,6 +21,8 @@ namespace Game{
 		int m_cd; // countdown or active time
 	};
 
+	// can be placed
+	// explodes on collision
 	class Mine : public Item
 	{
 	public:
@@ -35,10 +37,42 @@ namespace Game{
 		}m_state;
 	};
 
+	// lets the player shoot multiple projectiles at once
 	class ClusterGun : public Item
 	{
 	public:
 		ClusterGun(const sf::Vector2f& _pos);
+		void use() override;
+		void endUse() override;
+	};
+
+	// increases the light radius temporary
+	class LightAura : public Item
+	{
+	public:
+		LightAura(const sf::Vector2f& _pos);
+
+		void use() override;
+		void endUse() override;
+
+	private:
+	};
+
+	// instantly heal up to full health
+	class HealthBoost : public Item
+	{
+	public:
+		HealthBoost(const sf::Vector2f& _pos);
+
+		void use() override;
+		void endUse() override;
+	};
+
+	class SpeedBoost : public Item
+	{
+	public:
+		SpeedBoost(const sf::Vector2f& _pos);
+
 		void use() override;
 		void endUse() override;
 	};

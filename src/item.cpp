@@ -77,4 +77,66 @@ namespace Game{
 		m_pawn->setProjType(ProjType::Standard);
 		destroy();
 	}
+
+	// *********************************************************** //
+
+	LightAura::LightAura(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_aura.png"))
+	{
+		m_activeTime = 60 * 10;
+	}
+
+	void LightAura::use()
+	{
+		Item::use();
+
+		m_pawn->getLightInfo().radius += 200.f;
+	}
+
+	void LightAura::endUse()
+	{
+		m_pawn->getLightInfo().radius -= 200;
+		destroy();
+	}
+
+	// *********************************************************** //
+
+	HealthBoost::HealthBoost(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
+	{
+		m_activeTime = 1;
+	}
+
+	void HealthBoost::use()
+	{
+		Item::use();
+
+		m_pawn->addHealth(100.f);
+	}
+
+	void HealthBoost::endUse()
+	{
+		destroy();
+	}
+
+	// *********************************************************** //
+
+	SpeedBoost::SpeedBoost(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_laser.png"))
+	{
+		m_activeTime = 60 * 8;
+	}
+
+	void SpeedBoost::use()
+	{
+		Item::use();
+
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() + 2.f);
+	}
+
+	void SpeedBoost::endUse()
+	{
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 2.f);
+		destroy();
+	}
 }

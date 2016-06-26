@@ -16,6 +16,7 @@ namespace Game{
 		virtual void collision(Actor& _oth){};
 
 		void damage(float _amount);
+		void addHealth(float _amount) { m_health = std::max(m_health + _amount, m_healthMax); };
 
 		void setPosition(const sf::Vector2f& _pos) { m_position = _pos; }
 		//set angle in radients

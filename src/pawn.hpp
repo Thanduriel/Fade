@@ -21,6 +21,10 @@ namespace Game{
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
 		void setProjType(ProjType _type){ m_projType = _type; }
 
+		Graphic::LightInfo& getLightInfo() { return m_lightInfo; }
+		float speedFactor() { return m_speedFactor; }
+		void setSpeedFactor(float _factor) { m_speedFactor = _factor; }
+
 		void takeItem(Item& _itm);
 	private:
 		Graphic::LightInfo& m_lightInfo;
@@ -38,6 +42,7 @@ namespace Game{
 
 		float m_damage;
 		ProjType m_projType;
+		float m_speedFactor;
 
 		Item* m_item;
 	};

@@ -50,8 +50,11 @@ namespace Game{
 		m_gameObjects.emplace_back(new Pawn(sf::Vector2f(600.f, 800.f),
 			*g_resourceManager.getTexture("player_main.png")));
 
+		m_gameObjects.emplace_back(new SpeedBoost(sf::Vector2f(123.f, 121.f)));
+		m_gameObjects.emplace_back(new HealthBoost(sf::Vector2f(123.f, 221.f)));
 		m_gameObjects.emplace_back(new Mine(sf::Vector2f(123.f, 321.f)));
 		m_gameObjects.emplace_back(new ClusterGun(sf::Vector2f(123.f, 421.f)));
+		m_gameObjects.emplace_back(new LightAura(sf::Vector2f(123.f, 521.f)));
 
 		clock.restart();
 	}

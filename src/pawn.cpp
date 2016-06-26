@@ -18,7 +18,8 @@ namespace Game{
 		m_cdMax(130),
 		m_damage(10.f),
 		m_item(nullptr),
-		m_projType(ProjType::Standard)
+		m_projType(ProjType::Standard),
+		m_speedFactor(1.f)
 	{
 		m_isStatic = false;
 
