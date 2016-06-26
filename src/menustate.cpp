@@ -18,10 +18,10 @@ namespace State{
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
-		m_gui.emplace_back(new GUI::Gui("Play", left, 300));
-		m_gui.emplace_back(new GUI::Gui("Options", left, 400));
-		m_gui.emplace_back(new GUI::Gui("Credits", left, 500));
-		m_gui.emplace_back(new GUI::Gui("Quit", left, 600));
+		m_gui.emplace_back(new GUI::Gui("Play", left-100, 300));
+		m_gui.emplace_back(new GUI::Gui("Options", left-100, 400));
+		m_gui.emplace_back(new GUI::Gui("Credits", left-100, 500));
+		m_gui.emplace_back(new GUI::Gui("Quit", left-100, 600));
 
         m_state = 0; // internal state
         m_ID = 0;

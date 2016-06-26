@@ -2,22 +2,25 @@
 
 #include "optionstate.hpp"
 #include "resourcemanager.hpp"
+#include "constants.hpp"
 
 namespace State{
     OptionState::OptionState()
     {
         font = *g_resourceManager.getFont("suburbia");
 
+        uint32_t left = Constants::c_windowSizeX / 2 - 200;
+
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(400,50);
+        title.setPosition(left - 100,50);
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
-        m_gui.emplace_back(new GUI::Gui("World: Small", 400, 300));
-        m_gui.emplace_back(new GUI::Gui("Walls:", 400, 400));
-        m_gui.emplace_back(new GUI::Gui("Back", 400, 500));
+        m_gui.emplace_back(new GUI::Gui("World: Small", left-100, 300));
+        m_gui.emplace_back(new GUI::Gui("Walls:", left-100, 400));
+        m_gui.emplace_back(new GUI::Gui("Back", left-100, 500));
 
         m_worldSizes.push_back("Small");
         m_worldSizes.push_back("Medium");
