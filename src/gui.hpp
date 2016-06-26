@@ -23,7 +23,7 @@ namespace GUI
 
       void unfocus(){m_cback = sf::Color::White;};
       void focus(){m_cfront = m_cback = sf::Color::Yellow;};
-      void set_text(const sf::String& _name){m_text.setString(_name);};
+      void setText(const sf::String& _name){m_text.setString(_name);};
 
    private:
       sf::Color m_cfront, m_cback;

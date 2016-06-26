@@ -6,10 +6,10 @@
 #include "gui.hpp"
 
 namespace State{
-    class MenuState: public Game::GameState
+    class OptionState: public Game::GameState
     {
     public:
-        MenuState();
+        OptionState();
 
         virtual uint32_t process() override;
         virtual void processEvents(sf::Event& _event);
@@ -19,6 +19,7 @@ namespace State{
         sf::Font font;
         sf::Text title;
         std::vector < std::unique_ptr < GUI::Gui > > m_gui;
-        uint32_t m_state;
+        uint32_t m_state, m_size, m_walls;
+        std::vector < sf::String > m_worldSizes, m_nWalls;
     };
 }

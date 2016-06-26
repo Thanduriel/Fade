@@ -15,13 +15,13 @@ namespace Game
 	class GameState
 	{
 	public:
-		GameState() : bFinished(false), newState(States::None){}
+		GameState() : newState(States::None){}
 
-		virtual void process() = 0;
+		virtual uint32_t process() = 0;
 		virtual void processEvents(sf::Event& _event) = 0;
 		virtual void draw(sf::RenderWindow& _window) = 0;
 
-		bool bFinished;
+		uint32_t m_nextGameState, m_ID;
 		States newState;
 	};
 }

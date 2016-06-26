@@ -6,11 +6,20 @@
 namespace State{
 	MainState::MainState()
 	{
+		m_ID = 1;
+        m_nextGameState = m_ID;
 	}
 
-	void MainState::process()
+	uint32_t MainState::process()
 	{
 		m_world.process();
+		if (m_nextGameState!=m_ID)
+        {
+            uint32_t tempGameState(m_nextGameState);
+            m_nextGameState = m_ID;
+            return tempGameState;
+        }
+		return m_nextGameState;
 	}
 
 	void MainState::processEvents(sf::Event& _event)
@@ -22,7 +31,7 @@ namespace State{
 		case sf::Event::KeyPressed:
 		{
 			if (_event.key.code == sf::Keyboard::Escape)
-				bFinished = true;
+				m_nextGameState = 0;
 			break;
 		}
 		case sf::Event::MouseButtonPressed:
@@ -35,7 +44,7 @@ namespace State{
 		}
 		case sf::Event::Closed:
 		{
-			bFinished = true;
+			m_nextGameState = 100;
 			break;
 		}
 		case sf::Event::Resized:

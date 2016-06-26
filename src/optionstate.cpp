@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "menustate.hpp"
+#include "optionstate.hpp"
 #include "resourcemanager.hpp"
 
 namespace State{
-    MenuState::MenuState()
+    OptionState::OptionState()
     {
         font = *g_resourceManager.getFont("suburbia");
 
@@ -15,17 +15,30 @@ namespace State{
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
-        m_gui.emplace_back(new GUI::Gui("Play", 400, 300));
-        m_gui.emplace_back(new GUI::Gui("Options", 400, 400));
-        m_gui.emplace_back(new GUI::Gui("Credits", 400, 500));
-        m_gui.emplace_back(new GUI::Gui("Quit", 400, 600));
+        m_gui.emplace_back(new GUI::Gui("World: Small", 400, 300));
+        m_gui.emplace_back(new GUI::Gui("Walls:", 400, 400));
+        m_gui.emplace_back(new GUI::Gui("Back", 400, 500));
 
-        m_state = 0; // internal state
-        m_ID = 0;
+        m_worldSizes.push_back("Small");
+        m_worldSizes.push_back("Medium");
+        m_worldSizes.push_back("Large");
+        m_worldSizes.push_back("Auto");
+        m_size = 0;
+
+        m_nWalls.push_back("None");
+        m_nWalls.push_back("Few");
+        m_nWalls.push_back("Many");
+        m_nWalls.push_back("Random");
+        m_walls = 0;
+
+        m_gui[0]->setText(sf::String("World: ") + m_worldSizes[m_size]);
+        m_gui[1]->setText(sf::String("Walls: ") + m_nWalls[m_walls]);
+        m_state = 0;
+        m_ID = 2;
         m_nextGameState = m_ID;
     }
 
-    uint32_t MenuState::process()
+    uint32_t OptionState::process()
     {
         m_gui[m_state]->focus();
         for (auto& gui : m_gui)
@@ -39,14 +52,14 @@ namespace State{
         return m_nextGameState;
     }
 
-    void MenuState::processEvents(sf::Event& _event)
+    void OptionState::processEvents(sf::Event& _event)
     {
         switch(_event.type)
         {
         case sf::Event::KeyPressed:
         {
             if (_event.key.code == sf::Keyboard::Escape)
-                m_nextGameState = 100;
+                m_nextGameState = 0;
             else if (_event.key.code == sf::Keyboard::Up)
             {
                 if (m_state > 0)
@@ -65,23 +78,23 @@ namespace State{
             }
             else if (_event.key.code == sf::Keyboard::Return)
             {
-                if (m_state == 0) // play
+                if (m_state == 0) // change worldSize
                 {
-                    m_nextGameState = 1;
+                    if (++m_size == m_worldSizes.size())
+                        m_size = 0;
                 }
-                else if (m_state == 1) // Options
+                else if (m_state == 1) // change nWalls
                 {
-                    m_nextGameState = 2;
+                    if (++m_walls == m_nWalls.size())
+                        m_walls = 0;
                 }
-                else if (m_state == 2) // credits
+                else if (m_state == 2) // back to main menu
                 {
-                    m_nextGameState = 3;
-                }
-                else if (m_state == (m_gui.size()-1)) // quit
-                {
-                    m_nextGameState = 100;
+                    m_nextGameState = 0;
                 }
             }
+            m_gui[0]->setText(sf::String("World: ") + m_worldSizes[m_size]);
+            m_gui[1]->setText(sf::String("Walls: ") + m_nWalls[m_walls]);
 
             break;
         }
@@ -110,7 +123,7 @@ namespace State{
         }// switch(sf_event.type)
     }
 
-    void MenuState::draw(sf::RenderWindow& _window)
+    void OptionState::draw(sf::RenderWindow& _window)
     {
         _window.draw(title);
         for (auto& gui : m_gui)
