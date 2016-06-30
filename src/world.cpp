@@ -8,27 +8,11 @@
 #include "projectile.hpp"
 #include "constants.hpp"
 #include "item.hpp"
+#include "utils.hpp"
 
 using namespace sf;
 
 namespace Game{
-
-	//some utils that do not belong here
-
-	inline unsigned int rnd()
-	{
-		static unsigned int num = rand();
-		num ^= num << 13;
-		num ^= num >> 17;
-		num ^= num << 5;
-
-		return num;
-	}
-
-	inline uint32_t rand(uint32_t _max, uint32_t _min = 0)
-	{
-		return(rnd() % (_max + 1 - _min)) + _min;
-	}
 
 	World::World()
 	{
@@ -60,6 +44,9 @@ namespace Game{
 		rect.height = Constants::c_windowSizeY;
 		m_ground.setTextureRect(rect);
 
+#ifdef _DEBUG
+		addNewPlayer(-1);
+#endif
 
 		//test stuff
 		/*
@@ -87,7 +74,7 @@ namespace Game{
 		// game events
 		++m_frameCount;
 		if (m_frameCount % Constants::c_eventFrequency == 0)
-			for (uint32_t i = 0; i < rand(3, 1); ++i) spawnItem();
+			for (uint32_t i = 0; i < util::rand(3, 1); ++i) spawnItem();
 
 		for (auto& controller : m_controllers)
 		{
@@ -158,8 +145,8 @@ namespace Game{
 		sf::Vector2f pos;
 		bool isValid;
 		do{
-			pos.x = rand(Constants::c_windowSizeX-50, 50);
-			pos.y = rand(Constants::c_windowSizeY-50, 50);
+			pos.x = util::rand(Constants::c_windowSizeX-50, 50);
+			pos.y = util::rand(Constants::c_windowSizeY - 50, 50);
 
 			isValid = true;
 			for (auto& actor : m_gameObjects)
@@ -180,7 +167,7 @@ namespace Game{
 		sf::Vector2f pos = getDistantPosition(50.f);
 
 		Item* item;
-		switch (rand(5))
+		switch (util::rand(5))
 		{
 		case 0: item = new Mine(pos); break;
 		case 1: item = new LightAura(pos); break;
@@ -209,7 +196,8 @@ namespace Game{
 
 	void World::addNewPlayer(int _id)
 	{
-		Controller* controller = new PlayerController(_id);
+		Controller* controller = _id >= 0 ? (Controller*)new PlayerController(_id)
+			: new AiController();
 		controller->possess(spawnPlayer());
 		m_controllers.emplace_back(controller);
 	}

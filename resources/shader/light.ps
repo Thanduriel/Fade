@@ -1,12 +1,12 @@
-uniform sampler2D texture;
-uniform vec2 lightPosition;
-uniform vec4 lightColor;
-uniform float lightRadius;
 
+
+in vec2 gs_out_LightPosition;
+in vec4 gs_out_LightColor;
+in float gs_out_lightRadius;
 
 void main()
 {
     // multiply it by the color
-    gl_FragColor = lightColor;
-	gl_FragColor.w *=  (lightRadius - distance(lightPosition, gl_FragCoord.xy))/lightRadius;
+    gl_FragColor = gs_out_LightColor;
+	gl_FragColor.w *=  (gs_out_lightRadius - distance(gs_out_LightPosition, gl_FragCoord.xy))/gs_out_lightRadius;
 }

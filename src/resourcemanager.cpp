@@ -5,7 +5,7 @@ ResourceManager g_resourceManager;
 
 ResourceManager::ResourceManager()
 {
-	 getShader("light");
+	 getShader("light", true);
 }
 
 
@@ -85,7 +85,7 @@ sf::SoundBuffer* ResourceManager::getSound(const std::string& _fileName)
 	return m_soundBuffers.back().data.get();
 }
 
-sf::Shader* ResourceManager::getShader(const std::string& _fileName)
+sf::Shader* ResourceManager::getShader(const std::string& _fileName, bool _geometry)
 {
 	for (auto& shader : m_shaders)
 	{
@@ -96,8 +96,11 @@ sf::Shader* ResourceManager::getShader(const std::string& _fileName)
 
 	static std::string path = resourcePath + "shader/";
 
-	bool b = shader->loadFromFile(path + _fileName + ".vs", path + _fileName + ".ps");
-//	bool b = shader->loadFromFile(path + _fileName + ".ps", sf::Shader::Type::Fragment);
+	bool b = _geometry ? shader->loadFromFile(resourcePath + "shader/" + _fileName + ".vs", 
+		resourcePath + "shader/" + _fileName + ".gs", 
+		resourcePath + "shader/" + _fileName + ".ps")
+		: shader->loadFromFile(resourcePath + "shader/" + _fileName + ".vs",
+		resourcePath+"shader/" + _fileName + ".ps");
 	 if (!b)
 	{
 		return nullptr;

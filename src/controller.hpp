@@ -26,4 +26,10 @@ namespace Game{
 		void process() override;
 		void processEvent(sf::Event& _event) override;
 	};
+
+	class AiController : public Controller
+	{
+	public:
+		void process() override;
+	};
 }

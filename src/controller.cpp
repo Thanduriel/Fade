@@ -1,6 +1,7 @@
 #include "controller.hpp"
 #include "math.hpp"
 #include "constants.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 using namespace sf;
@@ -51,4 +52,25 @@ namespace Game{
 			}
 	}
 
+	// ******************************************************** //
+
+	void AiController::process()
+	{
+		if (!m_pawn) return;
+		if (m_pawn->isDeath())
+		{
+			if (m_pawn->alphaVal() < 0.2f)
+				m_pawn = nullptr;
+			return;
+		}
+
+		static int counter = 0;
+		++counter;
+		if (!(counter % 90)){
+			Vector2f dir = Vector2f((float)util::rand(2) - 1.f, (float)util::rand(2) - 1.f);
+			if (dir.x + dir.y != 0.f) dir = normalize(dir);
+			m_pawn->setVelocity(Constants::c_playerBaseSpeed * dir * m_pawn->speedFactor());
+		}
+		if(!(counter % 20))m_pawn->fire();
+	}
 }
