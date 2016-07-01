@@ -9,13 +9,19 @@
 #include "constants.hpp"
 #include "item.hpp"
 #include "utils.hpp"
+#include "camera.hpp"
 
 using namespace sf;
 
 namespace Game{
 
-	World::World()
+	World::World(int _sizeX, int _sizeY)
 	{
+		Texture* texture = g_resourceManager.getTexture("ground.png");
+		texture->setRepeated(true);
+		m_ground.setTexture(*texture);
+
+		resize(_sizeX, _sizeY);
 		// determine number of connected joysticks/gamepads with Axis
 		for (uint32_t i(0); i<5; i++)
 		{
@@ -33,16 +39,6 @@ namespace Game{
 				}
 			}
 		}
-		//ground texture
-		Texture* texture = g_resourceManager.getTexture("ground.png");
-		texture->setRepeated(true);
-		m_ground.setTexture(*texture);
-		IntRect rect;
-		rect.left = 0;
-		rect.top = 0;
-		rect.width = Constants::c_windowSizeX;
-		rect.height = Constants::c_windowSizeY;
-		m_ground.setTextureRect(rect);
 
 #ifdef _DEBUG
 		addNewPlayer(-1);
@@ -112,9 +108,9 @@ namespace Game{
 			Vector2f newPos = first.position();
 
 			if (first.position().x - first.boundingRad() < 0.f) newPos.x = first.boundingRad();
-			else if (first.position().x + first.boundingRad() > Constants::c_windowSizeX) newPos.x = Constants::c_windowSizeX - first.boundingRad();
+			else if (first.position().x + first.boundingRad() > m_sizeX) newPos.x = m_sizeX - first.boundingRad();
 			if (first.position().y - first.boundingRad() < 0.f) newPos.y = first.boundingRad();
-			else if (first.position().y + first.boundingRad() > Constants::c_windowSizeY) newPos.y = Constants::c_windowSizeY - first.boundingRad();
+			else if (first.position().y + first.boundingRad() > m_sizeY) newPos.y = m_sizeY - first.boundingRad();
 
 			first.setPosition(newPos);
 		}
@@ -139,14 +135,37 @@ namespace Game{
 		for (auto& actor : m_gameObjects) actor->stopSounds();
 	}
 
+	// *************************************************** //
+
+	void World::resize(int _sizeX, int _sizeY)
+	{		
+		m_sizeX = _sizeX;
+		m_sizeY = _sizeY;
+		//ground texture
+		IntRect rect;
+		rect.left = 0;
+		rect.top = 0;
+		rect.width = _sizeX;
+		rect.height = _sizeY;
+		m_ground.setTextureRect(rect);
+
+		//center camera on the world
+		Graphic::g_camera.setCenter((float)_sizeX*0.5f, (float)_sizeY * 0.5f);
+		//
+		//Graphic::g_lightSystem.resize();
+
+	}
+
+	// *************************************************** //
+
 	sf::Vector2f World::getDistantPosition(float _minDist)
 	{
 		_minDist *= _minDist; //compare sqr
 		sf::Vector2f pos;
 		bool isValid;
 		do{
-			pos.x = util::rand(Constants::c_windowSizeX-50, 50);
-			pos.y = util::rand(Constants::c_windowSizeY - 50, 50);
+			pos.x = util::rand(m_sizeX - 50, 50);
+			pos.y = util::rand(m_sizeY - 50, 50);
 
 			isValid = true;
 			for (auto& actor : m_gameObjects)

@@ -12,12 +12,14 @@ namespace Game{
 	class World
 	{
 	public:
-		World();
+		World(int _sizeX, int _sizeY);
 
 		void process();
 		void processEvent(sf::Event& _keyEvent);
 		void draw(sf::RenderWindow& _window);
 		void stopSounds();
+
+		void resize(int _sizeX, int _sizeY);
 
 		// returns a position distant to existing game objects
 		// @param _minDist minimum distance to dynamic game objects
@@ -28,8 +30,10 @@ namespace Game{
 		void addNewPlayer(int _id);
 		void removePlayer(int _id);
 	private:
-		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		sf::Sprite m_ground;
+		int m_sizeX, m_sizeY;
+
+		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
 		sf::Clock clock;
 		int m_frameCount;

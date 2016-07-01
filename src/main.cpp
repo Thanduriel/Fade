@@ -2,6 +2,7 @@
 //
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <iostream>
 
 #include <vector>
 #include <memory>
@@ -20,8 +21,9 @@
 // INITIALIZE_EASYLOGGINGPP
 
 namespace Constants{
-	int c_windowSizeX;
-	int c_windowSizeY;
+	int g_windowSizeX;
+	int g_windowSizeY;
+	float g_worldScale;
 }
 
 int main()
@@ -33,10 +35,10 @@ int main()
     track->play();
 
 	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
-	Constants::c_windowSizeX = desktop.width;
-	Constants::c_windowSizeY = desktop.height;
+	Constants::g_windowSizeX = desktop.width;
+	Constants::g_windowSizeY = desktop.height;
 	Graphic::g_lightSystem.refreshSize();
-	sf::RenderWindow window(desktop, "Fade", sf::Style::None);
+	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
 	window.setMouseCursorVisible(false);
 
 	sf::Clock clock;
@@ -44,7 +46,7 @@ int main()
 	std::vector< std::unique_ptr< Game::GameState > > states;
 	states.emplace_back(new State::MenuState());
 	states.emplace_back(new State::MainState());
-	states.emplace_back(new State::OptionState());
+	states.emplace_back(new State::OptionState(window));
 	states.emplace_back(new State::CreditState());
 	uint32_t current_state(0);
 
@@ -64,12 +66,14 @@ int main()
 				state.processEvents(event);
 
 			current_state = state.process();
-		//	if (&state != states[current_state].get()) states[current_state]->onActivate();
+			if (current_state != 100 && &state != states[current_state].get()) 
+				states[current_state]->onActivate();
 			window.clear();
 			state.draw(window);
 			window.display();
 
 			elapsed = clock.restart();
+			if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
 			if (elapsed.asMilliseconds() < 16.667)
 				sf::sleep((sf::milliseconds(16.667) - elapsed));
 		}

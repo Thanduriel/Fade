@@ -9,7 +9,7 @@ namespace State{
     {
         font = *g_resourceManager.getFont("suburbia");
 
-         uint32_t left = Constants::c_windowSizeX / 2 - 200;
+         uint32_t left = Constants::g_windowSizeX / 2 - 200;
 
         title.setFont(font);
         title.setCharacterSize(200);

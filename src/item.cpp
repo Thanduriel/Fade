@@ -29,8 +29,7 @@ namespace Game{
 		pawn.takeItem(*this);
 		m_pawn = &pawn;
 
-		m_lightInfo.radius = 0.f;
-		m_lightInfo.isInUse = false;
+		m_lightInfo.destroy();
 	}
 
 	void Item::process()
@@ -99,8 +98,7 @@ namespace Game{
 
 	void Sentinel::endUse()
 	{
-		m_lightInfo.isInUse = false;
-		m_lightInfo.radius = 0;
+		m_lightInfo.destroy();
 		m_sprite.setColor(sf::Color(255, 210, 255, 255));
 		m_sprite.scale(2.2f, 2.2f);
 		destroy();

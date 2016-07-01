@@ -12,7 +12,7 @@ namespace Graphic{
 	void LightInfo::setPosition(const sf::Vector2f& _vec)
 	{
 		position.x = _vec.x;
-		position.y = _vec.y;//(float)Constants::c_windowSizeY - _vec.y;
+		position.y = _vec.y;//(float)Constants::g_windowSizeY - _vec.y;
 	}
 
 	LightSystem::LightSystem():
@@ -44,25 +44,25 @@ namespace Graphic{
 		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
 		states.shader = shader;
 
-		shader->setParameter("windowSizeX", Constants::c_windowSizeX);
-		shader->setParameter("windowSizeY", Constants::c_windowSizeY);
-
-		m_vertices.resize(m_lightInfos.size());
+		//every light is encoded in one point vertex
+		m_vertices.clear();
 
 		for (int i = 0; i < m_lightInfos.size(); ++i)
 		{
 			LightInfo& lightInfo = *m_lightInfos[i];
 			if (lightInfo.radius == 0.f) continue;
 
-			m_vertices[i].color = lightInfo.color;
-			m_vertices[i].position = lightInfo.position;
-			m_vertices[i].texCoords.x = lightInfo.radius;
+			sf::Vertex vertex;
+			vertex.color = lightInfo.color;
+			sf::Vector2i screenPos = _window.mapCoordsToPixel(lightInfo.position);
+			vertex.position = Vector2f((float)screenPos.x, (float)screenPos.y);
+			vertex.texCoords.x = lightInfo.radius / Constants::g_worldScale;
+			m_vertices.append(vertex);
 		}
+		_window.setView(_window.getDefaultView());
 		m_offScreen.draw(m_vertices, states);
-	//	std::cout << drawcalls << std::endl;
 		m_offScreen.display();
 		sf::Sprite sprite(m_offScreen.getTexture());
-	//	sprite.setColor(Color(255, 255, 255, 255));
 		sf::RenderStates states2;
 		states2.blendMode = sf::BlendMultiply;
 		_window.draw(sprite, states2);
@@ -70,6 +70,11 @@ namespace Graphic{
 
 	void LightSystem::refreshSize()
 	{
-		m_offScreen.create(Constants::c_windowSizeX, Constants::c_windowSizeY);
+		m_offScreen.create(Constants::g_windowSizeX, Constants::g_windowSizeY);
+
+		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
+
+		shader->setParameter("windowSizeX", Constants::g_windowSizeX);
+		shader->setParameter("windowSizeY", Constants::g_windowSizeY);
 	}
 }

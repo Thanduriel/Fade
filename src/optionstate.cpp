@@ -3,13 +3,19 @@
 #include "optionstate.hpp"
 #include "resourcemanager.hpp"
 #include "constants.hpp"
+#include "camera.hpp"
+
+namespace Graphic{
+	sf::View g_camera;
+}
 
 namespace State{
-    OptionState::OptionState()
+	OptionState::OptionState(sf::RenderWindow& _window) :
+		m_window(_window)
     {
         font = *g_resourceManager.getFont("suburbia");
 
-        uint32_t left = Constants::c_windowSizeX / 2 - 200;
+        uint32_t left = Constants::g_windowSizeX / 2 - 200;
 
         title.setFont(font);
         title.setCharacterSize(200);
@@ -26,7 +32,8 @@ namespace State{
         m_worldSizes.push_back("Medium");
         m_worldSizes.push_back("Large");
         m_worldSizes.push_back("Auto");
-        m_size = 0;
+        m_size = 1; //medium seems to be the appropriate default
+		rescaleView(1);
 
         m_nWalls.push_back("None");
         m_nWalls.push_back("Few");
@@ -85,6 +92,7 @@ namespace State{
                 {
                     if (++m_size == m_worldSizes.size())
                         m_size = 0;
+					rescaleView(m_size);
                 }
                 else if (m_state == 1) // change nWalls
                 {
@@ -132,4 +140,15 @@ namespace State{
         for (auto& gui : m_gui)
             gui->draw(_window);
     }
+
+	// *********************************************** //
+
+	void OptionState::rescaleView(uint32_t _size)
+	{
+		float scale = (float)(_size+1) * 0.5f;
+		Constants::g_worldScale = scale;
+		sf::View view = m_window.getDefaultView();
+		view.zoom(scale);
+		Graphic::g_camera = view;
+	}
 }

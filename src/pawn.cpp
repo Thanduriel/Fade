@@ -117,8 +117,7 @@ namespace Game{
 	{
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
-		m_lightInfo.isInUse = false;
-		m_lightInfo.radius = 0.f;
+		m_lightInfo.destroy();
 	}
 
 	void Pawn::onDeath()

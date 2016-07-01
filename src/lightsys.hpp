@@ -8,8 +8,8 @@ namespace Graphic{
 
 	struct LightInfo
 	{
-		//transforms the position to gpu pixel coords
 		void setPosition(const sf::Vector2f& _vec);
+		void destroy() { radius = 0.f; isInUse = false; }
 		sf::Color color;
 		sf::Vector2f position;
 		float radius;
@@ -31,9 +31,4 @@ namespace Graphic{
 	};
 
 	extern LightSystem g_lightSystem;
-/*	class LightManager : public ltbl::LightSystem
-	{
-	public:
-		LightManager(sf::RenderWindow& _window);
-	};*/
 }

@@ -2,9 +2,12 @@
 
 #include "mainstate.hpp"
 #include "lightsys.hpp"
+#include "camera.hpp"
+#include "constants.hpp"
 
 namespace State{
-	MainState::MainState()
+	MainState::MainState():
+		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY)
 	{
 		m_ID = 1;
         m_nextGameState = m_ID;
@@ -74,16 +77,17 @@ namespace State{
 
 	void MainState::draw(sf::RenderWindow& _window)
 	{
-	//	auto view = _window.getDefaultView();
-	//	view.zoom(1.5f);
-	//	_window.setView(view);
+		_window.setView(Graphic::g_camera);
 		m_world.draw(_window);
+		
+		//lightsystem is drawn in screen space
+		//thus it changes the view to defaultView!
 		Graphic::g_lightSystem.draw(_window);
 	}
 
+	using namespace Constants;
 	void MainState::onActivate()
 	{
-	//	m_world.~World();
-	//	new (&m_world) Game::World();
+		m_world.resize(g_worldScale * g_windowSizeX, g_worldScale * g_windowSizeY);
 	}
 }

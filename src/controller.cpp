@@ -68,7 +68,7 @@ namespace Game{
 		++counter;
 		if (!(counter % 90)){
 			Vector2f dir = Vector2f((float)util::rand(2) - 1.f, (float)util::rand(2) - 1.f);
-			if (dir.x + dir.y != 0.f) dir = normalize(dir);
+			if (dir.x != 0.f || dir.y != 0.f) dir = normalize(dir);
 			m_pawn->setVelocity(Constants::c_playerBaseSpeed * dir * m_pawn->speedFactor());
 		}
 		if(!(counter % 20))m_pawn->fire();
