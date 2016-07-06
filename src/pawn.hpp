@@ -32,6 +32,15 @@ namespace Game{
 		float alphaVal() { return m_alpha; }
 
 		void takeItem(Item& _itm);
+
+		enum LightState{
+			Off,
+			On,
+			OnlyFire
+		};
+
+		void setLightState(LightState _state){ m_lightState = _state; }
+		LightState lightState(){ return m_lightState; }
 	private:
 		Graphic::LightInfo& m_lightInfo;
 		sf::Sprite m_weaponSprite;
@@ -50,7 +59,10 @@ namespace Game{
 		float m_damage;
 		ProjType m_projType;
 		float m_speedFactor;
+		int m_ammo;
 
 		Item* m_item;
+
+		LightState m_lightState;
 	};
 }

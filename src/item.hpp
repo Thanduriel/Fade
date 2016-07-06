@@ -89,4 +89,14 @@ namespace Game{
 		void use() override;
 		void endUse() override;
 	};
+
+	// puts on a child that reflects projectiles toward their origin
+	class Shield : public Item
+	{
+	public:
+		Shield(const sf::Vector2f& _pos);
+
+		void use() override;
+		void endUse() override;
+	};
 }

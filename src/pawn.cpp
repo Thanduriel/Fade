@@ -15,11 +15,13 @@ namespace Game{
 		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
 		m_fadeFactor(0.985f),
 		m_alpha(1.f),
-		m_cdMax(5),//130
-		m_damage(10.f),
+		m_cdMax(60),//130
+		m_damage(16.f),
 		m_item(nullptr),
 		m_projType(ProjType::Standard),
-		m_speedFactor(1.f)
+		m_speedFactor(1.f),
+		m_lightState(Pawn::OnlyFire),
+		m_ammo(5)
 	{
 		m_isStatic = false;
 
@@ -66,9 +68,11 @@ namespace Game{
 	//	if (m_alpha < 0.1f) m_alpha = 1.f;
 
 		--m_cd;
-	//	if (m_cd <= 0) {
-	//		fire(); altFire();
-	//	}
+		if (m_cd <= 0)
+		{
+			++m_ammo;
+			m_cd = (int)(m_cdMax * std::max(m_ammo / 5.f, 1.f));
+		}
 
 		if (m_item)
 		{
@@ -138,16 +142,16 @@ namespace Game{
 
 	void Pawn::fire()
 	{
-		if (m_cd <= 0)
+		if (m_ammo > 0)
 		{
-			m_alpha = 1.f;
+			if (m_lightState == OnlyFire) m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
 			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
 				dir, m_projType);
 			m_soundFire.play();
 
-			m_cd = m_cdMax;
+			--m_ammo;
 		}
 	}
 

@@ -49,6 +49,8 @@ namespace Game{
 				m_pawn->fire();
 			else if (_event.joystickButton.button == 4)
 				m_pawn->altFire();
+			else if (_event.joystickButton.button == 1)
+				m_pawn->setLightState(m_pawn->lightState() == Pawn::OnlyFire ? Pawn::Off : Pawn::OnlyFire);
 			}
 	}
 

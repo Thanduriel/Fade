@@ -185,4 +185,26 @@ namespace Game{
 		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 1.f);
 		destroy();
 	}
+
+	// *********************************************************** //
+
+	Shield::Shield(const sf::Vector2f& _pos) :
+		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
+	{
+		m_sprite.setColor(sf::Color(0, 0, 255, 255));
+		m_activeTime = 60 * 4;
+	}
+
+	void Shield::use()
+	{
+		Item::use();
+
+		m_pawn->setReflective(true);
+	}
+
+	void Shield::endUse()
+	{
+		m_pawn->setReflective(false);
+		destroy();
+	}
 }

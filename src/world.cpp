@@ -186,7 +186,7 @@ namespace Game{
 		sf::Vector2f pos = getDistantPosition(50.f);
 
 		Item* item;
-		switch (util::rand(5))
+		switch (util::rand(6))
 		{
 		case 0: item = new Mine(pos); break;
 		case 1: item = new LightAura(pos); break;
@@ -194,6 +194,7 @@ namespace Game{
 		case 3: item = new SpeedBoost(pos); break;
 		case 4: item = new ClusterGun(pos); break;
 		case 5: item = new Sentinel(pos); break;
+		case 6: item = new Shield(pos); break;
 		}
 
 		assert(item);

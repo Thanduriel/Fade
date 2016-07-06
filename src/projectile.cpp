@@ -1,6 +1,7 @@
 #include "projectile.hpp"
 #include "resourcemanager.hpp"
 #include "constants.hpp"
+#include "math.hpp"
 
 using namespace sf;
 
@@ -16,12 +17,19 @@ namespace Game{
 		m_velocity = _vel * Constants::c_projectileBaseSpeed;
 		m_boundingRad = Constants::c_projectileRadius;
 
-		m_lightInfo.color = Color(50, 120, 255, 255);
+		m_sprite.setColor(Color(228, 255, 255, 255));
+		m_lightInfo.color = Color(228, 10, 255, 255);//Color(50, 120, 255, 255);
 		m_lightInfo.radius = m_boundingRad * 8.f;
 	}
 
 	void Projectile::collision(Actor& _oth)
 	{
+		if (_oth.isReflective())
+		{
+			m_velocity = -m_velocity;
+			m_position += normalize(m_position - _oth.position()) * _oth.boundingRad();
+			return;
+		}
 		_oth.damage(m_damage);
 		destroy();
 	}

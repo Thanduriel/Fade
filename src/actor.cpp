@@ -14,7 +14,8 @@ namespace Game{
 		m_health(100.f),
 		m_healthMax(100.f),
 		m_isDestroyed(false),
-		m_isDeath(false)
+		m_isDeath(false),
+		m_isReflective(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
 		m_sprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);

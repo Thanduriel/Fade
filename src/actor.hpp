@@ -37,6 +37,8 @@ namespace Game{
 		bool isDestroyed() { return m_isDestroyed; }
 
 		bool isDeath() { return m_isDeath; }
+		void setReflective(bool _reflective) { m_isReflective = _reflective; }
+		bool isReflective() { return m_isReflective; }
 	protected:
 		Graphic::CenteredSprite m_sprite;
 		sf::Vector2f m_position;
@@ -51,5 +53,6 @@ namespace Game{
 		bool m_canCollide;
 		bool m_isDestroyed;
 		bool m_isDeath;
+		bool m_isReflective; // reflects projectiles
 	};
 }
