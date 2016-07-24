@@ -31,7 +31,7 @@ namespace Game{
 		m_soundExplode.setBuffer(*g_resourceManager.getSound("sound_explode"));
 		m_soundTakeItem.setBuffer(*g_resourceManager.getSound("sound_item_collect"));
 
-		m_weaponSprite.setOrigin(sf::Vector2f(0.f, m_weaponSprite.getTextureRect().height * 0.5f));//_texture.getSize().x
+		m_weaponSprite.setOrigin(sf::Vector2f(m_weaponSprite.getTextureRect().width, m_weaponSprite.getTextureRect().height * 0.5f));
 		m_healthBarSprite.rotate(180.f);
 		m_healthBarSprite.setColor(sf::Color(138, 240, 12, 255));
 
@@ -42,6 +42,9 @@ namespace Game{
 
 		m_healthRect = m_healthBarSprite.getTextureRect();
 		m_healthRectDef = m_healthRect.height;
+
+		m_weaponRect = m_weaponSprite.getTextureRect();
+		m_weaponRectDef = m_weaponRect.width;
 		//radius of the final scaled sprite
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 
@@ -71,7 +74,7 @@ namespace Game{
 		if (m_cd <= 0)
 		{
 			++m_ammo;
-			m_cd = (int)(m_cdMax * std::max(m_ammo / 5.f, 1.f));
+			m_cd = (int)(m_cdMax * std::max(m_ammo / Constants::c_fastReloadCount, 1.f));
 		}
 
 		if (m_item)
@@ -79,6 +82,8 @@ namespace Game{
 			m_item->setPosition(m_position);
 		}
 	}
+
+	// ******************************************** **//
 
 	void Pawn::draw(sf::RenderWindow& _window)
 	{
@@ -102,8 +107,13 @@ namespace Game{
 
 		// weapon points in the direction the player is facing
 		m_weaponSprite.setPosition(m_position);
+		m_weaponRect.width = m_weaponRectDef 
+			* std::min((float)m_ammo + (m_cdMax - m_cd) / (float)m_cdMax,
+			Constants::c_fastReloadCount) / Constants::c_fastReloadCount + 1.f;
+	//	m_weaponRect.left = m_weaponRectDef - m_weaponRect.width;
+		m_weaponSprite.setTextureRect(m_weaponRect);
 	//	m_weaponSprite.setColor(sf::Color(228, 10, 255, a));
-		m_weaponSprite.setRotation(m_dirAngle / (2.f*3.1415f) * 360.f);
+		m_weaponSprite.setRotation(m_dirAngle / (2.f*3.1415f) * 360.f + 180.f);
 		_window.draw(m_weaponSprite);
 	}
 

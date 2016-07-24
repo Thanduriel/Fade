@@ -41,7 +41,7 @@ namespace Game{
 		}
 
 #ifdef _DEBUG
-		addNewPlayer(-1);
+	//	addNewPlayer(-1);
 #endif
 
 		//test stuff
