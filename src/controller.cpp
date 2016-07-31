@@ -12,7 +12,7 @@ namespace Game{
 	{
 		if (!m_pawn) return;
 
-		if (m_pawn->isDeath())
+		if (m_pawn->isDead())
 		{
 			if (m_pawn->alphaVal() < 0.2f)
 				m_pawn = nullptr;
@@ -59,7 +59,7 @@ namespace Game{
 	void AiController::process()
 	{
 		if (!m_pawn) return;
-		if (m_pawn->isDeath())
+		if (m_pawn->isDead())
 		{
 			if (m_pawn->alphaVal() < 0.2f)
 				m_pawn = nullptr;

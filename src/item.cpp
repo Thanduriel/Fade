@@ -24,6 +24,8 @@ namespace Game{
 
 	void Item::collision(Actor& _oth)
 	{
+		if (_oth.isDead()) return;
+
 		Pawn& pawn = reinterpret_cast<Pawn&>(_oth);
 		m_canCollide = false;
 		pawn.takeItem(*this);

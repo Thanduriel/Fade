@@ -41,9 +41,9 @@ namespace Game{
 		}
 
 #ifdef _DEBUG
-	//	addNewPlayer(-1);
+		addNewPlayer(-1);
 #endif
-
+		m_gameObjects.emplace_back(new Wall(Vector2f(200.f, 200.f), Vector2f(50.f, 100.f)));
 		//test stuff
 		/*
 		m_gameObjects.emplace_back(new Sentinel(sf::Vector2f(123.f, 121.f)));

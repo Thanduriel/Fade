@@ -36,7 +36,7 @@ namespace Game{
 		void destroy() { m_isDestroyed = true; onDestroy(); }
 		bool isDestroyed() { return m_isDestroyed; }
 
-		bool isDeath() { return m_isDeath; }
+		bool isDead() { return m_isDead; }
 		void setReflective(bool _reflective) { m_isReflective = _reflective; }
 		bool isReflective() { return m_isReflective; }
 	protected:
@@ -52,7 +52,7 @@ namespace Game{
 		bool m_isStatic;
 		bool m_canCollide;
 		bool m_isDestroyed;
-		bool m_isDeath;
+		bool m_isDead;
 		bool m_isReflective; // reflects projectiles
 	};
 }

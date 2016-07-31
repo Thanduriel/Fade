@@ -54,7 +54,7 @@ namespace Game{
 
 	void Pawn::process()
 	{
-		if (m_isDeath)
+		if (m_isDead)
 		{
 			if (alphaVal() < 0.1f)
 			{
@@ -119,8 +119,12 @@ namespace Game{
 
 	void Pawn::collision(Actor& _oth)
 	{
-		_oth.damage(1.f);
-		m_soundCollision.play();
+		//make no sound while running against a wall
+		if (!_oth.isStatic())
+		{
+			_oth.damage(1.f);
+			m_soundCollision.play();
+		}
 	}
 
 	void Pawn::stopSounds()

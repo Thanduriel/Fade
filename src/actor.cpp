@@ -14,7 +14,7 @@ namespace Game{
 		m_health(100.f),
 		m_healthMax(100.f),
 		m_isDestroyed(false),
-		m_isDeath(false),
+		m_isDead(false),
 		m_isReflective(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
@@ -39,7 +39,7 @@ namespace Game{
 
 		m_health = std::max(m_health -_amount, 0.f);
 		if (m_health <= 0.f) {
-			m_isDeath = true;
+			m_isDead = true;
 			onDeath();
 		}
 	}
