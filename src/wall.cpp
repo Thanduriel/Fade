@@ -24,45 +24,28 @@ namespace Game{
 		m_bbEnd = m_bbBegin + _size;
 	}
 
+	void Wall::lineCollision(const Vector2f& v, const Vector2f& w, Actor& _act)
+	{
+		const Vector2f& p = _act.position();
+		// Return minimum distance between line segment vw and point p
+		float l2 = lenSq(v - w);  // i.e. |w-v|^2 -  avoid a sqrt
+		// Consider the line extending the segment, parameterized as v + t (w - v).
+		// We find projection of point p onto the line. 
+		// It falls where t = [(p-v) . (w-v)] / |w-v|^2
+		// We clamp t from [0,1] to handle points outside the segment vw.
+		float t = std::max(0.f, std::min(1.f, dot(p - v, w - v) / l2));
+		Vector2f projection = v + t * (w - v);  // Projection falls on the segment
+		if (distSq(projection, p) < _act.boundingRad()*_act.boundingRad()) 
+			_act.setPosition(projection - normalize(projection - p) * _act.boundingRad());
+		//return distance(p, projection);
+	}
+
 
 	void Wall::collision(Actor& _oth)
 	{
-		Vector2f newPos = _oth.position();
-		const Vector2f& curPos = _oth.position();
-		Vector2f prevPos = _oth.position() - _oth.velocity();
-		float rad = _oth.boundingRad();
-		float radSq = rad * rad;
-
-		//edges
-
-		if (prevPos.x + rad < m_bbBegin.x && curPos.x + rad > m_bbBegin.x)
-			newPos.x = m_bbBegin.x - _oth.boundingRad() - 1.f;
-
-		if (prevPos.x - rad > m_bbEnd.x && curPos.x - rad < m_bbEnd.x)
-			newPos.x = m_bbEnd.x + _oth.boundingRad() + 1.f;
-
-		if (prevPos.y + rad < m_bbBegin.y && curPos.y + rad > m_bbBegin.y)
-			newPos.y = m_bbBegin.y - _oth.boundingRad() - 1.f;
-
-		if (prevPos.y - rad > m_bbEnd.y && curPos.y - rad < m_bbEnd.y)
-			newPos.y = m_bbEnd.y + _oth.boundingRad() + 1.f;
-
-		//corners need special treatment because players are circles
-
-		float d = radSq - distSq(newPos, m_bbBegin);
-		if (d > 0) newPos += normalize(newPos - m_bbEnd) * sqrt(d);
-
-		Vector2f corner(m_bbBegin.x, m_bbEnd.y);
-		d = radSq - distSq(newPos, corner);
-		if (d > 0) newPos += normalize(newPos - corner) * sqrt(d);
-
-		corner = Vector2f(m_bbEnd.x, m_bbBegin.y);
-		d = radSq - distSq(newPos, corner);
-		if (d > 0) newPos += normalize(newPos - corner) * sqrt(d);
-
-		d = radSq - distSq(newPos, m_bbEnd);
-		if (d > 0) newPos += normalize(newPos - m_bbEnd) * sqrt(d);
-
-		_oth.setPosition(newPos);
+		lineCollision(m_bbBegin, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth);
+		lineCollision(m_bbBegin, Vector2f(m_bbEnd.x, m_bbBegin.y), _oth);
+		lineCollision(m_bbEnd, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth);
+		lineCollision(m_bbEnd, Vector2f(m_bbEnd.x, m_bbBegin.y), _oth);
 	}
 }
