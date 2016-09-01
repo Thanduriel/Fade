@@ -26,6 +26,7 @@ namespace Game{
 		sf::Vector2f getDistantPosition(float _minDist);
 
 		void spawnItem();
+		void generateWalls(int _count);
 		Pawn* spawnPlayer();
 		void addNewPlayer(int _id);
 		void removePlayer(int _id);
@@ -35,6 +36,7 @@ namespace Game{
 
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
+		std::vector < sf::Glsl::Vec2 > m_wallInfos;
 		sf::Clock clock;
 		int m_frameCount;
 	};

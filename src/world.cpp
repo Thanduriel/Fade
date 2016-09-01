@@ -43,7 +43,7 @@ namespace Game{
 #ifdef _DEBUG
 		addNewPlayer(-1);
 #endif
-		m_gameObjects.emplace_back(new Wall(Vector2f(200.f, 200.f), Vector2f(50.f, 100.f)));
+		generateWalls(3);
 		//test stuff
 		/*
 		m_gameObjects.emplace_back(new Sentinel(sf::Vector2f(123.f, 121.f)));
@@ -177,6 +177,22 @@ namespace Game{
 		}while(!isValid);
 
 		return pos;
+	}
+
+	void World::generateWalls(int _count)
+	{
+		m_wallInfos.reserve(_count * 3);
+		for (int i = 0; i < _count; ++i)
+		{
+			Vector2f center(200.f + 200.f*i, 200.f);
+			Wall* wall = new Wall(center, Vector2f(50.f, 100.f));
+			m_gameObjects.emplace_back(wall);
+			m_wallInfos.push_back(wall->bbBegin());
+			m_wallInfos.push_back(wall->bbEnd());
+			m_wallInfos.push_back(center); // center
+		}
+
+		Graphic::g_lightSystem.setWalls(m_wallInfos.data(), m_wallInfos.size());
 	}
 
 	// *************************************************** //

@@ -24,6 +24,9 @@ namespace Graphic{
 		LightInfo& createLight();
 		void draw(sf::RenderWindow& _window);
 		void refreshSize();
+
+		//transforms the coordinates and pushes wall information to the gpu
+		void setWalls(sf::Glsl::Vec2* _arr, size_t _size);
 	private:
 		sf::RenderTexture m_offScreen;
 		std::vector<std::unique_ptr<LightInfo>> m_lightInfos;
