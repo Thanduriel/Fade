@@ -20,6 +20,11 @@ namespace Game{
 		virtual void onDamage(){};
 		virtual void collision(Actor& _oth){};
 
+		// only used when hasComplexShape() true
+		// @return Whether a collision actually occured
+		virtual bool testComplexCollision(Actor& _oth){ return true; };
+
+		//apply damage to this actor
 		void damage(float _amount);
 		void addHealth(float _amount) { m_health = std::min(m_health + _amount, m_healthMax); };
 
@@ -32,6 +37,8 @@ namespace Game{
 		float boundingRad() { return m_boundingRad; }
 		bool isStatic() { return m_isStatic; }
 		bool canCollide() { return m_canCollide; }
+
+		bool hasComplexShape() { return m_hasComplexShape; }
 
 		void destroy() { m_isDestroyed = true; onDestroy(); }
 		bool isDestroyed() { return m_isDestroyed; }
@@ -49,6 +56,7 @@ namespace Game{
 		float m_healthMax;
 
 		float m_boundingRad;
+		bool m_hasComplexShape;
 		bool m_isStatic;
 		bool m_canCollide;
 		bool m_isDestroyed;

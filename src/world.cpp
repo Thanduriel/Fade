@@ -22,6 +22,11 @@ namespace Game{
 		m_ground.setTexture(*texture);
 
 		resize(_sizeX, _sizeY);
+
+		// m_gameObjects[0] should always be a dummy that objects can collide with 
+		// when reaching the map boundaries
+		m_gameObjects.emplace_back(new Actor(Vector2f(-100.f, -100.f), *g_resourceManager.getTexture("wall.png")));
+
 		// determine number of connected joysticks/gamepads with Axis
 		for (uint32_t i(0); i<5; i++)
 		{
@@ -96,7 +101,9 @@ namespace Game{
 
 				float r2 = first.boundingRad() + second.boundingRad();
 				r2 *= r2;
-				if (distSq(first.position(), second.position()) < r2)
+				if (distSq(first.position(), second.position()) < r2 
+					&& (!first.hasComplexShape() || first.testComplexCollision(second)) 
+					&& (!second.hasComplexShape() || second.testComplexCollision(first)))
 				{
 					first.collision(second);
 					second.collision(first);
@@ -112,6 +119,7 @@ namespace Game{
 			if (first.position().y - first.boundingRad() < 0.f) newPos.y = first.boundingRad();
 			else if (first.position().y + first.boundingRad() > m_sizeY) newPos.y = m_sizeY - first.boundingRad();
 
+			if (newPos != first.position()) first.collision(*m_gameObjects[0]);
 			first.setPosition(newPos);
 		}
 
@@ -179,13 +187,21 @@ namespace Game{
 		return pos;
 	}
 
+	// *************************************************** //
+
 	void World::generateWalls(int _count)
 	{
 		m_wallInfos.reserve(_count * 3);
 		for (int i = 0; i < _count; ++i)
 		{
-			Vector2f center(200.f + 200.f*i, 200.f);
-			Wall* wall = new Wall(center, Vector2f(50.f, 100.f));
+			Vector2f size;
+			if (i % 2/*util::rand(1)*/)
+				size = Vector2f((float)Constants::c_wallThickness, (float)util::rand(Constants::c_wallMaxLength, 50));
+			else
+				size = Vector2f((float)util::rand(Constants::c_wallMaxLength, 50), (float)Constants::c_wallThickness);
+			Vector2f center(util::rand(m_sizeX - (int)size.x / 2, (int)size.x / 2),
+				util::rand(m_sizeY - (int)size.y / 2, (int)size.y / 2));
+			Wall* wall = new Wall(center, size);
 			m_gameObjects.emplace_back(wall);
 			m_wallInfos.push_back(wall->bbBegin());
 			m_wallInfos.push_back(wall->bbEnd());

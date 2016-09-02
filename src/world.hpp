@@ -26,6 +26,9 @@ namespace Game{
 		sf::Vector2f getDistantPosition(float _minDist);
 
 		void spawnItem();
+
+		// removes walls and generates _count new ones
+		// amount is currently limited by the light fragment shader to 3
 		void generateWalls(int _count);
 		Pawn* spawnPlayer();
 		void addNewPlayer(int _id);
