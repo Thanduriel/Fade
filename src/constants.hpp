@@ -5,6 +5,7 @@ namespace Constants{
 	extern int g_windowSizeX;
 	extern int g_windowSizeY;
 	extern float g_worldScale;
+	extern int g_numWalls;
 
 	//game constants
 	const float c_scaleFactor = 0.4f; //globally applied to all sprites

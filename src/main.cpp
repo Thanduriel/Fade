@@ -24,6 +24,7 @@ namespace Constants{
 	int g_windowSizeX;
 	int g_windowSizeY;
 	float g_worldScale;
+	int g_numWalls;
 }
 
 int main()

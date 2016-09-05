@@ -98,6 +98,7 @@ namespace State{
                 {
                     if (++m_walls == m_nWalls.size())
                         m_walls = 0;
+					Constants::g_numWalls = m_walls * 3;
                 }
                 else if (m_state == 2) // back to main menu
                 {

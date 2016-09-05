@@ -191,6 +191,7 @@ namespace Game{
 
 	void World::generateWalls(int _count)
 	{
+		m_wallInfos.clear();
 		m_wallInfos.reserve(_count * 3);
 		for (int i = 0; i < _count; ++i)
 		{
