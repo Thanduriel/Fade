@@ -9,8 +9,10 @@ namespace Game{
 	class Actor
 	{
 	public:
-		Actor(const sf::Vector2f& _position, sf::Texture& _texture);
+		Actor(const sf::Vector2f& _position, sf::Texture& _texture, int _cid = -1);
 		virtual ~Actor(){};
+
+		int getCId() { return m_cid; }
 
 		virtual void process();
 		virtual void draw(sf::RenderWindow& _window);
@@ -47,6 +49,8 @@ namespace Game{
 		void setReflective(bool _reflective) { m_isReflective = _reflective; }
 		bool isReflective() { return m_isReflective; }
 	protected:
+		int m_cid; //id of the related controller; -1 for world objects
+
 		Graphic::CenteredSprite m_sprite;
 		sf::Vector2f m_position;
 		sf::Vector2f m_velocity;

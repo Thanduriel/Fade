@@ -8,8 +8,8 @@ using namespace sf;
 namespace Game{
 	ProjectileFactory g_projectileFactory;
 
-	Projectile::Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg):
-		Actor(_pos, *g_resourceManager.getTexture("projectile.png")),
+	Projectile::Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg, int _cid):
+		Actor(_pos, *g_resourceManager.getTexture("projectile.png"), _cid),
 		m_damage(_dmg),
 		m_lifeTime(360),
 		m_lightInfo(Graphic::g_lightSystem.createLight())
@@ -56,11 +56,11 @@ namespace Game{
 
 	// ******************************************************** //
 
-	void ProjectileFactory::spawn(const sf::Vector2f& _pos, const sf::Vector2f& _dir, ProjType _type)
+	void ProjectileFactory::spawn(const sf::Vector2f& _pos, const sf::Vector2f& _dir, ProjType _type, int _cid)
 	{
 		switch (_type)
 		{
-		case ProjType::Standard: add(new Projectile(_pos, _dir, 10.f));
+		case ProjType::Standard: add(new Projectile(_pos, _dir, 10.f, _cid));
 			break;
 		case ProjType::Cluster:
 		{
@@ -70,9 +70,9 @@ namespace Game{
 			off.y = _dir.x;
 			off *= 20.0f;
 
-			add(new Projectile(_pos, _dir, 10.f));
-			add(new Projectile(_pos + off, _dir, 10.f));
-			add(new Projectile(_pos - off, _dir, 10.f));
+			add(new Projectile(_pos, _dir, 10.f, _cid));
+			add(new Projectile(_pos + off, _dir, 10.f, _cid));
+			add(new Projectile(_pos - off, _dir, 10.f, _cid));
 			break;
 		}
 		}

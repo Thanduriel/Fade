@@ -10,7 +10,7 @@ namespace Game{
 		virtual void processEvent(sf::Event& _event){};
 
 		void possess(Pawn* _pawn) { m_pawn = _pawn; }
-		bool hasPawn() { return m_pawn; }
+		bool hasPawn() { return m_pawn != 0; }
 		Pawn* getPawn() { return m_pawn; }
 		uint32_t getId() { return m_id; }
 	protected:

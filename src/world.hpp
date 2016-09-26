@@ -30,16 +30,18 @@ namespace Game{
 		// removes walls and generates _count new ones
 		// amount is currently limited by the light fragment shader to 3
 		void generateWalls(int _count);
-		Pawn* spawnPlayer();
+		Pawn* spawnPlayer(int _cid);
 		void addNewPlayer(int _id);
 		void removePlayer(int _id);
 	private:
 		sf::Sprite m_ground;
 		int m_sizeX, m_sizeY;
 
+		std::unique_ptr< Actor > m_collisionDummy;
 		std::vector < std::unique_ptr < Actor > > m_gameObjects;
 		std::vector < std::unique_ptr < Controller > > m_controllers;
 		std::vector < sf::Glsl::Vec2 > m_wallInfos;
+		std::vector < class Wall* > m_walls;
 		sf::Clock clock;
 		int m_frameCount;
 	};

@@ -11,7 +11,7 @@ namespace Game{
 	class Pawn : public Actor
 	{
 	public:
-		Pawn(const sf::Vector2f& _position, sf::Texture& _texture);
+		Pawn(const sf::Vector2f& _position, sf::Texture& _texture, int _cid);
 
 		void process() override;
 		void draw(sf::RenderWindow& _window) override;
@@ -42,6 +42,8 @@ namespace Game{
 		void setLightState(LightState _state){ m_lightState = _state; }
 		LightState lightState(){ return m_lightState; }
 	private:
+		int m_lastHitId; //cid of the last actor a collision occurred with
+
 		Graphic::LightInfo& m_lightInfo;
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;

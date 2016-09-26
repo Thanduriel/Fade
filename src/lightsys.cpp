@@ -86,7 +86,7 @@ namespace Graphic{
 			_arr[i].y = Constants::g_windowSizeY - _arr[i].y;
 		}
 		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
-		shader->setUniformArray("wallInfos", _arr, _size);
+		if(_size)shader->setUniformArray("wallInfos", _arr, _size);
 		shader->setUniform("numWalls_x3", (int)_size);
 	}
 }

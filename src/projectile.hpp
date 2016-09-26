@@ -7,7 +7,7 @@ namespace Game{
 	class Projectile : public Actor
 	{
 	public:
-		Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg);
+		Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg, int _cid = -1);
 
 		void collision(Actor& _oth) override;
 
@@ -29,7 +29,7 @@ namespace Game{
 	class ProjectileFactory
 	{
 	public:
-		void spawn(const sf::Vector2f& _pos, const sf::Vector2f& _dir, ProjType _type);
+		void spawn(const sf::Vector2f& _pos, const sf::Vector2f& _dir, ProjType _type, int _cid = -1);
 		void add(Projectile* _proj) { m_projectiles.push_back(_proj); }
 
 		const ProjCntainer& collect() { return m_projectiles; }

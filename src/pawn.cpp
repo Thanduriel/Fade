@@ -4,12 +4,13 @@
 #include "math.hpp"
 #include "constants.hpp"
 #include "lightsys.hpp"
+#include "stats.hpp"
 
 using namespace sf;
 
 namespace Game{
-	Pawn::Pawn(const sf::Vector2f& _position, sf::Texture& _texture) :
-		Actor(_position, _texture),
+	Pawn::Pawn(const sf::Vector2f& _position, sf::Texture& _texture, int _cid) :
+		Actor(_position, _texture, _cid),
 		m_lightInfo(Graphic::g_lightSystem.createLight()),
 		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
 		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
@@ -125,6 +126,7 @@ namespace Game{
 			_oth.damage(1.f);
 			m_soundCollision.play();
 		}
+		m_lastHitId = _oth.getCId();
 	}
 
 	void Pawn::stopSounds()
@@ -147,6 +149,9 @@ namespace Game{
 		m_lightInfo.color.g = 50;
 		m_lightInfo.color.b = 50;
 		m_canCollide = false;
+
+		Stats::g_statManager.Add(m_cid, Stats::Deaths);
+		Stats::g_statManager.Add(m_lastHitId, Stats::Kills);
 	}
 
 	void Pawn::onDamage()
@@ -162,7 +167,7 @@ namespace Game{
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
 			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
-				dir, m_projType);
+				dir, m_projType, m_cid);
 			m_soundFire.play();
 
 			--m_ammo;

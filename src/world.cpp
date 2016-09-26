@@ -25,7 +25,7 @@ namespace Game{
 
 		// m_gameObjects[0] should always be a dummy that objects can collide with 
 		// when reaching the map boundaries
-		m_gameObjects.emplace_back(new Actor(Vector2f(-100.f, -100.f), *g_resourceManager.getTexture("wall.png")));
+		m_collisionDummy = std::make_unique<Actor>(Vector2f(-100.f, -100.f), *g_resourceManager.getTexture("wall.png"));
 
 		// determine number of connected joysticks/gamepads with Axis
 		for (uint32_t i(0); i<5; i++)
@@ -38,9 +38,7 @@ namespace Game{
 					sf::Joystick::hasAxis(i, sf::Joystick::U) &&
 					sf::Joystick::hasAxis(i, sf::Joystick::R))
 				{
-					Controller* controller = new PlayerController(i);
-					controller->possess(spawnPlayer());
-					m_controllers.emplace_back(controller);
+					addNewPlayer(i);
 				}
 			}
 		}
@@ -80,7 +78,7 @@ namespace Game{
 		for (auto& controller : m_controllers)
 		{
 			controller->process();
-			if (!controller->hasPawn()) controller->possess(spawnPlayer());
+			if (!controller->hasPawn()) controller->possess(spawnPlayer(controller->getId()));
 		}
 		for (auto& actor : m_gameObjects) actor->process();
 
@@ -119,7 +117,7 @@ namespace Game{
 			if (first.position().y - first.boundingRad() < 0.f) newPos.y = first.boundingRad();
 			else if (first.position().y + first.boundingRad() > m_sizeY) newPos.y = m_sizeY - first.boundingRad();
 
-			if (newPos != first.position()) first.collision(*m_gameObjects[0]);
+			if (newPos != first.position()) first.collision(*m_collisionDummy);
 			first.setPosition(newPos);
 		}
 
@@ -191,6 +189,8 @@ namespace Game{
 
 	void World::generateWalls(int _count)
 	{
+		for (auto wall : m_walls) wall->destroy();
+		m_walls.clear();
 		m_wallInfos.clear();
 		m_wallInfos.reserve(_count * 3);
 		for (int i = 0; i < _count; ++i)
@@ -204,6 +204,7 @@ namespace Game{
 				util::rand(m_sizeY - (int)size.y / 2, (int)size.y / 2));
 			Wall* wall = new Wall(center, size);
 			m_gameObjects.emplace_back(wall);
+			m_walls.push_back(wall);
 			m_wallInfos.push_back(wall->bbBegin());
 			m_wallInfos.push_back(wall->bbEnd());
 			m_wallInfos.push_back(center); // center
@@ -236,10 +237,10 @@ namespace Game{
 
 	// *************************************************** //
 
-	Pawn* World::spawnPlayer()
+	Pawn* World::spawnPlayer(int _cid)
 	{
 		Pawn* player = new Pawn(getDistantPosition(200.f),
-			*g_resourceManager.getTexture("player_main.png"));
+			*g_resourceManager.getTexture("player_main.png"), _cid);
 		m_gameObjects.emplace_back(player);
 
 		return player;
@@ -251,7 +252,7 @@ namespace Game{
 	{
 		Controller* controller = _id >= 0 ? (Controller*)new PlayerController(_id)
 			: new AiController();
-		controller->possess(spawnPlayer());
+		controller->possess(spawnPlayer(_id));
 		m_controllers.emplace_back(controller);
 	}
 

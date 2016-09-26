@@ -15,6 +15,9 @@
 #include "optionstate.hpp"
 #include "creditstate.hpp"
 #include "resourcemanager.hpp"
+#include "stats.hpp"
+
+#include <sstream>
 
 // #define ELPP_NO_DEFAULT_LOG_FILE
 
@@ -25,6 +28,10 @@ namespace Constants{
 	int g_windowSizeY;
 	float g_worldScale;
 	int g_numWalls;
+}
+
+namespace Stats{
+	StatManager g_statManager;
 }
 
 int main()
@@ -74,7 +81,14 @@ int main()
 			window.display();
 
 			elapsed = clock.restart();
-			if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
+
+			//temporary stat display
+			std::stringstream s;
+			for (int i = 0; i < 4; ++i){
+				s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
+			}
+			window.setTitle(s.str());
+		//	if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
 			if (elapsed.asMilliseconds() < 16.667)
 				sf::sleep((sf::milliseconds(16.667) - elapsed));
 		}

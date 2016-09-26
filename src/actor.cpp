@@ -4,7 +4,8 @@
 namespace Game{
 	using namespace sf;
 
-	Actor::Actor(const Vector2f& _position, sf::Texture& _texture):
+	Actor::Actor(const Vector2f& _position, sf::Texture& _texture, int _cid):
+		m_cid(_cid),
 		m_sprite(_texture),
 		m_position(_position),
 		m_velocity(0.f, 0.f),
