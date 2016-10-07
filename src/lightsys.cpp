@@ -78,11 +78,12 @@ namespace Graphic{
 		shader->setParameter("windowSizeY", Constants::g_windowSizeY);
 	}
 
-	void LightSystem::setWalls(sf::Glsl::Vec2* _arr, size_t _size)
+	void LightSystem::setWalls(sf::Glsl::Vec2* _arr, size_t _size, float _worldToScreenRatio)
 	{
 		//transform to gpu pixel coords
 		for (int i = 0; i < _size; ++i)
 		{
+			_arr[i] *= _worldToScreenRatio;
 			_arr[i].y = Constants::g_windowSizeY - _arr[i].y;
 		}
 		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);

@@ -210,7 +210,7 @@ namespace Game{
 			m_wallInfos.push_back(center); // center
 		}
 
-		Graphic::g_lightSystem.setWalls(m_wallInfos.data(), m_wallInfos.size());
+		Graphic::g_lightSystem.setWalls(m_wallInfos.data(), m_wallInfos.size(), (float)Constants::g_windowSizeX / (float)m_sizeX);
 	}
 
 	// *************************************************** //

@@ -26,7 +26,7 @@ namespace Graphic{
 		void refreshSize();
 
 		//transforms the coordinates and pushes wall information to the gpu
-		void setWalls(sf::Glsl::Vec2* _arr, size_t _size);
+		void setWalls(sf::Glsl::Vec2* _arr, size_t _size, float _worldToScreenRatio = 1.f);
 	private:
 		sf::RenderTexture m_offScreen;
 		std::vector<std::unique_ptr<LightInfo>> m_lightInfos;
