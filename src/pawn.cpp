@@ -16,7 +16,7 @@ namespace Game{
 		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
 		m_fadeFactor(0.985f),
 		m_alpha(1.f),
-		m_cdMax(60),//130
+		m_cdMax(Constants::c_baseReloadSpeed),//130
 		m_damage(16.f),
 		m_item(nullptr),
 		m_projType(ProjType::Standard),

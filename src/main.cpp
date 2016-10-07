@@ -49,7 +49,7 @@ int main()
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
 	window.setMouseCursorVisible(false);
 
-	sf::Clock clock;
+	sf::Clock clock, frameTimeClock;
 	sf::Time elapsed;
 	std::vector< std::unique_ptr< Game::GameState > > states;
 	states.emplace_back(new State::MenuState());
@@ -60,6 +60,9 @@ int main()
 
 	while (window.isOpen())
 	{
+		//only messure the relevant time
+		clock.restart();
+
 		if (current_state > states.size())
 			window.close();
 		else
@@ -80,7 +83,7 @@ int main()
 			state.draw(window);
 			window.display();
 
-			elapsed = clock.restart();
+			elapsed = clock.getElapsedTime();
 
 			//temporary stat display
 			std::stringstream s;
@@ -88,9 +91,18 @@ int main()
 				s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
 			}
 			window.setTitle(s.str());
+
+			//couts fps
+		/*	static int c = 0;
+			++c;
+			if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) {
+				window.setTitle(std::to_string(c));
+				frameTimeClock.restart();
+				c = 0;
+			}*/
 		//	if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
-			if (elapsed.asMilliseconds() < 16.667)
-				sf::sleep((sf::milliseconds(16.667) - elapsed));
+			if (elapsed.asMicroseconds() < 16667)
+				sf::sleep((sf::microseconds(16667) - elapsed));
 		}
 	}
 	track = NULL;
