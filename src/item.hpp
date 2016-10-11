@@ -18,7 +18,7 @@ namespace Game{
 	protected:
 		int m_activeTime;
 		Pawn* m_pawn;
-		Graphic::LightInfo& m_lightInfo;
+		Graphic::LightInfoHandle m_lightInfo;
 	private:
 		int m_cd; // countdown or active time
 		sf::Sound m_soundAppear;

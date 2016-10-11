@@ -1,29 +1,49 @@
 #include <iostream>
 
 #include "mainstate.hpp"
+#include "poststate.hpp"
 #include "lightsys.hpp"
 #include "camera.hpp"
 #include "constants.hpp"
+#include "stats.hpp"
 
 namespace State{
-	MainState::MainState():
+	MainState::MainState(const GameSettings& _gameSettings) :
+		m_gameSettings(_gameSettings),
+		m_gameTime(0),
 		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY)
 	{
-		m_ID = 1;
-        m_nextGameState = m_ID;
+		Stats::g_statManager.Reset();
 	}
 
-	uint32_t MainState::process()
+	void MainState::process()
 	{
+		m_gameTime++;
 		m_world.process();
-		if (m_nextGameState!=m_ID)
+
+		//check end condition
+		if (m_gameSettings.winCondition == WinCondition::Time)
+		{
+			if (m_gameTime / 60 >= m_gameSettings.value)
+			{
+				m_finished = true;
+				m_newState = new State::PostState();
+			}
+		}
+		else
+		{
+		//	Stats::g_statManager.sort(Stats::Stat::Kills);
+			if (Stats::g_statManager.getMax(Stats::Stat::Kills) >= m_gameSettings.value)
+			{
+				m_finished = true;
+				m_newState = new State::PostState();
+			}
+		}
+
+		if (m_newState || m_finished)
         {
         	this->m_world.stopSounds();
-            uint32_t tempGameState(m_nextGameState);
-            m_nextGameState = m_ID;
-            return tempGameState;
         }
-		return m_nextGameState;
 	}
 
 	void MainState::processEvents(sf::Event& _event)
@@ -36,7 +56,7 @@ namespace State{
 		{
 			if (_event.key.code == sf::Keyboard::Escape)
 			{
-				m_nextGameState = 0;
+				m_finished = true;
 			}
 			break;
 		}
@@ -50,7 +70,7 @@ namespace State{
 		}
 		case sf::Event::Closed:
 		{
-			m_nextGameState = 100;
+			m_finished = true;
 			break;
 		}
 		case sf::Event::Resized:

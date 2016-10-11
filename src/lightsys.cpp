@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "lightsys.hpp"
 #include "constants.hpp"
@@ -15,25 +16,54 @@ namespace Graphic{
 		position.y = _vec.y;//(float)Constants::g_windowSizeY - _vec.y;
 	}
 
+	LightInfoHandle::LightInfoHandle(LightInfo& _info)
+	{
+		assert(!_info.isInUse && "this light is already in use");
+
+		m_lightInfo = &_info;
+		m_lightInfo->isInUse = true;
+	}
+
+	void LightInfoHandle::release()
+	{
+		if (!m_lightInfo) return;
+
+		m_lightInfo->destroy();
+		m_lightInfo = nullptr;
+	}
+
+	LightInfoHandle::~LightInfoHandle()
+	{
+		release();
+	}
+
+	LightInfo* LightInfoHandle::operator->()
+	{
+		assert(m_lightInfo);
+
+		return m_lightInfo;
+	}
+
+	// ********************************************** //
+
 	LightSystem::LightSystem():
 		m_vertices(Points)
 	{
 	}
 
-	LightInfo& LightSystem::createLight()
+	LightInfoHandle LightSystem::createLight()
 	{
 		auto it = std::find_if(m_lightInfos.begin(), m_lightInfos.end(),
 			[](const std::unique_ptr<LightInfo>& _info){return !_info->isInUse; });
 
 		if (it != m_lightInfos.end())
 		{
-			(*it)->isInUse = true;
-			return **it;
+			return LightInfoHandle(**it);
 		}
 
 		m_lightInfos.emplace_back(new LightInfo());
 
-		return *m_lightInfos.back();
+		return LightInfoHandle(*m_lightInfos.back());
 	}
 
 	void LightSystem::draw(sf::RenderWindow& _window)
@@ -49,7 +79,7 @@ namespace Graphic{
 
 		for (int i = 0; i < m_lightInfos.size(); ++i)
 		{
-			LightInfo& lightInfo = *m_lightInfos[i];
+			LightInfo lightInfo = *m_lightInfos[i];
 			if (lightInfo.radius == 0.f) continue;
 
 			sf::Vertex vertex;

@@ -21,10 +21,13 @@ namespace Game{
 	class PlayerController : public Controller
 	{
 	public:
-		PlayerController(int _id) { m_id = _id; }
+		PlayerController(int _id) : m_fireCd(0){ m_id = _id; }
 
 		void process() override;
 		void processEvent(sf::Event& _event) override;
+
+	private:
+		int m_fireCd;
 	};
 
 	class AiController : public Controller

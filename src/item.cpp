@@ -14,9 +14,9 @@ namespace Game{
 	{
 		m_boundingRad = 10.f;
 
-		m_lightInfo.color = sf::Color(100, 255, 12, 255);
-		m_lightInfo.radius = 80.f;
-		m_lightInfo.setPosition(_pos);
+		m_lightInfo->color = sf::Color(100, 255, 12, 255);
+		m_lightInfo->radius = 80.f;
+		m_lightInfo->setPosition(_pos);
 
 		m_soundAppear.setBuffer(*g_resourceManager.getSound("sound_itemAppear"));
 		m_soundAppear.play();
@@ -31,7 +31,7 @@ namespace Game{
 		pawn.takeItem(*this);
 		m_pawn = &pawn;
 
-		m_lightInfo.destroy();
+		m_lightInfo.release();
 	}
 
 	void Item::process()
@@ -86,21 +86,21 @@ namespace Game{
 	void Sentinel::collision(Actor& _oth)
 	{
 		Item::collision(_oth);
-		m_lightInfo.isInUse = true;
 	}
 
 	void Sentinel::use()
 	{
 		Item::use();
 		m_sprite.setColor(sf::Color(255, 255, 12, 255));
-		m_lightInfo.color = sf::Color(255, 255, 255, 255);
-		m_lightInfo.setPosition(m_position);
-		m_lightInfo.radius = 256.f;
+		m_lightInfo = Graphic::g_lightSystem.createLight();
+		m_lightInfo->color = sf::Color(255, 255, 255, 255);
+		m_lightInfo->setPosition(m_position);
+		m_lightInfo->radius = 256.f;
 	}
 
 	void Sentinel::endUse()
 	{
-		m_lightInfo.destroy();
+		m_lightInfo.release();
 		m_sprite.setColor(sf::Color(255, 210, 255, 255));
 		m_sprite.scale(2.2f, 2.2f);
 		destroy();

@@ -52,58 +52,69 @@ int main()
 	sf::Clock clock, frameTimeClock;
 	sf::Time elapsed;
 	std::vector< std::unique_ptr< Game::GameState > > states;
-	states.emplace_back(new State::MenuState());
-	states.emplace_back(new State::MainState());
-	states.emplace_back(new State::OptionState(window));
-	states.emplace_back(new State::CreditState());
+	states.emplace_back(new State::MenuState(window));
+//	states.emplace_back(new State::MainState());
+//	states.emplace_back(new State::OptionState(window));
+//	states.emplace_back(new State::CreditState());
 	uint32_t current_state(0);
 
 	while (window.isOpen())
 	{
-		//only messure the relevant time
+		using namespace Game;
+
+		//only measure the relevant time
 		clock.restart();
+		if (track->getStatus() == sf::Music::Status::Playing && current_state == 1)
+			track->stop();
+		else if (track->getStatus() == sf::Music::Status::Stopped && current_state != 1)
+			track->play();
 
-		if (current_state > states.size())
-			window.close();
-		else
+		Game::GameState& state = *states.back();
+		sf::Event event;
+		while (window.pollEvent(event))
+			state.processEvents(event);
+
+		state.process();
+		window.clear();
+		state.draw(window);
+		window.display();
+
+		//handle state changes
+		GameState* newState = state.fetchNewState();
+		//pop state afterwards to allow exchanging one state for a new one
+		if (state.isFinished())
 		{
-			if (track->getStatus() == sf::Music::Status::Playing && current_state==1)
-				track->stop();
-			else if (track->getStatus() == sf::Music::Status::Stopped && current_state!=1)
-				track->play();
-			Game::GameState& state = *states[current_state];
-			sf::Event event;
-			while (window.pollEvent(event))
-				state.processEvents(event);
+			states.pop_back();
+			if (states.size()) states.back()->onActivate();
+			else window.close();
+		}
 
-			current_state = state.process();
-			if (current_state != 100 && &state != states[current_state].get()) 
-				states[current_state]->onActivate();
-			window.clear();
-			state.draw(window);
-			window.display();
+		if (newState)
+		{
+			states.emplace_back(newState);
+			newState->onActivate();
+		}
 
-			elapsed = clock.getElapsedTime();
+		elapsed = clock.getElapsedTime();
 
-			//temporary stat display
-			std::stringstream s;
-			for (int i = 0; i < 4; ++i){
-				s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
-			}
-			window.setTitle(s.str());
+		//temporary stat display
+		std::stringstream s;
+		for (int i = 0; i < 4; ++i){
+			s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
+		}
+		window.setTitle(s.str());
 
-			//couts fps
+		//couts fps
 		/*	static int c = 0;
 			++c;
 			if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) {
-				window.setTitle(std::to_string(c));
-				frameTimeClock.restart();
-				c = 0;
+			window.setTitle(std::to_string(c));
+			frameTimeClock.restart();
+			c = 0;
 			}*/
 		//	if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
-			if (elapsed.asMicroseconds() < 16667)
-				sf::sleep((sf::microseconds(16667) - elapsed));
-		}
+		if (elapsed.asMicroseconds() < 16667)
+			sf::sleep((sf::microseconds(16667) - elapsed));
 	}
 	track = NULL;
 

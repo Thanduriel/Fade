@@ -16,7 +16,7 @@ namespace Game{
 	private:
 		float m_damage;
 		int m_lifeTime;
-		Graphic::LightInfo& m_lightInfo;
+		Graphic::LightInfoHandle m_lightInfo;
 	};
 
 	typedef std::vector < Projectile* > ProjCntainer;

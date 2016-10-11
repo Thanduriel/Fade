@@ -4,26 +4,34 @@
 
 namespace Game
 {
-	enum class States
+	enum class States : int
 	{
-		None = 0,
-		Main,
+		None = 0,	// no changes
+		Pop,		// pop the current state
+		NewState,	// everything > NewState should be a makable state 
+		Main,		// push new state
 		Menu,
 		Pause,
-		Inventory
+		Options,
+		Credits
 	};
 
 	class GameState
 	{
 	public:
-		GameState() : newState(States::None){}
+		GameState() : m_newState(nullptr), m_finished(false){ onActivate(); }
 
-		virtual uint32_t process() = 0;
+		//
+		virtual void process() = 0;
 		virtual void processEvents(sf::Event& _event) = 0;
 		virtual void draw(sf::RenderWindow& _window) = 0;
 		virtual void onActivate() {};
 
-		uint32_t m_nextGameState, m_ID;
-		States newState;
+		bool isFinished() const { return m_finished; }
+		GameState* fetchNewState() { GameState* p = m_newState; m_newState = nullptr; return p; }
+	protected:
+		bool m_finished;
+
+		GameState* m_newState;
 	};
 }

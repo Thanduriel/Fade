@@ -27,21 +27,12 @@ namespace State{
         m_gui[1]->focus();
         m_gui[3]->focus();
         m_gui[5]->focus();
-        m_ID = 3;
-        m_nextGameState = m_ID;
     }
 
-    uint32_t CreditState::process()
+    void CreditState::process()
     {
         for (auto& gui : m_gui)
             gui->process();
-        if (m_nextGameState!=m_ID)
-        {
-            uint32_t tempGameState(m_nextGameState);
-            m_nextGameState = m_ID;
-            return tempGameState;
-        }
-        return m_nextGameState;
     }
 
     void CreditState::processEvents(sf::Event& _event)
@@ -50,16 +41,16 @@ namespace State{
         {
         case sf::Event::KeyPressed:
         {
-            if (_event.key.code == sf::Keyboard::Escape)
-                m_nextGameState = 0;
+			if (_event.key.code == sf::Keyboard::Escape)
+				m_finished = true;
             else if (_event.key.code == sf::Keyboard::Return)
-                m_nextGameState = 0;
+				m_finished = true;
 
             break;
         }
         case sf::Event::Closed:
         {
-            m_nextGameState = 100;
+			m_finished = true;
             break;
         }
         // Default case

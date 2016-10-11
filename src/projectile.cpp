@@ -20,8 +20,9 @@ namespace Game{
 		m_boundingRad = Constants::c_projectileRadius;
 
 		m_sprite.setColor(Color(228, 255, 255, 255));
-		m_lightInfo.color = Color(228, 10, 255, 255);//Color(50, 120, 255, 255);
-		m_lightInfo.radius = m_boundingRad * 8.f;
+		m_lightInfo->color = Color(228, 10, 255, 255);//Color(50, 120, 255, 255);
+		m_lightInfo->radius = m_boundingRad * 8.f;
+		m_lightInfo->setPosition(m_position);
 	}
 
 	void Projectile::collision(Actor& _oth)
@@ -40,7 +41,7 @@ namespace Game{
 	{
 		Actor::process();
 
-		m_lightInfo.setPosition(m_position);
+		m_lightInfo->setPosition(m_position);
 
 		m_sprite.rotate(float(360 - m_lifeTime)/20.f);
 
@@ -50,8 +51,7 @@ namespace Game{
 
 	void Projectile::onDestroy()
 	{
-		m_lightInfo.isInUse = false;
-		m_lightInfo.radius = 0.f;
+		m_lightInfo.release();
 	}
 
 	// ******************************************************** //

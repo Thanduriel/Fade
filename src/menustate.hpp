@@ -9,9 +9,9 @@ namespace State{
     class MenuState: public Game::GameState
     {
     public:
-        MenuState();
+		MenuState(sf::RenderWindow& _window);
 
-        virtual uint32_t process() override;
+        virtual void process() override;
         virtual void processEvents(sf::Event& _event);
         virtual void draw(sf::RenderWindow& _window) override;
 
@@ -20,5 +20,6 @@ namespace State{
         sf::Text title;
         std::vector < std::unique_ptr < GUI::Gui > > m_gui;
         uint32_t m_state;
+		sf::RenderWindow& m_window;
     };
 }

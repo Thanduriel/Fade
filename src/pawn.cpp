@@ -14,7 +14,7 @@ namespace Game{
 		m_lightInfo(Graphic::g_lightSystem.createLight()),
 		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
 		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
-		m_fadeFactor(0.985f),
+		m_fadeFactor(Constants::c_playerBaseFadeFactor),
 		m_alpha(1.f),
 		m_cdMax(Constants::c_baseReloadSpeed),//130
 		m_damage(16.f),
@@ -49,10 +49,11 @@ namespace Game{
 		//radius of the final scaled sprite
 		m_boundingRad = (float)m_sprite.getTexture()->getSize().x * m_sprite.getScale().x * 0.5f;
 
-		m_lightInfo.color = Color(255, 255, 255, 0);
-		m_lightInfo.radius = m_boundingRad * 6.f;
+		
+		m_lightInfo->color = Color(255, 255, 255, 0);
+		m_lightInfo->radius = m_boundingRad * 6.f;
 	}
-
+	// ************************************************ //
 	void Pawn::process()
 	{
 		if (m_isDead)
@@ -63,6 +64,7 @@ namespace Game{
 			}
 			return;
 		}
+
 
 		Actor::process();
 
@@ -88,12 +90,12 @@ namespace Game{
 
 	void Pawn::draw(sf::RenderWindow& _window)
 	{
-		m_lightInfo.setPosition(m_position);
+		m_lightInfo->setPosition(m_position);
 
 		m_alpha *= m_fadeFactor;
 		uint8_t a = (uint8_t)(m_alpha * 255.f);
 
-		m_lightInfo.color.a = a;
+		m_lightInfo->color.a = a;
 
 	//	m_sprite.setColor(sf::Color(255, 255, 255, a));
 		Actor::draw(_window);
@@ -137,17 +139,18 @@ namespace Game{
 	{
 		//destroy stuff depended on this pawn
 		if (m_item) m_item->destroy();
-		m_lightInfo.destroy();
+		m_lightInfo.release();
 	}
 
 	void Pawn::onDeath()
 	{
 		m_soundExplode.play();
+		//red circle
 		m_alpha = 1.f;
-		m_fadeFactor = 0.995;
-		m_lightInfo.radius *= 1.5f;
-		m_lightInfo.color.g = 50;
-		m_lightInfo.color.b = 50;
+		m_fadeFactor = Constants::c_playerBaseFadeFactor + 0.003f;
+		m_lightInfo->radius *= 1.5f;
+		m_lightInfo->color.g = 50;
+		m_lightInfo->color.b = 50;
 		m_canCollide = false;
 
 		Stats::g_statManager.Add(m_cid, Stats::Deaths);

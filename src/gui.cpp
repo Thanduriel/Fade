@@ -4,7 +4,11 @@
 namespace GUI
 {
 
-	Gui::Gui(const sf::String& _name, uint32_t _x, uint32_t _y)
+
+	// ******************************************************** //
+
+	Gui::Gui(const sf::String& _name, uint32_t _x, uint32_t _y, std::function<void()> _onClick)
+		:m_onClick(_onClick)
     {
         m_font = *g_resourceManager.getFont("suburbia");
 
@@ -36,4 +40,21 @@ namespace GUI
     {
 
     }
+
+	// ********************************************** //
+
+	ExtGui::ExtGui(const sf::String& _name, uint32_t _x, uint32_t _y,
+		std::function<void()> _onClick, sf::Vector2f _position)
+		: Gui(_name, _x, _y, _onClick)
+	{
+		m_text2.setFont(m_font);
+		m_text2.setCharacterSize(75);
+		setPosition2(_position);
+	}
+
+	void ExtGui::draw(sf::RenderWindow& _window)
+	{
+		Gui::draw(_window);
+		_window.draw(m_text2);
+	}
 }

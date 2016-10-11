@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 
 #include "optionstate.hpp"
 #include "resourcemanager.hpp"
@@ -9,24 +10,76 @@ namespace Graphic{
 	sf::View g_camera;
 }
 
+
+//possible choices for the corresponding settings
+const std::array<std::string, 2> ENDCONDITIONS =
+{
+	"time", "kills"
+};
+
+const std::array<std::array<int, 4>, 2> ENDVALUE =
+{
+	2, 5, 7, 10, 
+	1, 3, 5, 11 
+};
+enum Button
+{
+	WorldSize,
+	NumWalls,
+	EndCondition,
+	EndValue,
+	Back,
+	//last entry
+	Count
+};
+
+using namespace sf;
+
 namespace State{
 	OptionState::OptionState(sf::RenderWindow& _window) :
-		m_window(_window)
+		m_window(_window),
+		m_endCondition(0),
+		m_endValue(0)
     {
         font = *g_resourceManager.getFont("suburbia");
 
-        uint32_t left = Constants::g_windowSizeX / 2 - 200;
+        uint32_t left = Constants::g_windowSizeX / 2 - 450;
+		Vector2f rightOff = Vector2f(600.f, 0.f);
 
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(left - 100,50);
+        title.setPosition(left + 150,50);
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
-
-        m_gui.emplace_back(new GUI::Gui("World: Small", left-100, 300));
-        m_gui.emplace_back(new GUI::Gui("Walls:", left-100, 400));
-        m_gui.emplace_back(new GUI::Gui("Back", left-100, 500));
+		
+		m_gui.reserve(Button::Count);
+		m_gui.emplace_back(new GUI::ExtGui("World:", left, 300, [&]()
+		{
+			if (++m_size == m_worldSizes.size())
+				m_size = 0;
+			rescaleView(m_size);
+		}, rightOff));
+		m_gui.emplace_back(new GUI::ExtGui("Walls:", left, 400, [&]()
+		{
+			if (++m_walls == m_nWalls.size())
+				m_walls = 0;
+			Constants::g_numWalls = m_walls * 3;
+		}, rightOff));
+		m_gui.emplace_back(new GUI::ExtGui("End Condition:	", left, 500, [&]()
+		{
+			if (++m_endCondition == ENDCONDITIONS.size())
+				m_endCondition = 0;
+		}, rightOff));
+		m_gui.emplace_back(new GUI::ExtGui("Amount: ", left, 600, [&]()
+		{
+			if (++m_endValue == ENDVALUE[m_endCondition].size())
+				m_endValue = 0;
+		}, rightOff));
+		m_gui.emplace_back(new GUI::ExtGui("Back", left, 700, [&]()
+		{
+			m_finished = true;
+		}));
 
         m_worldSizes.push_back("Small");
         m_worldSizes.push_back("Medium");
@@ -41,25 +94,16 @@ namespace State{
         m_nWalls.push_back("Random");
         m_walls = 0;
 
-        m_gui[0]->setText(sf::String("World: ") + m_worldSizes[m_size]);
-        m_gui[1]->setText(sf::String("Walls: ") + m_nWalls[m_walls]);
         m_state = 0;
-        m_ID = 2;
-        m_nextGameState = m_ID;
+
+		refreshGui();
     }
 
-    uint32_t OptionState::process()
+    void OptionState::process()
     {
         m_gui[m_state]->focus();
         for (auto& gui : m_gui)
             gui->process();
-        if (m_nextGameState!=m_ID)
-        {
-            uint32_t tempGameState(m_nextGameState);
-            m_nextGameState = m_ID;
-            return tempGameState;
-        }
-        return m_nextGameState;
     }
 
     void OptionState::processEvents(sf::Event& _event)
@@ -68,8 +112,8 @@ namespace State{
         {
         case sf::Event::KeyPressed:
         {
-            if (_event.key.code == sf::Keyboard::Escape)
-                m_nextGameState = 0;
+			if (_event.key.code == sf::Keyboard::Escape)
+				m_finished = true;
             else if (_event.key.code == sf::Keyboard::Up)
             {
                 if (m_state > 0)
@@ -88,26 +132,10 @@ namespace State{
             }
             else if (_event.key.code == sf::Keyboard::Return)
             {
-                if (m_state == 0) // change worldSize
-                {
-                    if (++m_size == m_worldSizes.size())
-                        m_size = 0;
-					rescaleView(m_size);
-                }
-                else if (m_state == 1) // change nWalls
-                {
-                    if (++m_walls == m_nWalls.size())
-                        m_walls = 0;
-					Constants::g_numWalls = m_walls * 3;
-                }
-                else if (m_state == 2) // back to main menu
-                {
-                    m_nextGameState = 0;
-                }
+				m_gui[m_state]->click();
             }
-            m_gui[0]->setText(sf::String("World: ") + m_worldSizes[m_size]);
-            m_gui[1]->setText(sf::String("Walls: ") + m_nWalls[m_walls]);
-
+            
+			refreshGui();
             break;
         }
         case sf::Event::MouseButtonPressed:
@@ -120,7 +148,7 @@ namespace State{
         }
         case sf::Event::Closed:
         {
-            m_nextGameState = 100;
+			m_finished = true;
             break;
         }
         case sf::Event::Resized:
@@ -151,5 +179,16 @@ namespace State{
 		sf::View view = m_window.getDefaultView();
 		view.zoom(scale);
 		Graphic::g_camera = view;
+	}
+
+	// *********************************************** //
+
+	void OptionState::refreshGui()
+	{
+		m_gui[WorldSize]->setText2(m_worldSizes[m_size]);
+		m_gui[NumWalls]->setText2(m_nWalls[m_walls]);
+		m_gui[EndCondition]->setText2(ENDCONDITIONS[m_endCondition]);
+		m_gui[EndValue]->setText2( std::to_string(ENDVALUE[m_endCondition][m_endValue])
+			+ (m_endCondition ? "" : "min"));
 	}
 }

@@ -8,12 +8,44 @@ namespace Graphic{
 
 	struct LightInfo
 	{
+		LightInfo() : isInUse(false){}
 		void setPosition(const sf::Vector2f& _vec);
-		void destroy() { radius = 0.f; isInUse = false; }
 		sf::Color color;
 		sf::Vector2f position;
 		float radius;
+
+	private:
+		friend class LightInfoHandle;
+		friend class LightSystem;
+		void destroy() { radius = 0.f; isInUse = false; }
 		bool isInUse;
+	};
+
+	class LightInfoHandle
+	{
+	public:
+		//can only be moved
+		LightInfoHandle(LightInfoHandle& _info) = delete;
+		LightInfoHandle& operator=(LightInfoHandle& _info) = delete;
+		LightInfoHandle& operator=(LightInfoHandle&& _info)
+		{
+			m_lightInfo = _info.m_lightInfo;
+			_info.m_lightInfo = nullptr;
+			return *this;
+		}
+
+		// 
+		LightInfoHandle(LightInfo& _info);
+		~LightInfoHandle();
+
+		// stops usage of this light
+		void release();
+
+		//access
+		LightInfo* get() { return m_lightInfo; }
+		LightInfo* operator->();
+	private:
+		LightInfo* m_lightInfo;
 	};
 
 	class LightSystem
@@ -21,7 +53,7 @@ namespace Graphic{
 	public:
 		LightSystem();
 
-		LightInfo& createLight();
+		LightInfoHandle createLight();
 		void draw(sf::RenderWindow& _window);
 		void refreshSize();
 

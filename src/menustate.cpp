@@ -3,18 +3,23 @@
 #include "menustate.hpp"
 #include "resourcemanager.hpp"
 #include "constants.hpp"
+#include "mainstate.hpp"
+#include "creditstate.hpp"
+#include "optionstate.hpp"
+#include "lobbystate.hpp"
 
 namespace State{
-    MenuState::MenuState()
+	MenuState::MenuState(sf::RenderWindow& _window)
+		: m_window(_window)
     {
         font = *g_resourceManager.getFont("suburbia");
 
-		uint32_t left = Constants::g_windowSizeX / 2 - 200;
+		uint32_t left = Constants::g_windowSizeX / 2 - 100;
 
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(left-100,50);
+        title.setPosition(left-200,50);
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
@@ -24,22 +29,13 @@ namespace State{
 		m_gui.emplace_back(new GUI::Gui("Quit", left-100, 600));
 
         m_state = 0; // internal state
-        m_ID = 0;
-        m_nextGameState = m_ID;
     }
 
-    uint32_t MenuState::process()
+	void MenuState::process()
     {
         m_gui[m_state]->focus();
         for (auto& gui : m_gui)
             gui->process();
-        if (m_nextGameState!=m_ID)
-        {
-            uint32_t tempGameState(m_nextGameState);
-            m_nextGameState = m_ID;
-            return tempGameState;
-        }
-        return m_nextGameState;
     }
 
     void MenuState::processEvents(sf::Event& _event)
@@ -49,7 +45,7 @@ namespace State{
         case sf::Event::KeyPressed:
         {
             if (_event.key.code == sf::Keyboard::Escape)
-                m_nextGameState = 100;
+				m_finished = true;
             else if (_event.key.code == sf::Keyboard::Up)
             {
                 if (m_state > 0)
@@ -70,19 +66,19 @@ namespace State{
             {
                 if (m_state == 0) // play
                 {
-                    m_nextGameState = 1;
+					m_newState = new State::LobbyState(m_window);
                 }
                 else if (m_state == 1) // Options
                 {
-                    m_nextGameState = 2;
+					m_newState = new State::OptionState(m_window);
                 }
                 else if (m_state == 2) // credits
                 {
-                    m_nextGameState = 3;
+					m_newState = new State::CreditState();
                 }
                 else if (m_state == (m_gui.size()-1)) // quit
                 {
-                    m_nextGameState = 100;
+					m_finished = true;
                 }
             }
 
@@ -98,7 +94,7 @@ namespace State{
         }
         case sf::Event::Closed:
         {
-            m_nextGameState = 100;
+			m_finished = true;
             break;
         }
         case sf::Event::Resized:

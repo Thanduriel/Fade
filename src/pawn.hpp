@@ -12,7 +12,6 @@ namespace Game{
 	{
 	public:
 		Pawn(const sf::Vector2f& _position, sf::Texture& _texture, int _cid);
-
 		void process() override;
 		void draw(sf::RenderWindow& _window) override;
 		void collision(Actor& _oth) override;
@@ -26,7 +25,7 @@ namespace Game{
 		void setVelocity(const sf::Vector2f& _velocity) { m_velocity = _velocity; }
 		void setProjType(ProjType _type){ m_projType = _type; }
 
-		Graphic::LightInfo& getLightInfo() { return m_lightInfo; }
+		Graphic::LightInfo& getLightInfo() { return *m_lightInfo.get(); }
 		float speedFactor() { return m_speedFactor; }
 		void setSpeedFactor(float _factor) { m_speedFactor = _factor; }
 		float alphaVal() { return m_alpha; }
@@ -44,7 +43,7 @@ namespace Game{
 	private:
 		int m_lastHitId; //cid of the last actor a collision occurred with
 
-		Graphic::LightInfo& m_lightInfo;
+		Graphic::LightInfoHandle m_lightInfo;
 		sf::Sprite m_weaponSprite;
 		Graphic::CenteredSprite m_healthBarSprite;
 		sf::IntRect m_healthRect;
