@@ -20,6 +20,8 @@ namespace Game{
 
 		m_soundAppear.setBuffer(*g_resourceManager.getSound("sound_itemAppear"));
 		m_soundAppear.play();
+
+		m_collisionType = CollisionType::Item;
 	};
 
 	void Item::collision(Actor& _oth)

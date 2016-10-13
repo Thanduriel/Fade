@@ -25,6 +25,7 @@ namespace Game{
 		m_ammo(5)
 	{
 		m_isStatic = false;
+		m_collisionType = CollisionType::Player;
 
 		m_soundFire.setBuffer(*g_resourceManager.getSound("sound_shot"));
 		m_soundAltFire.setBuffer(*g_resourceManager.getSound("sound_altShot"));

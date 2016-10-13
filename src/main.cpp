@@ -64,9 +64,9 @@ int main()
 
 		//only measure the relevant time
 		clock.restart();
-		if (track->getStatus() == sf::Music::Status::Playing && current_state == 1)
+		if (track->getStatus() == sf::Music::Status::Playing && states.size() > 2)
 			track->stop();
-		else if (track->getStatus() == sf::Music::Status::Stopped && current_state != 1)
+		else if (track->getStatus() == sf::Music::Status::Stopped && states.size() < 3)
 			track->play();
 
 		Game::GameState& state = *states.back();

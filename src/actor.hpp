@@ -6,6 +6,28 @@
 
 namespace Game{
 
+	//collision happens on:
+	// All + (World || OnlyPlayer || All)
+	// World + (World || All)
+	// NotSelf + (World || All)
+	// OnlyPlayer + All
+	static const bool COLLISIONTABLE[5][5] = {
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 1,
+		0, 0, 0, 1, 1,
+		0, 0, 1, 1, 1,
+		0, 1, 1, 1, 1
+	};
+	
+	enum class CollisionType : int
+	{
+		None = 0,
+		Item,
+		Projectile,
+		World,
+		Player
+	};
+
 	class Actor
 	{
 	public:
@@ -39,6 +61,7 @@ namespace Game{
 		float boundingRad() { return m_boundingRad; }
 		bool isStatic() { return m_isStatic; }
 		bool canCollide() { return m_canCollide; }
+		CollisionType collisionType() { return m_collisionType; }
 
 		bool hasComplexShape() { return m_hasComplexShape; }
 
@@ -63,6 +86,7 @@ namespace Game{
 		bool m_hasComplexShape;
 		bool m_isStatic;
 		bool m_canCollide;
+		CollisionType m_collisionType;
 		bool m_isDestroyed;
 		bool m_isDead;
 		bool m_isReflective; // reflects projectiles

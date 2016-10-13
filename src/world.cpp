@@ -95,6 +95,8 @@ namespace Game{
 			for (size_t j = i+1; j < m_gameObjects.size(); ++j)
 			{
 				auto& second = *m_gameObjects[j];
+				if (!COLLISIONTABLE[(int)first.collisionType()][(int)second.collisionType()]) continue;
+				//todo remove this line should be obsolete
 				if (first.isStatic() && second.isStatic() || !second.canCollide()) continue;
 
 				float r2 = first.boundingRad() + second.boundingRad();

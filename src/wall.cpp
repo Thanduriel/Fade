@@ -12,6 +12,7 @@ namespace Game{
 		Actor(_pos, *g_resourceManager.getTexture("wall.png"))
 	{
 		m_hasComplexShape = true;
+		m_collisionType = CollisionType::World;
 
 		sf::Vector2f texSize;
 		texSize.x = (float)m_sprite.getTexture()->getSize().x;

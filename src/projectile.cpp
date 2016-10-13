@@ -16,6 +16,7 @@ namespace Game{
 	{
 		m_isStatic = false;
 		m_isDead = true;
+		m_collisionType = CollisionType::Projectile;
 		m_velocity = _vel * Constants::c_projectileBaseSpeed;
 		m_boundingRad = Constants::c_projectileRadius;
 
