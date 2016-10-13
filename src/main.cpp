@@ -53,9 +53,6 @@ int main()
 	sf::Time elapsed;
 	std::vector< std::unique_ptr< Game::GameState > > states;
 	states.emplace_back(new State::MenuState(window));
-//	states.emplace_back(new State::MainState());
-//	states.emplace_back(new State::OptionState(window));
-//	states.emplace_back(new State::CreditState());
 	uint32_t current_state(0);
 
 	while (window.isOpen())

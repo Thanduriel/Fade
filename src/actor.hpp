@@ -6,11 +6,6 @@
 
 namespace Game{
 
-	//collision happens on:
-	// All + (World || OnlyPlayer || All)
-	// World + (World || All)
-	// NotSelf + (World || All)
-	// OnlyPlayer + All
 	static const bool COLLISIONTABLE[5][5] = {
 		0, 0, 0, 0, 0,
 		0, 0, 0, 0, 1,

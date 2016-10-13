@@ -14,7 +14,7 @@ namespace Game{
 
 		if (m_pawn->isDead())
 		{
-			if (m_pawn->alphaVal() < 0.2f)
+			if (m_pawn->alphaVal() < 0.0001f)
 				m_pawn = nullptr;
 			return;
 		}

@@ -78,6 +78,7 @@ namespace Game{
 		for (auto& controller : m_controllers)
 		{
 			controller->process();
+			// revive
 			if (!controller->hasPawn()) controller->possess(spawnPlayer(controller->getId()));
 		}
 		for (auto& actor : m_gameObjects) actor->process();

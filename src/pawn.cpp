@@ -148,7 +148,7 @@ namespace Game{
 		m_soundExplode.play();
 		//red circle
 		m_alpha = 1.f;
-		m_fadeFactor = Constants::c_playerBaseFadeFactor + 0.003f;
+		m_fadeFactor = Constants::c_playerBaseFadeFactor + 0.019f;
 		m_lightInfo->radius *= 1.5f;
 		m_lightInfo->color.g = 50;
 		m_lightInfo->color.b = 50;

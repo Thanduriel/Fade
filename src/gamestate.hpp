@@ -20,6 +20,7 @@ namespace Game
 	{
 	public:
 		GameState() : m_newState(nullptr), m_finished(false){ onActivate(); }
+		virtual ~GameState(){};
 
 		//
 		virtual void process() = 0;

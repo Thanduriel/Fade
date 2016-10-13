@@ -61,7 +61,7 @@ namespace Game{
 	{
 		switch (_type)
 		{
-		case ProjType::Standard: add(new Projectile(_pos, _dir, 10.f, _cid));
+		case ProjType::Standard: add(new Projectile(_pos, _dir, 13.f, _cid));
 			break;
 		case ProjType::Cluster:
 		{
