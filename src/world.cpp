@@ -21,7 +21,9 @@ namespace Game{
 		texture->setRepeated(true);
 		m_ground.setTexture(*texture);
 
-		resize(_sizeX, _sizeY);
+		using namespace Constants;
+		resize(g_worldScale * g_windowSizeX, g_worldScale * g_windowSizeY);
+		generateWalls(g_numWalls);
 
 		// m_gameObjects[0] should always be a dummy that objects can collide with 
 		// when reaching the map boundaries
@@ -46,7 +48,6 @@ namespace Game{
 #ifdef _DEBUG
 		addNewPlayer(-1);
 #endif
-		generateWalls(3);
 		//test stuff
 		/*
 		m_gameObjects.emplace_back(new Sentinel(sf::Vector2f(123.f, 121.f)));
@@ -183,6 +184,20 @@ namespace Game{
 					isValid = false;
 					break;
 				}
+
+			if (isValid)
+			{
+				m_collisionDummy->setPosition(pos);
+				//should not be inside a wall
+				for (auto wall : m_walls)
+				{
+					if (wall->testComplexCollision(*m_collisionDummy))
+					{
+						isValid = false;
+						break;
+					}
+				}
+			}
 		}while(!isValid);
 
 		return pos;

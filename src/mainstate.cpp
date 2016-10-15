@@ -42,7 +42,7 @@ namespace State{
 
 		if (m_newState || m_finished)
         {
-        	this->m_world.stopSounds();
+        	m_world.stopSounds();
         }
 	}
 
@@ -108,7 +108,5 @@ namespace State{
 	using namespace Constants;
 	void MainState::onActivate()
 	{
-		m_world.resize(g_worldScale * g_windowSizeX, g_worldScale * g_windowSizeY);
-		m_world.generateWalls(g_numWalls);
 	}
 }

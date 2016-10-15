@@ -7,7 +7,7 @@ namespace Constants{
 	extern float g_worldScale;
 	extern int g_numWalls;
 
-	//game constants
+	//game constants ----------------------------
 	const float c_scaleFactor = 0.4f; //globally applied to all sprites
 
 	const int c_eventFrequency = 60 * 20; // in frames
@@ -21,4 +21,21 @@ namespace Constants{
 
 	const int c_wallThickness = 25;
 	const int c_wallMaxLength = 400;
+
+	//item constants -----------------------------
+	const int c_sentinelChargeTime =	60 * 2;
+	const int c_sentinelActiveTime =	60 * 20;
+
+	const int c_mineChargeTime =		60 * 4;
+
+	const int c_clusterGunActiveTime =	60 * 10;
+
+	const int c_lightAuraActiveTime =	60 * 10;
+	const int c_lightAuraExtraRadius =	200;
+
+	const int c_speedBonusActiveTime =	60 * 8;
+	const float c_speedBonusExtraSpeed =1.f;
+
+	const int c_shieldActiveTime =		60 * 4;
+
 }

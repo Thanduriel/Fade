@@ -11,11 +11,14 @@ namespace Game{
 	public:
 		Item(const sf::Vector2f& _pos, sf::Texture& _texture);
 		void collision(Actor& _oth) override;
-
 		virtual void use(){ m_cd = m_activeTime; };
 		virtual void endUse(){};
 		void process() override;
 	protected:
+		//sets the active timer to the given value
+		// use this if you want to have an item with more timed states
+		void SetTimer(int _cd) { m_cd = _cd; };
+
 		int m_activeTime;
 		Pawn* m_pawn;
 		Graphic::LightInfoHandle m_lightInfo;
@@ -48,6 +51,9 @@ namespace Game{
 		void use() override;
 		void endUse() override;
 	private:
+		enum{
+			Pickable, Ticking, Active
+		}m_state;
 	};
 
 	// lets the player shoot multiple projectiles at once

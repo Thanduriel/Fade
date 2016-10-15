@@ -45,11 +45,13 @@ namespace Game{
 
 	// *********************************************************** //
 
+	using namespace Constants;
+
 	Mine::Mine(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("powerup_mine.png")),
 		m_state(Pickable)
 	{
-		m_activeTime = 240;
+		m_activeTime = c_mineChargeTime;
 	}
 
 	void Mine::collision(Actor& _oth)
@@ -82,7 +84,7 @@ namespace Game{
 	Sentinel::Sentinel(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("sentinel.png"))
 	{
-		m_activeTime = 60*20;
+		m_activeTime = c_sentinelChargeTime;
 	}
 
 	void Sentinel::collision(Actor& _oth)
@@ -93,19 +95,29 @@ namespace Game{
 	void Sentinel::use()
 	{
 		Item::use();
-		m_sprite.setColor(sf::Color(255, 255, 12, 255));
-		m_lightInfo = Graphic::g_lightSystem.createLight();
-		m_lightInfo->color = sf::Color(255, 255, 255, 255);
-		m_lightInfo->setPosition(m_position);
-		m_lightInfo->radius = 256.f;
+		m_state = Ticking;
 	}
 
 	void Sentinel::endUse()
 	{
-		m_lightInfo.release();
-		m_sprite.setColor(sf::Color(255, 210, 255, 255));
-		m_sprite.scale(2.2f, 2.2f);
-		destroy();
+		if (m_state == Ticking)
+		{
+			m_sprite.setColor(sf::Color(255, 255, 12, 255));
+			m_lightInfo = Graphic::g_lightSystem.createLight();
+			m_lightInfo->color = sf::Color(255, 255, 255, 255);
+			m_lightInfo->setPosition(m_position);
+			m_lightInfo->radius = 256.f;
+
+			m_state = Active;
+			SetTimer(c_sentinelActiveTime);
+		}
+		else if (m_state == Active)
+		{
+			m_lightInfo.release();
+			m_sprite.setColor(sf::Color(255, 210, 255, 255));
+			m_sprite.scale(2.2f, 2.2f);
+			destroy();
+		}
 	}
 
 	// *********************************************************** //
@@ -113,7 +125,7 @@ namespace Game{
 	ClusterGun::ClusterGun(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("powerup_particle_gun.png"))
 	{
-		m_activeTime = 60 * 10;
+		m_activeTime = c_clusterGunActiveTime;
 	}
 
 	void ClusterGun::use()
@@ -133,19 +145,19 @@ namespace Game{
 	LightAura::LightAura(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("powerup_aura.png"))
 	{
-		m_activeTime = 60 * 10;
+		m_activeTime = c_lightAuraActiveTime;
 	}
 
 	void LightAura::use()
 	{
 		Item::use();
 
-		m_pawn->getLightInfo().radius += 200.f;
+		m_pawn->getLightInfo().radius += c_lightAuraExtraRadius;
 	}
 
 	void LightAura::endUse()
 	{
-		m_pawn->getLightInfo().radius -= 200;
+		m_pawn->getLightInfo().radius -= c_lightAuraExtraRadius;
 		destroy();
 	}
 
@@ -174,19 +186,19 @@ namespace Game{
 	SpeedBoost::SpeedBoost(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager.getTexture("powerup_laser.png"))
 	{
-		m_activeTime = 60 * 8;
+		m_activeTime = c_speedBonusActiveTime;
 	}
 
 	void SpeedBoost::use()
 	{
 		Item::use();
 
-		m_pawn->setSpeedFactor(m_pawn->speedFactor() + 1.f);
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() + c_speedBonusExtraSpeed);
 	}
 
 	void SpeedBoost::endUse()
 	{
-		m_pawn->setSpeedFactor(m_pawn->speedFactor() - 1.f);
+		m_pawn->setSpeedFactor(m_pawn->speedFactor() - c_speedBonusExtraSpeed);
 		destroy();
 	}
 
@@ -196,7 +208,7 @@ namespace Game{
 		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
 	{
 		m_sprite.setColor(sf::Color(0, 0, 255, 255));
-		m_activeTime = 60 * 4;
+		m_activeTime = c_shieldActiveTime;
 	}
 
 	void Shield::use()

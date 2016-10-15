@@ -29,10 +29,13 @@ namespace Game{
 
 	bool Wall::testComplexCollision(Actor& _oth)
 	{
-		return lineCollision(m_bbBegin, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth)
-			|| lineCollision(m_bbBegin, Vector2f(m_bbEnd.x, m_bbBegin.y), _oth)
-			|| lineCollision(m_bbEnd, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth)
+		//make sure to always check both x and y; because on edges both can b hit
+		bool hit = lineCollision(m_bbBegin, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth)
 			|| lineCollision(m_bbEnd, Vector2f(m_bbEnd.x, m_bbBegin.y), _oth);
+
+		hit |= lineCollision(m_bbBegin, Vector2f(m_bbEnd.x, m_bbBegin.y), _oth)
+			|| lineCollision(m_bbEnd, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth);
+			return hit;
 	}
 
 	bool Wall::lineCollision(const Vector2f& v, const Vector2f& w, Actor& _act)

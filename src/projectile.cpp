@@ -71,9 +71,9 @@ namespace Game{
 			off.y = _dir.x;
 			off *= 20.0f;
 
-			add(new Projectile(_pos, _dir, 10.f, _cid));
-			add(new Projectile(_pos + off, _dir, 10.f, _cid));
-			add(new Projectile(_pos - off, _dir, 10.f, _cid));
+			add(new Projectile(_pos, _dir, 9.f, _cid));
+			add(new Projectile(_pos + off, _dir, 9.f, _cid));
+			add(new Projectile(_pos - off, _dir, 9.f, _cid));
 			break;
 		}
 		}
