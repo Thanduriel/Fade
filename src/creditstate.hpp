@@ -18,6 +18,6 @@ namespace State{
 	private:
 		sf::Font font;
 		sf::Text title;
-		std::vector < std::unique_ptr < GUI::Gui > > m_gui;
+		std::vector < std::unique_ptr < GUI::GuiElement > > m_gui;
 	};
 }

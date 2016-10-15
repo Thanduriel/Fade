@@ -3,18 +3,21 @@
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
 #include <functional>
+#include <vector>
+#include <memory>
 
 namespace GUI
 {
-   class Gui
+
+   class GuiElement
    {
 
    public:
-	   Gui(const sf::String& _name, uint32_t _x, uint32_t _y, 
+	   GuiElement(const sf::String& _name, uint32_t _x, uint32_t _y, 
 		   std::function<void()> _onClick = [](){});
-      ~Gui(){};
+      virtual ~GuiElement(){};
 
-      void draw(sf::RenderWindow& _window);
+	  virtual void draw(sf::RenderWindow& _window);
       void process();
       void activate(sf::Event::KeyEvent *sf_key_event);
       // virtual void activate(sf::Event::MouseButtonEvent *_sf_mouse_button_event){};
@@ -37,17 +40,36 @@ namespace GUI
    };
 
    //element with two labels
-   class ExtGui : public Gui
+   class ExtGuiElement : public GuiElement
    {
    public:
-	   ExtGui(const sf::String& _name, uint32_t _x, uint32_t _y,
+	   ExtGuiElement(const sf::String& _name, uint32_t _x, uint32_t _y,
 		   std::function<void()> _onClick = [](){}, sf::Vector2f _vec = sf::Vector2f(0.f,0.f));
 
-	   void draw(sf::RenderWindow& _window);
+	   virtual void draw(sf::RenderWindow& _window);
 	   //relative to the first label
 	   void setPosition2(sf::Vector2f _pos) { m_text2.setPosition(m_text.getPosition() + _pos); };
 	   void setText2(const sf::String& _text) { m_text2.setString(_text); }
    private:
 	   sf::Text m_text2;
+   };
+
+   typedef std::vector<std::unique_ptr<GuiElement>> ElContainer;
+
+   class Gui : public ElContainer
+   {
+   public:
+	   void init();
+
+	   void draw(sf::RenderWindow& _window);
+
+	   void process();
+	   void processEvents(sf::Event& _event);
+   private:
+	   void prev();
+	   void next();
+
+	   bool m_controllerMove; //controller y-axis
+	   ElContainer::iterator m_currentElement;
    };
 }

@@ -54,33 +54,33 @@ namespace State{
 		m_gui.reserve(Button::Count);
 
 		//size
-		m_gui.emplace_back(new GUI::ExtGui("World:", left, 300, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("World:", left, 300, [&]()
 		{
 			if (++m_size == m_worldSizes.size())
 				m_size = 0;
 			rescaleView(m_size);
 		}, rightOff));
 		//walls
-		m_gui.emplace_back(new GUI::ExtGui("Walls:", left, 400, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Walls:", left, 400, [&]()
 		{
 			if (++m_walls == m_nWalls.size())
 				m_walls = 0;
 			Constants::g_numWalls = m_walls * 3;
 		}, rightOff));
 		//end condition
-		m_gui.emplace_back(new GUI::ExtGui("End Condition:	", left, 500, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("End Condition:	", left, 500, [&]()
 		{
 			if (++m_endCondition == ENDCONDITIONS.size())
 				m_endCondition = 0;
 		}, rightOff));
 		//value for win
-		m_gui.emplace_back(new GUI::ExtGui("Amount: ", left, 600, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Amount: ", left, 600, [&]()
 		{
 			if (++m_endValue == ENDVALUE[m_endCondition].size())
 				m_endValue = 0;
 		}, rightOff));
 		//start game
-		m_gui.emplace_back(new GUI::ExtGui("start game", left + 150, 750, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("start game", left + 150, 750, [&]()
 		{
 			GameSettings config;
 			config.winCondition = m_endCondition ? WinCondition::Kills : WinCondition::Time;
@@ -88,10 +88,11 @@ namespace State{
 			m_newState = new State::MainState(config);
 		}));
 		//back
-		m_gui.emplace_back(new GUI::ExtGui("Back", left + 150, 850, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Back", left + 150, 850, [&]()
 		{
 			m_finished = true;
 		}));
+		m_gui.init();
 
 		m_worldSizes.push_back("Small");
 		m_worldSizes.push_back("Medium");
@@ -108,78 +109,26 @@ namespace State{
 
 		m_state = 0;
 
-		refreshGui();
+		refreshGuiElement();
 	}
 
 	void LobbyState::process()
 	{
-		m_gui[m_state]->focus();
-		for (auto& gui : m_gui)
-			gui->process();
+		m_gui.process();
 	}
 
 	void LobbyState::processEvents(sf::Event& _event)
 	{
-		switch (_event.type)
-		{
-		case sf::Event::KeyPressed:
-		{
-			if (_event.key.code == sf::Keyboard::Escape)
-				m_finished = true;
-			else if (_event.key.code == sf::Keyboard::Up)
-			{
-				if (m_state > 0)
-				{
-					m_gui[m_state]->unfocus();
-					m_state--;
-				}
-			}
-			else if (_event.key.code == sf::Keyboard::Down)
-			{
-				if (m_state < (m_gui.size() - 1))
-				{
-					m_gui[m_state]->unfocus();
-					m_state++;
-				}
-			}
-			else if (_event.key.code == sf::Keyboard::Return)
-			{
-				m_gui[m_state]->click();
-			}
+		GameState::processEvents(_event);
+		m_gui.processEvents(_event);
 
-			refreshGui();
-			break;
-		}
-		case sf::Event::MouseButtonPressed:
-		{
-			break;
-		}
-		case sf::Event::JoystickButtonPressed:
-		{
-			break;
-		}
-		case sf::Event::Closed:
-		{
-			m_finished = true;
-			break;
-		}
-		case sf::Event::Resized:
-		{
-			break;
-		}
-		// Default case
-		default:
-		{
-			break;
-		}
-		}// switch(sf_event.type)
+		refreshGuiElement();
 	}
 
 	void LobbyState::draw(sf::RenderWindow& _window)
 	{
 		_window.draw(title);
-		for (auto& gui : m_gui)
-			gui->draw(_window);
+		m_gui.draw(_window);
 	}
 
 	// *********************************************** //
@@ -195,12 +144,12 @@ namespace State{
 	
 	// *********************************************** //
 
-	void LobbyState::refreshGui()
+	void LobbyState::refreshGuiElement()
 	{
-		m_gui[WorldSize]->setText2(m_worldSizes[m_size]);
-		m_gui[NumWalls]->setText2(m_nWalls[m_walls]);
-		m_gui[EndCondition]->setText2(ENDCONDITIONS[m_endCondition]);
-		m_gui[EndValue]->setText2(std::to_string(ENDVALUE[m_endCondition][m_endValue])
+		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[WorldSize].get())->setText2(m_worldSizes[m_size]);
+		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[NumWalls].get())->setText2(m_nWalls[m_walls]);
+		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndCondition].get())->setText2(ENDCONDITIONS[m_endCondition]);
+		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndValue].get())->setText2(std::to_string(ENDVALUE[m_endCondition][m_endValue])
 			+ (m_endCondition ? "" : "min"));
 	}
 }

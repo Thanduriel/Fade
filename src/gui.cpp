@@ -7,7 +7,7 @@ namespace GUI
 
 	// ******************************************************** //
 
-	Gui::Gui(const sf::String& _name, uint32_t _x, uint32_t _y, std::function<void()> _onClick)
+	GuiElement::GuiElement(const sf::String& _name, uint32_t _x, uint32_t _y, std::function<void()> _onClick)
 		:m_onClick(_onClick)
     {
         m_font = *g_resourceManager.getFont("suburbia");
@@ -22,39 +22,120 @@ namespace GUI
         m_text.setScale(1., 1.);
     }
 
-    void Gui::draw(sf::RenderWindow& _window)
+    void GuiElement::draw(sf::RenderWindow& _window)
     {
         m_text.setColor(m_cfront);
         _window.draw(m_text);
 
     }
 
-    void Gui::process()
+    void GuiElement::process()
     {
         m_cfront.r += ceil(0.1*((float) (m_cback.r-m_cfront.r)));
         m_cfront.g += ceil(0.1*((float) (m_cback.g-m_cfront.g)));
         m_cfront.b += ceil(0.1*((float) (m_cback.b-m_cfront.b)));
     }
 
-    void Gui::activate(sf::Event::KeyEvent *sf_key_event)
+    void GuiElement::activate(sf::Event::KeyEvent *sf_key_event)
     {
 
     }
 
 	// ********************************************** //
 
-	ExtGui::ExtGui(const sf::String& _name, uint32_t _x, uint32_t _y,
+	ExtGuiElement::ExtGuiElement(const sf::String& _name, uint32_t _x, uint32_t _y,
 		std::function<void()> _onClick, sf::Vector2f _position)
-		: Gui(_name, _x, _y, _onClick)
+		: GuiElement(_name, _x, _y, _onClick)
 	{
 		m_text2.setFont(m_font);
 		m_text2.setCharacterSize(75);
 		setPosition2(_position);
 	}
 
-	void ExtGui::draw(sf::RenderWindow& _window)
+	void ExtGuiElement::draw(sf::RenderWindow& _window)
 	{
-		Gui::draw(_window);
+		GuiElement::draw(_window);
 		_window.draw(m_text2);
+	}
+
+	// ********************************************** //
+
+	void Gui::init()
+	{
+		m_currentElement = begin();
+		(*m_currentElement)->focus();
+	}
+
+	void Gui::draw(sf::RenderWindow& _window)
+	{
+		for (auto& el : *this) el->draw(_window);
+	}
+
+	void Gui::process()
+	{
+		float axis = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+
+		if (m_controllerMove)
+		{
+			if(abs(axis) < 40.f) m_controllerMove = false;
+		}
+		else
+		{
+			if (axis > 90.f) { next(); m_controllerMove = true; }
+			else if (axis < -90.f) { prev(); m_controllerMove = true; }
+		}
+		for (auto& el : *this) el->process();
+	}
+
+	void Gui::processEvents(sf::Event& _event)
+	{
+		switch (_event.type)
+		{
+		case sf::Event::KeyPressed:
+		{
+			if (_event.key.code == sf::Keyboard::Up)
+			{
+				prev();
+			}
+			else if (_event.key.code == sf::Keyboard::Down)
+			{
+				next();
+			}
+			else if (_event.key.code == sf::Keyboard::Return)
+			{
+				(*m_currentElement)->click();
+			}
+		}
+		case sf::Event::MouseButtonPressed:
+		{
+			break;
+		}
+		case sf::Event::JoystickButtonPressed:
+		{
+			if (_event.joystickButton.joystickId == 0 && _event.joystickButton.button == 0)
+				(*m_currentElement)->click();
+			break;
+		}
+		default:
+		{
+			break;
+		}
+		}
+	}
+
+	void Gui::prev()
+	{
+		if (m_currentElement != begin())
+		{
+			(*m_currentElement--)->unfocus();
+			(*m_currentElement)->focus();
+		}
+	}
+
+	void Gui::next()
+	{
+		(*m_currentElement++)->unfocus();
+		if (m_currentElement == end()) m_currentElement--;
+		(*m_currentElement)->focus();
 	}
 }

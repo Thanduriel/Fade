@@ -18,7 +18,7 @@ namespace State{
     private:
         sf::Font font;
         sf::Text title;
-        std::vector < std::unique_ptr < GUI::Gui > > m_gui;
+       GUI::Gui m_gui;
         uint32_t m_state;
 		sf::RenderWindow& m_window;
     };

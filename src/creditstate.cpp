@@ -18,12 +18,12 @@ namespace State{
         title.setScale(1., 1.);
         title.setColor(sf::Color::White);
 
-        m_gui.emplace_back(new GUI::Gui("Created by", left-300, 300));
-        m_gui.emplace_back(new GUI::Gui("Thanduriel and jokiel", left-100, 400));
-        m_gui.emplace_back(new GUI::Gui("During the", left-300, 500));
-        m_gui.emplace_back(new GUI::Gui("Acagamics GAMEJAM 2016", left-100, 600));
-        m_gui.emplace_back(new GUI::Gui("Music by", left-300, 700));
-        m_gui.emplace_back(new GUI::Gui("Streako", left-100, 800));
+        m_gui.emplace_back(new GUI::GuiElement("Created by", left-300, 300));
+        m_gui.emplace_back(new GUI::GuiElement("Thanduriel and jokiel", left-100, 400));
+        m_gui.emplace_back(new GUI::GuiElement("During the", left-300, 500));
+        m_gui.emplace_back(new GUI::GuiElement("Acagamics GAMEJAM 2016", left-100, 600));
+        m_gui.emplace_back(new GUI::GuiElement("Music by", left-300, 700));
+        m_gui.emplace_back(new GUI::GuiElement("Streako", left-100, 800));
         m_gui[1]->focus();
         m_gui[3]->focus();
         m_gui[5]->focus();
@@ -40,14 +40,7 @@ namespace State{
         switch(_event.type)
         {
         case sf::Event::KeyPressed:
-        {
-			if (_event.key.code == sf::Keyboard::Escape)
-				m_finished = true;
-            else if (_event.key.code == sf::Keyboard::Return)
-				m_finished = true;
-
-            break;
-        }
+		case sf::Event::JoystickButtonPressed:
         case sf::Event::Closed:
         {
 			m_finished = true;

@@ -20,12 +20,12 @@ namespace State{
 		void rescaleView(uint32_t _size);
 
 		//updates the displayed values
-		void refreshGui();
+		void refreshGuiElement();
 
 		sf::RenderWindow& m_window;
         sf::Font font;
         sf::Text title;
-        std::vector < std::unique_ptr < GUI::ExtGui > > m_gui;
+        std::vector < std::unique_ptr < GUI::ExtGuiElement > > m_gui;
         uint32_t m_state, m_size, m_walls, m_endCondition, m_endValue;
         std::vector < sf::String > m_worldSizes, m_nWalls;
     };

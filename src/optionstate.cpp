@@ -54,29 +54,29 @@ namespace State{
         title.setColor(sf::Color::White);
 		
 		m_gui.reserve(Button::Count);
-		m_gui.emplace_back(new GUI::ExtGui("World:", left, 300, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("World:", left, 300, [&]()
 		{
 			if (++m_size == m_worldSizes.size())
 				m_size = 0;
 			rescaleView(m_size);
 		}, rightOff));
-		m_gui.emplace_back(new GUI::ExtGui("Walls:", left, 400, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Walls:", left, 400, [&]()
 		{
 			if (++m_walls == m_nWalls.size())
 				m_walls = 0;
 			Constants::g_numWalls = m_walls * 3;
 		}, rightOff));
-		m_gui.emplace_back(new GUI::ExtGui("End Condition:	", left, 500, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("End Condition:	", left, 500, [&]()
 		{
 			if (++m_endCondition == ENDCONDITIONS.size())
 				m_endCondition = 0;
 		}, rightOff));
-		m_gui.emplace_back(new GUI::ExtGui("Amount: ", left, 600, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Amount: ", left, 600, [&]()
 		{
 			if (++m_endValue == ENDVALUE[m_endCondition].size())
 				m_endValue = 0;
 		}, rightOff));
-		m_gui.emplace_back(new GUI::ExtGui("Back", left, 700, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Back", left, 700, [&]()
 		{
 			m_finished = true;
 		}));
@@ -96,7 +96,7 @@ namespace State{
 
         m_state = 0;
 
-		refreshGui();
+		refreshGuiElement();
     }
 
     void OptionState::process()
@@ -135,7 +135,7 @@ namespace State{
 				m_gui[m_state]->click();
             }
             
-			refreshGui();
+			refreshGuiElement();
             break;
         }
         case sf::Event::MouseButtonPressed:
@@ -183,7 +183,7 @@ namespace State{
 
 	// *********************************************** //
 
-	void OptionState::refreshGui()
+	void OptionState::refreshGuiElement()
 	{
 		m_gui[WorldSize]->setText2(m_worldSizes[m_size]);
 		m_gui[NumWalls]->setText2(m_nWalls[m_walls]);

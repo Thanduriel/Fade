@@ -24,7 +24,13 @@ namespace Game
 
 		//
 		virtual void process() = 0;
-		virtual void processEvents(sf::Event& _event) = 0;
+		virtual void processEvents(sf::Event& _event)
+		{
+			if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Escape
+				|| _event.type == sf::Event::JoystickButtonPressed 
+				&& _event.joystickButton.joystickId == 0 && _event.joystickButton.button == 1)
+				m_finished = true;
+		}
 		virtual void draw(sf::RenderWindow& _window) = 0;
 		virtual void onActivate() {};
 
