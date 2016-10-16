@@ -30,7 +30,7 @@ namespace Game{
 		m_collisionDummy = std::make_unique<Actor>(Vector2f(-100.f, -100.f), *g_resourceManager.getTexture("wall.png"));
 
 		// determine number of connected joysticks/gamepads with Axis
-		for (uint32_t i(0); i<5; i++)
+	/*	for (uint32_t i(0); i<5; i++)
 		{
 			if (sf::Joystick::isConnected(i))
 			{
@@ -43,7 +43,7 @@ namespace Game{
 					addNewPlayer(i);
 				}
 			}
-		}
+		}*/
 
 #ifdef _DEBUG
 		addNewPlayer(-1);

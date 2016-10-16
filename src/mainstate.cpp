@@ -8,12 +8,15 @@
 #include "stats.hpp"
 
 namespace State{
-	MainState::MainState(const GameSettings& _gameSettings) :
+	MainState::MainState(const GameSettings& _gameSettings,
+		const std::vector < std::unique_ptr< Game::Pawn >>& _players) :
 		m_gameSettings(_gameSettings),
 		m_gameTime(0),
 		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY)
 	{
 		Stats::g_statManager.Reset();
+
+		for (auto& player : _players) if (player.get()) m_world.addNewPlayer(player->getCId());
 	}
 
 	void MainState::process()

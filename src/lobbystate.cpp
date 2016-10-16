@@ -32,6 +32,7 @@ enum Button
 };
 
 using namespace sf;
+using namespace Constants;
 
 namespace State{
 	LobbyState::LobbyState(sf::RenderWindow& _window) :
@@ -85,7 +86,7 @@ namespace State{
 			GameSettings config;
 			config.winCondition = m_endCondition ? WinCondition::Kills : WinCondition::Time;
 			config.value = ENDVALUE[m_endCondition][m_endValue] * (m_endCondition ? 1 : 60);
-			m_newState = new State::MainState(config);
+			m_newState = new State::MainState(config, m_connectedPlayers);
 		}));
 		//back
 		m_gui.emplace_back(new GUI::ExtGuiElement("Back", left + 150, 850, [&]()
@@ -109,7 +110,23 @@ namespace State{
 
 		m_state = 0;
 
+		m_connectedPlayers.resize(8);
+		m_connectedPlayerNames.resize(8);
+		for (size_t i = 0; i < m_connectedPlayerNames.size(); ++i)
+		{
+			if (sf::Joystick::isConnected(i)) switchPlayer(i);
+
+			m_connectedPlayerNames[i].setString(std::to_string(i));
+			m_connectedPlayerNames[i].setPosition(calcScreenPos(i) + sf::Vector2f(60.f, -38.f));
+			m_connectedPlayerNames[i].setScale(1.f, 1.f);
+			m_connectedPlayerNames[i].setColor(sf::Color::White);
+			m_connectedPlayerNames[i].setFont(font);
+			m_connectedPlayerNames[i].setCharacterSize(76);
+		}
 		refreshGuiElement();
+
+		//test
+		//for (int i = 1; i < 8; ++i) switchPlayer(i);
 	}
 
 	void LobbyState::process()
@@ -122,6 +139,19 @@ namespace State{
 		GameState::processEvents(_event);
 		m_gui.processEvents(_event);
 
+		if( _event.type == sf::Event::JoystickConnected)
+		{
+			switchPlayer(_event.joystickConnect.joystickId);
+		}
+		else if( _event.type == sf::Event::JoystickDisconnected)
+		{
+			switchPlayer(_event.joystickConnect.joystickId);
+		}
+		if (_event.type == sf::Event::JoystickButtonPressed)
+		{
+			if (_event.joystickButton.button == 7) switchPlayer(_event.joystickButton.joystickId);
+		}
+
 		refreshGuiElement();
 	}
 
@@ -129,6 +159,14 @@ namespace State{
 	{
 		_window.draw(title);
 		m_gui.draw(_window);
+
+		for (size_t i = 0; i < m_connectedPlayers.size(); ++i)
+		{
+			if (!m_connectedPlayers[i].get()) continue;
+
+			m_connectedPlayers[i]->draw(_window);
+			_window.draw(m_connectedPlayerNames[i]);
+		}
 	}
 
 	// *********************************************** //
@@ -151,5 +189,21 @@ namespace State{
 		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndCondition].get())->setText2(ENDCONDITIONS[m_endCondition]);
 		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndValue].get())->setText2(std::to_string(ENDVALUE[m_endCondition][m_endValue])
 			+ (m_endCondition ? "" : "min"));
+	}
+
+	// *********************************************** //
+
+	void LobbyState::switchPlayer(int _cid)
+	{
+		if (m_connectedPlayers[_cid].get())
+		{
+			auto ptr = m_connectedPlayers[_cid].release();
+			delete ptr;
+		}
+		else
+		{
+			m_connectedPlayers[_cid] = std::make_unique<Game::Pawn>(calcScreenPos(_cid),
+				*g_resourceManager.getTexture("player_main.png"), _cid);
+		}
 	}
 }

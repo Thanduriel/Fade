@@ -81,8 +81,8 @@ namespace GUI
 		}
 		else
 		{
-			if (axis > 90.f) { next(); m_controllerMove = true; }
-			else if (axis < -90.f) { prev(); m_controllerMove = true; }
+			if (axis > 70.f) { next(); m_controllerMove = true; }
+			else if (axis < -70.f) { prev(); m_controllerMove = true; }
 		}
 		for (auto& el : *this) el->process();
 	}

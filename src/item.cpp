@@ -205,9 +205,8 @@ namespace Game{
 	// *********************************************************** //
 
 	Shield::Shield(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
+		Item(_pos, *g_resourceManager.getTexture("powerup_shield.png"))
 	{
-		m_sprite.setColor(sf::Color(0, 0, 255, 255));
 		m_activeTime = c_shieldActiveTime;
 	}
 

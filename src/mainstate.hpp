@@ -21,7 +21,8 @@ namespace State{
 	class MainState: public Game::GameState
 	{
 	public:
-		MainState(const GameSettings& _gameSettings);
+		MainState(const GameSettings& _gameSettings,
+			const std::vector < std::unique_ptr< Game::Pawn >>& _players);
 
 		virtual void process() override;
         virtual void processEvents(sf::Event& _event);
