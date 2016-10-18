@@ -16,7 +16,7 @@ namespace State{
 	{
 		Stats::g_statManager.Reset();
 
-		for (auto& player : _players) if (player.get()) m_world.addNewPlayer(player->getCId());
+		for (auto& player : _players) if (player.get()) m_world.addNewPlayer(player->getCId(), player.get());
 	}
 
 	void MainState::process()

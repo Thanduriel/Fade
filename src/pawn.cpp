@@ -22,7 +22,8 @@ namespace Game{
 		m_projType(ProjType::Standard),
 		m_speedFactor(1.f),
 		m_lightState(Pawn::OnlyFire),
-		m_ammo(5)
+		m_ammo(5),
+		m_playerColorId(0)
 	{
 		m_isStatic = false;
 		m_collisionType = CollisionType::Player;

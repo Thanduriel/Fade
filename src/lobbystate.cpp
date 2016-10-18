@@ -6,6 +6,8 @@
 #include "resourcemanager.hpp"
 #include "constants.hpp"
 #include "camera.hpp"
+#include "utils.hpp"
+#include "controller.hpp"
 
 
 //possible choices for the corresponding settings
@@ -150,6 +152,10 @@ namespace State{
 		if (_event.type == sf::Event::JoystickButtonPressed)
 		{
 			if (_event.joystickButton.button == 7) switchPlayer(_event.joystickButton.joystickId);
+			else if (_event.joystickButton.button == 2 && m_connectedPlayers[_event.joystickButton.joystickId].get())
+			{
+				m_connectedPlayers[_event.joystickButton.joystickId]->switchColor();
+			}
 		}
 
 		refreshGuiElement();

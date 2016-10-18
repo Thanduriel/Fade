@@ -66,6 +66,8 @@ namespace Game{
 		bool isDead() { return m_isDead; }
 		void setReflective(bool _reflective) { m_isReflective = _reflective; }
 		bool isReflective() { return m_isReflective; }
+
+		void setColor(sf::Color _color) { m_sprite.setColor(_color); };
 	protected:
 		int m_cid; //id of the related controller; -1 for world objects
 

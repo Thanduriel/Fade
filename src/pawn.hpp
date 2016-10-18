@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Audio.hpp>
+#include <array>
 
 #include "actor.hpp"
 #include "item.hpp"
@@ -8,6 +9,19 @@
 #include "lightsys.hpp"
 
 namespace Game{
+
+	const std::array<sf::Color, 4> PLAYERCOLORS =
+	{
+		//	sf::Color(255, 0, 90),
+		sf::Color(255, 255, 255),
+		sf::Color(20, 220, 120),
+		sf::Color(100, 100, 243),
+		sf::Color(230, 160, 20)
+		//	sf::Color(255, 255, 0),
+		//	sf::Color(255, 0, 255),
+		//	sf::Color(0, 255, 255)
+	};
+
 	class Pawn : public Actor
 	{
 	public:
@@ -40,6 +54,10 @@ namespace Game{
 
 		void setLightState(LightState _state){ m_lightState = _state; }
 		LightState lightState(){ return m_lightState; }
+
+		size_t getColorId() const { return m_playerColorId; }
+		void switchColor(size_t _col) { m_playerColorId = _col; setColor(PLAYERCOLORS[m_playerColorId]); }
+		void switchColor() { m_playerColorId = (m_playerColorId + 1) % PLAYERCOLORS.size(); setColor(PLAYERCOLORS[m_playerColorId]); }
 	private:
 		int m_lastHitId; //cid of the last actor a collision occurred with
 
@@ -67,5 +85,7 @@ namespace Game{
 		Item* m_item;
 
 		LightState m_lightState;
+
+		size_t m_playerColorId;
 	};
 }

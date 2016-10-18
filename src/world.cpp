@@ -80,7 +80,11 @@ namespace Game{
 		{
 			controller->process();
 			// revive
-			if (!controller->hasPawn()) controller->possess(spawnPlayer(controller->getId()));
+			if (!controller->hasPawn())
+			{
+				controller->possess(spawnPlayer(controller->getId()));
+				controller->getPawn()->switchColor(controller->getColorId());
+			}
 		}
 		for (auto& actor : m_gameObjects) actor->process();
 
@@ -266,12 +270,18 @@ namespace Game{
 
 	// *************************************************** //
 
-	void World::addNewPlayer(int _id)
+	void World::addNewPlayer(int _id, Pawn* _parent)
 	{
 		Controller* controller = _id >= 0 ? (Controller*)new PlayerController(_id)
 			: new AiController();
 		controller->possess(spawnPlayer(_id));
 		m_controllers.emplace_back(controller);
+
+		if (_parent)
+		{
+			controller->setColorId(_parent->getColorId());
+			controller->getPawn()->switchColor(_parent->getColorId());
+		}
 	}
 
 	// *************************************************** //
