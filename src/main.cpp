@@ -46,7 +46,11 @@ int main()
 	Constants::g_windowSizeX = desktop.width;
 	Constants::g_windowSizeY = desktop.height;
 	Graphic::g_lightSystem.refreshSize();
+#ifdef _DEBUG
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
+#else
+	sf::RenderWindow window(desktop, "Fade", sf::Style::Fullscreen);
+#endif
 	window.setMouseCursorVisible(false);
 
 	sf::Clock clock, frameTimeClock;

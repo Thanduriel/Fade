@@ -3,10 +3,10 @@
 uniform float windowSizeX;
 uniform float windowSizeY;
 
-uniform vec2 wallInfos[18];
+uniform vec2 wallInfos[27];
 uniform int numWalls_x3;
 
-out vec2 simpleWallInfos[18];
+out vec2 simpleWallInfos[27];
 out vec2 gs_out_LightPosition;
 out vec4 gs_out_LightColor;
 out float gs_out_lightRadius;

@@ -39,5 +39,6 @@ namespace State{
 		std::vector < sf::String > m_worldSizes, m_nWalls;
 		PlayerContainer m_connectedPlayers;
 		std::vector < sf::Text > m_connectedPlayerNames;
+		sf::Text m_controlsText;
 	};
 }

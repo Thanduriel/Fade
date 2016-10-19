@@ -1,9 +1,10 @@
 #include <stdint.h>
+#include <Windows.h>
 
 namespace util{
 	inline unsigned int rnd()
 	{
-		static unsigned int num = rand();
+		static unsigned int num = GetTickCount();
 		num ^= num << 13;
 		num ^= num >> 17;
 		num ^= num << 5;

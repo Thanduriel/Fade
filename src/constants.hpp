@@ -20,7 +20,8 @@ namespace Constants{
 	const int	c_baseReloadSpeed = 40; // time for one fast reload projectile in frames
 
 	const int c_wallThickness = 25;
-	const int c_wallMaxLength = 400;
+	const int c_wallMaxLength = 500;
+	const int c_wallMinLength = 100;
 
 	//item constants -----------------------------
 	const int c_sentinelChargeTime =	60 * 2;

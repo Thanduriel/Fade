@@ -54,6 +54,13 @@ namespace State{
 		title.setScale(1., 1.);
 		title.setColor(sf::Color::White);
 
+		m_controlsText.setFont(font);
+		m_controlsText.setCharacterSize(50);
+		m_controlsText.setString("A         : use item \nB         : switch light \nlback : shoot");
+		m_controlsText.setPosition(g_windowSizeX - 590, g_windowSizeY - 200);
+		m_controlsText.setScale(1., 1.);
+		m_controlsText.setFillColor(sf::Color(150,150,150));
+
 		m_gui.reserve(Button::Count);
 
 		//size
@@ -108,8 +115,8 @@ namespace State{
 
 		m_nWalls.push_back("None");
 		m_nWalls.push_back("Few");
+		m_nWalls.push_back("Moderate");
 		m_nWalls.push_back("Many");
-		m_nWalls.push_back("Random");
 		m_walls = 0;
 
 		m_state = 0;
@@ -123,7 +130,7 @@ namespace State{
 			m_connectedPlayerNames[i].setString(std::to_string(i));
 			m_connectedPlayerNames[i].setPosition(calcScreenPos(i) + sf::Vector2f(60.f, -38.f));
 			m_connectedPlayerNames[i].setScale(1.f, 1.f);
-			m_connectedPlayerNames[i].setColor(sf::Color::White);
+			m_connectedPlayerNames[i].setFillColor(sf::Color::Cyan);
 			m_connectedPlayerNames[i].setFont(font);
 			m_connectedPlayerNames[i].setCharacterSize(76);
 		}
@@ -167,6 +174,7 @@ namespace State{
 	{
 		_window.draw(title);
 		m_gui.draw(_window);
+		_window.draw(m_controlsText);
 
 		for (size_t i = 0; i < m_connectedPlayers.size(); ++i)
 		{

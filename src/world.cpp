@@ -212,6 +212,8 @@ namespace Game{
 
 	void World::generateWalls(int _count)
 	{
+		using namespace Constants;
+
 		for (auto wall : m_walls) wall->destroy();
 		m_walls.clear();
 		m_wallInfos.clear();
@@ -219,12 +221,21 @@ namespace Game{
 		for (int i = 0; i < _count; ++i)
 		{
 			Vector2f size;
+			Vector2f center;
+			const int playerSize = 54; // a player should fit between the wall and the map borders
 			if (i % 2/*util::rand(1)*/)
-				size = Vector2f((float)Constants::c_wallThickness, (float)util::rand(Constants::c_wallMaxLength, 50));
+			{
+				size = Vector2f((float)Constants::c_wallThickness, (float)util::rand(c_wallMaxLength, c_wallMinLength));
+				center = Vector2f(util::rand(m_sizeX - (int)size.x / 2 - playerSize, (int)size.x / 2 + playerSize),
+					util::rand(m_sizeY - (int)size.y / 2, (int)size.y / 2));
+			}
 			else
-				size = Vector2f((float)util::rand(Constants::c_wallMaxLength, 50), (float)Constants::c_wallThickness);
-			Vector2f center(util::rand(m_sizeX - (int)size.x / 2, (int)size.x / 2),
-				util::rand(m_sizeY - (int)size.y / 2, (int)size.y / 2));
+			{
+				size = Vector2f((float)util::rand(c_wallMaxLength, c_wallMinLength), (float)c_wallThickness);
+				center = Vector2f(util::rand(m_sizeX - (int)size.x / 2, (int)size.x / 2),
+					util::rand(m_sizeY - (int)size.y / 2 - playerSize, (int)size.y / 2 + playerSize));
+			}
+
 			Wall* wall = new Wall(center, size);
 			m_gameObjects.emplace_back(wall);
 			m_walls.push_back(wall);
