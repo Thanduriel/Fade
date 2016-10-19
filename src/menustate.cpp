@@ -33,11 +33,19 @@ namespace State{
 		{
 			m_newState = new State::OptionState(m_window);
 		}));
-		m_gui.emplace_back(new GUI::GuiElement("Credits", left - 100, 500, [&]()
+		//controls
+		m_gui.emplace_back(new GUI::GuiElement("Controls", left - 100, 500, [&]()
+		{
+		//	m_newState = new State::OptionState(m_window);
+		}));
+
+		//credits
+		m_gui.emplace_back(new GUI::GuiElement("Credits", left - 100, 600, [&]()
 		{
 			m_newState = new State::CreditState();
 		}));
-		m_gui.emplace_back(new GUI::GuiElement("Quit", left - 100, 600, [&]()
+		//quit
+		m_gui.emplace_back(new GUI::GuiElement("Quit", left - 100, 700, [&]()
 		{
 			m_finished = true;
 		}));

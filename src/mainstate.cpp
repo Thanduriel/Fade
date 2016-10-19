@@ -16,7 +16,7 @@ namespace State{
 	{
 		Stats::g_statManager.Reset();
 
-		for (auto& player : _players) if (player.get()) m_world.addNewPlayer(player->getCId(), player.get());
+		for (auto& playerInfo : _gameSettings.playerInfos) m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
 	}
 
 	void MainState::process()
@@ -30,7 +30,7 @@ namespace State{
 			if (m_gameTime / 60 >= m_gameSettings.value)
 			{
 				m_finished = true;
-				m_newState = new State::PostState();
+				m_newState = new State::PostState(m_gameSettings);
 			}
 		}
 		else
@@ -39,7 +39,7 @@ namespace State{
 			if (Stats::g_statManager.getMax(Stats::Stat::Kills) >= m_gameSettings.value)
 			{
 				m_finished = true;
-				m_newState = new State::PostState();
+				m_newState = new State::PostState(m_gameSettings);
 			}
 		}
 
@@ -82,7 +82,7 @@ namespace State{
 		}
 		case sf::Event::JoystickConnected:
 		{
-			m_world.addNewPlayer(_event.joystickConnect.joystickId);
+			m_world.addNewPlayer(_event.joystickConnect.joystickId, Game::PlayerColor::White);
 			break;
 		}
 		case sf::Event::JoystickDisconnected:

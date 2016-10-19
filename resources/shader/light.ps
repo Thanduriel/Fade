@@ -2,6 +2,8 @@
 uniform vec2 wallInfos[18];
 uniform int numWalls_x3;
 
+in vec2 simpleWallInfos[18];
+
 in vec2 gs_out_LightPosition;
 in vec4 gs_out_LightColor;
 in float gs_out_lightRadius;
@@ -14,6 +16,27 @@ bool lineSeg(float p0_x, float p0_y, float p1_x, float p1_y,
 	s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
 	s2_x = p3_x - p2_x;     s2_y = p3_y - p2_y;
 
+	float s, t, q;
+	q = (-s2_x * s1_y + s1_x * s2_y);
+	s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / q;
+	t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / q;
+
+	if (s >= 0.f && s <= 1.f && t >= 0.f && t <= 1.f)
+	{
+		// Collision detected
+		return true;
+	}
+
+	return false; // No collision
+}
+/*
+bool lineSegVec(vec2 p0, vec2 p1, 
+	vec2 p2, vec2 p3)
+{
+	vec2 s1, s2;
+	s1 = p1 - p0;
+	s2 = p3 - p2;
+
 	float s, t;
 	s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
 	t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
@@ -25,7 +48,7 @@ bool lineSeg(float p0_x, float p0_y, float p1_x, float p1_y,
 	}
 
 	return false; // No collision
-}
+}*/
 
 
 void main()
@@ -33,15 +56,16 @@ void main()
 	for(int i = 0; i < numWalls_x3; i += 3)
 	{
 		if( lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
+			simpleWallInfos[i].x, simpleWallInfos[i].y, simpleWallInfos[i+1].x, simpleWallInfos[i+1].y))
+			return;
+	/*	if( lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
 			wallInfos[i].x, wallInfos[i].y, wallInfos[i].x, wallInfos[i+1].y)
 		|| lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
 			wallInfos[i].x, wallInfos[i].y, wallInfos[i+1].x, wallInfos[i].y)
 		|| lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
 			wallInfos[i].x, wallInfos[i+1].y, wallInfos[i+1].x, wallInfos[i+1].y)
 		|| lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
-			wallInfos[i+1].x, wallInfos[i+1].y, wallInfos[i+1].x, wallInfos[i].y)) return;
-//		vec2 p = nearestPoint(gs_out_LightPosition, gl_FragCoord.xy, wallInfos[i+2]);
-//		if(p.x >= wallInfos[i].x && p.x <= wallInfos[i+1].x && p.y <= wallInfos[i].y && p.y >= wallInfos[i+1].y) return;
+			wallInfos[i+1].x, wallInfos[i+1].y, wallInfos[i+1].x, wallInfos[i].y)) return; */
 	}
 //	if(distance(p, vec2(400.f,200.f)) < 50.f) return;
     // multiply it by the color

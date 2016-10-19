@@ -2,6 +2,7 @@
 
 #include "gamestate.hpp"
 #include "world.hpp"
+#include "pawn.hpp"
 
 namespace State{
 
@@ -12,10 +13,19 @@ namespace State{
 		Count
 	};
 
+	struct PlayerInfo
+	{
+		PlayerInfo(int _cid, Game::PlayerColor _color) : cid(_cid), playerColor(_color){}
+		int cid;
+		Game::PlayerColor playerColor;
+	};
+
 	struct GameSettings
 	{
 		WinCondition winCondition;
 		int value;
+
+		std::vector<PlayerInfo> playerInfos;
 	};
 
 	class MainState: public Game::GameState

@@ -19,6 +19,7 @@ namespace Game{
 		texSize.y = (float)m_sprite.getTexture()->getSize().y;
 
 		m_sprite.setScale(sf::Vector2f(_size.x / texSize.x, _size.y / texSize.y));
+		m_sprite.setColor(sf::Color::Black);
 
 		m_boundingRad = sqrt(_size.x * _size.x + _size.y * _size.y) * 0.57f;
 		m_bbBegin = _pos;

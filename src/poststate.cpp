@@ -2,11 +2,13 @@
 #include "constants.hpp"
 #include "resourcemanager.hpp"
 #include "stats.hpp"
+#include "mainstate.hpp"
+#include "constants.hpp"
 
 using namespace Stats;
 
 namespace State{
-	PostState::PostState()
+	PostState::PostState(const GameSettings& _gameSettings)
 	{
 		m_font = *g_resourceManager.getFont("suburbia");
 
@@ -19,17 +21,31 @@ namespace State{
 		m_title.setScale(1., 1.);
 		m_title.setColor(sf::Color::White);
 
-		m_playerStatTexts.resize(g_statManager.getPlayerCount());
+		sf::Vector2f basePos = sf::Vector2f(Constants::g_windowSizeX * 0.5f - (_gameSettings.playerInfos.size()-1) * 200.f * 0.5f, 350.f);
+
+		m_playerStatTexts.resize(_gameSettings.playerInfos.size());
 		for (size_t i = 0; i < m_playerStatTexts.size(); ++i)
 		{
+			sf::Vector2f pos(i * 200.f, 0.f);
+			pos += basePos;
+			m_players.emplace_back(std::make_unique<Game::Pawn>(pos,
+				*g_resourceManager.getTexture("player_main.png"), 0));
+			m_players.back()->switchColor(_gameSettings.playerInfos[i].playerColor);
+
 			m_playerStatTexts[i].setFont(m_font);
-			m_playerStatTexts[i].setPosition(sf::Vector2f(200.f + i * 200.f, 400.f));
+			m_playerStatTexts[i].setPosition(pos + sf::Vector2f(-75.f, 80.f));
 			m_playerStatTexts[i].setScale(1.f, 1.f);
 			m_playerStatTexts[i].setColor(sf::Color::White);
-		//	m_playerStatTexts[i].setCharacterSize(30)
-			m_playerStatTexts[i].setString(std::to_string(i) + " : " 
+			m_playerStatTexts[i].setCharacterSize(50);
+			m_playerStatTexts[i].setString(std::to_string(i) + " : "
 				+ std::to_string(g_statManager.Get(i, Stat::Kills))
-				+ std::to_string(g_statManager.Get(i, Stat::Deaths)));
+				+ ".."
+				+ std::to_string(g_statManager.Get(i, Stat::Deaths))
+				+ (g_statManager.Get(i, Stat::Kills) == g_statManager.getMax(Stat::Kills) ?
+				"\n\nWINNER!" : ""));
+
+			if (g_statManager.Get(i, Stat::Kills) == g_statManager.getMax(Stat::Kills))
+				m_playerStatTexts[i].setColor(sf::Color::Green);
 		}
 	}
 
@@ -52,6 +68,10 @@ namespace State{
 
 			break;
 		}
+		case sf::Event::JoystickButtonPressed:
+			if (_event.joystickButton.joystickId == 0)
+				m_finished = true;
+			break;
 		case sf::Event::Closed:
 		{
 			m_finished = true;
@@ -71,6 +91,7 @@ namespace State{
 		for (auto& gui : m_gui)
 			gui->draw(_window);
 
+		for (auto& pawn : m_players) pawn->draw(_window);
 		for (auto& text : m_playerStatTexts) _window.draw(text);
 	}
 }

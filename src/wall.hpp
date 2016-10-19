@@ -10,7 +10,7 @@ namespace Game{
 
 		void collision(Actor& _oth) override;
 		//sprite does not need to be rendered, they cast shadows
-		virtual void draw(sf::RenderWindow& _window) override {};
+		//virtual void draw(sf::RenderWindow& _window) override {};
 		virtual bool testComplexCollision(Actor& _oth) override;
 
 		const sf::Vector2f& bbBegin() { return m_bbBegin; }

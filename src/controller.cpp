@@ -20,10 +20,10 @@ namespace Game{
 		}
 
 		sf::Vector2f movDir(0.f, 0.f);
+		m_fireCd--;
 
 		if (sf::Joystick::isConnected(m_id))
 		{
-			m_fireCd--;
 			if (sf::Joystick::isButtonPressed(m_id, 5) && m_fireCd <= 0)
 			{
 				m_pawn->fire();
@@ -43,6 +43,18 @@ namespace Game{
 			if (abs(jDir.x) > 40.f || abs(jDir.y) > 40.f)
 				movDir = normalize(jDir);
 		}
+		else
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_fireCd <= 0)
+			{
+				m_pawn->fire();
+				m_fireCd = 12;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) movDir.y -= 1.f;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) movDir.y += 1.f;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) movDir.x -= 1.f;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) movDir.x += 1.f;
+		}
 		m_pawn->setVelocity(Constants::c_playerBaseSpeed * movDir * m_pawn->speedFactor());
 	}
 
@@ -57,7 +69,7 @@ namespace Game{
 			if (_event.joystickButton.button == 4)
 				m_pawn->altFire();
 			else if (_event.joystickButton.button == 1)
-				m_pawn->setLightState(m_pawn->lightState() == Pawn::OnlyFire ? Pawn::Off : Pawn::OnlyFire);
+				m_pawn->setLightState((Pawn::LightState)(m_pawn->lightState()+1 % Pawn::Count));
 			}
 	}
 
@@ -80,6 +92,6 @@ namespace Game{
 			if (dir.x != 0.f || dir.y != 0.f) dir = normalize(dir);
 			m_pawn->setVelocity(Constants::c_playerBaseSpeed * dir * m_pawn->speedFactor());
 		}
-	//	if(!(counter % 20))m_pawn->fire();
+		if(!(counter % 20))m_pawn->fire();
 	}
 }

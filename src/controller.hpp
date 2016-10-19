@@ -8,7 +8,7 @@ namespace Game{
 	class Controller
 	{
 	public:
-		Controller() : m_colorId(0) {}
+		Controller() : m_playerColor(PlayerColor::White) {}
 
 		virtual void process(){};
 		virtual void processEvent(sf::Event& _event){};
@@ -18,13 +18,13 @@ namespace Game{
 		Pawn* getPawn() { return m_pawn; }
 		uint32_t getId() { return m_id; }
 
-		void setColorId(size_t _color) { m_colorId = _color; }
-		size_t getColorId() const { return m_colorId; }
+		void setPlayerColor(PlayerColor _color) { m_playerColor = _color; }
+		PlayerColor getPlayerColor() const { return m_playerColor; }
 	protected:
 		Pawn* m_pawn;
 		uint32_t m_id;
 
-		size_t m_colorId;
+		PlayerColor m_playerColor;
 	};
 
 	class PlayerController : public Controller

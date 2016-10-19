@@ -10,13 +10,24 @@
 
 namespace Game{
 
-	const std::array<sf::Color, 4> PLAYERCOLORS =
+	enum PlayerColor
+	{
+		White,
+		Green,
+		Orange,
+		Blue,
+		Beige,
+		Count
+	};
+
+	const std::array<sf::Color, Count> PLAYERCOLORS =
 	{
 		//	sf::Color(255, 0, 90),
 		sf::Color(255, 255, 255),
 		sf::Color(20, 220, 120),
-		sf::Color(100, 100, 243),
-		sf::Color(230, 160, 20)
+		sf::Color(160, 160, 255),
+		sf::Color(230, 160, 20),
+		sf::Color(225, 225, 200)
 		//	sf::Color(255, 255, 0),
 		//	sf::Color(255, 0, 255),
 		//	sf::Color(0, 255, 255)
@@ -49,15 +60,16 @@ namespace Game{
 		enum LightState{
 			Off,
 			On,
-			OnlyFire
+			OnlyFire,
+			Count
 		};
 
 		void setLightState(LightState _state){ m_lightState = _state; }
 		LightState lightState(){ return m_lightState; }
 
-		size_t getColorId() const { return m_playerColorId; }
-		void switchColor(size_t _col) { m_playerColorId = _col; setColor(PLAYERCOLORS[m_playerColorId]); }
-		void switchColor() { m_playerColorId = (m_playerColorId + 1) % PLAYERCOLORS.size(); setColor(PLAYERCOLORS[m_playerColorId]); }
+		PlayerColor getPlayerColor() const { return m_playerColor; }
+		void switchColor(PlayerColor _col) { m_playerColor = _col; setColor(PLAYERCOLORS[m_playerColor]); }
+		void switchColor() { m_playerColor = (PlayerColor)((m_playerColor + 1) % PLAYERCOLORS.size()); setColor(PLAYERCOLORS[m_playerColor]); }
 	private:
 		int m_lastHitId; //cid of the last actor a collision occurred with
 
@@ -86,6 +98,6 @@ namespace Game{
 
 		LightState m_lightState;
 
-		size_t m_playerColorId;
+		PlayerColor m_playerColor;
 	};
 }

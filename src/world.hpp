@@ -31,7 +31,7 @@ namespace Game{
 		// amount is currently limited by the light fragment shader to 3
 		void generateWalls(int _count);
 		Pawn* spawnPlayer(int _cid);
-		void addNewPlayer(int _id, Pawn* _parent = nullptr);
+		void addNewPlayer(int _id, PlayerColor _color);
 		void removePlayer(int _id);
 	private:
 		sf::Sprite m_ground;

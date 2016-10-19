@@ -46,7 +46,8 @@ namespace Game{
 		}*/
 
 #ifdef _DEBUG
-		addNewPlayer(-1);
+		addNewPlayer(-1, Game::PlayerColor::White);
+		addNewPlayer(0, Game::PlayerColor::Blue);
 #endif
 		//test stuff
 		/*
@@ -83,7 +84,7 @@ namespace Game{
 			if (!controller->hasPawn())
 			{
 				controller->possess(spawnPlayer(controller->getId()));
-				controller->getPawn()->switchColor(controller->getColorId());
+				controller->getPawn()->switchColor(controller->getPlayerColor());
 			}
 		}
 		for (auto& actor : m_gameObjects) actor->process();
@@ -270,18 +271,15 @@ namespace Game{
 
 	// *************************************************** //
 
-	void World::addNewPlayer(int _id, Pawn* _parent)
+	void World::addNewPlayer(int _id, PlayerColor _color)
 	{
 		Controller* controller = _id >= 0 ? (Controller*)new PlayerController(_id)
 			: new AiController();
 		controller->possess(spawnPlayer(_id));
 		m_controllers.emplace_back(controller);
 
-		if (_parent)
-		{
-			controller->setColorId(_parent->getColorId());
-			controller->getPawn()->switchColor(_parent->getColorId());
-		}
+		controller->setPlayerColor(_color);
+		controller->getPawn()->switchColor(_color);
 	}
 
 	// *************************************************** //

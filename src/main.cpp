@@ -99,16 +99,17 @@ int main()
 		for (int i = 0; i < 4; ++i){
 			s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
 		}
-		window.setTitle(s.str());
+		//window.setTitle(s.str());
 
 		//couts fps
-		/*	static int c = 0;
-			++c;
-			if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) {
+		static int c = 0;
+		++c;
+		if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) 
+		{
 			window.setTitle(std::to_string(c));
 			frameTimeClock.restart();
 			c = 0;
-			}*/
+		}
 		//	if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
 		if (elapsed.asMicroseconds() < 16667)
 			sf::sleep((sf::microseconds(16667) - elapsed));

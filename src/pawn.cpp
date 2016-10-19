@@ -23,7 +23,7 @@ namespace Game{
 		m_speedFactor(1.f),
 		m_lightState(Pawn::OnlyFire),
 		m_ammo(5),
-		m_playerColorId(0)
+		m_playerColor(PlayerColor::White)
 	{
 		m_isStatic = false;
 		m_collisionType = CollisionType::Player;
@@ -94,7 +94,7 @@ namespace Game{
 	{
 		m_lightInfo->setPosition(m_position);
 
-		m_alpha *= m_fadeFactor;
+		if(m_lightState != On) m_alpha *= m_fadeFactor;
 		uint8_t a = (uint8_t)(m_alpha * 255.f);
 
 		m_lightInfo->color.a = a;
@@ -154,6 +154,7 @@ namespace Game{
 		m_lightInfo->color.g = 50;
 		m_lightInfo->color.b = 50;
 		m_canCollide = false;
+		m_lightState = Off;
 
 		Stats::g_statManager.Add(m_cid, Stats::Deaths);
 		Stats::g_statManager.Add(m_lastHitId, Stats::Kills);
@@ -168,7 +169,7 @@ namespace Game{
 	{
 		if (m_ammo > 0)
 		{
-			if (m_lightState == OnlyFire) m_alpha = 1.f;
+			if (m_lightState == OnlyFire || m_lightState == On) m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
 			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),

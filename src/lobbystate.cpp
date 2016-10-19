@@ -88,6 +88,8 @@ namespace State{
 			GameSettings config;
 			config.winCondition = m_endCondition ? WinCondition::Kills : WinCondition::Time;
 			config.value = ENDVALUE[m_endCondition][m_endValue] * (m_endCondition ? 1 : 60);
+			for (auto& player : m_connectedPlayers)
+				if(player.get()) config.playerInfos.emplace_back(player->getCId(), player->getPlayerColor());
 			m_newState = new State::MainState(config, m_connectedPlayers);
 		}));
 		//back
@@ -128,7 +130,7 @@ namespace State{
 		refreshGuiElement();
 
 		//test
-		//for (int i = 1; i < 8; ++i) switchPlayer(i);
+		for (int i = 1; i < 5; ++i) switchPlayer(i);
 	}
 
 	void LobbyState::process()
