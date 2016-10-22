@@ -2,6 +2,7 @@
 #include "resourcemanager.hpp"
 #include "constants.hpp"
 #include "math.hpp"
+#include "stats.hpp"
 
 using namespace sf;
 
@@ -34,6 +35,8 @@ namespace Game{
 			m_position += normalize(m_position - _oth.position()) * _oth.boundingRad();
 			return;
 		}
+		//other player got hit
+		if (_oth.getCId() >= 0) Stats::g_statManager.Add(m_cid, Stats::ShotsHit);
 		_oth.damage(m_damage);
 		destroy();
 	}

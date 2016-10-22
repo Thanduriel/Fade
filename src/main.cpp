@@ -37,6 +37,7 @@ namespace Stats{
 int main()
 {
 	using namespace Game;
+	using namespace Constants;
 
 	sf::Music *track;
 	track = g_resourceManager.getTrack("menu");

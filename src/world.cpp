@@ -75,7 +75,7 @@ namespace Game{
 		// game events
 		++m_frameCount;
 		if (m_frameCount % Constants::c_eventFrequency == 0)
-			for (uint32_t i = 0; i < util::rand(3, 1); ++i) spawnItem();
+			for (uint32_t i = 0; i < util::rand(m_itemSpawnFreq * 2, m_itemSpawnFreq); ++i) spawnItem();
 
 		for (auto& controller : m_controllers)
 		{

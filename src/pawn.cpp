@@ -177,6 +177,7 @@ namespace Game{
 			m_soundFire.play();
 
 			--m_ammo;
+			Stats::g_statManager.Add(m_cid, Stats::ShotsFired);
 		}
 	}
 

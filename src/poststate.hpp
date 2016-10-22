@@ -21,6 +21,7 @@ namespace State
 		sf::Text m_title;
 		std::vector < std::unique_ptr < GUI::GuiElement > > m_gui;
 		std::vector < sf::Text > m_playerStatTexts;
+		sf::Text m_headerText;
 		std::vector < std::unique_ptr< Game::Pawn >> m_players;
 	};
 

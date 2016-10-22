@@ -12,35 +12,42 @@ namespace State{
 		const std::vector < std::unique_ptr< Game::Pawn >>& _players) :
 		m_gameSettings(_gameSettings),
 		m_gameTime(0),
-		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY)
+		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY),
+		m_gameOver(false)
 	{
 		Stats::g_statManager.Reset();
 
+		m_world.setItemSpawn(_gameSettings.itemSpawns);
 		for (auto& playerInfo : _gameSettings.playerInfos) m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
 	}
 
 	void MainState::process()
 	{
 		m_gameTime++;
-		m_world.process();
-
-		//check end condition
-		if (m_gameSettings.winCondition == WinCondition::Time)
+		if (!m_gameOver)
 		{
-			if (m_gameTime / 60 >= m_gameSettings.value)
+			m_world.process();
+
+			//check end condition
+			if (m_gameSettings.winCondition == WinCondition::Time)
 			{
-				m_finished = true;
-				m_newState = new State::PostState(m_gameSettings);
+				if (m_gameTime / 60 >= m_gameSettings.value)
+				{
+					gameOver();
+				}
+			}
+			else
+			{
+				//	Stats::g_statManager.sort(Stats::Stat::Kills);
+				if (Stats::g_statManager.getMax(Stats::Stat::Kills) >= m_gameSettings.value)
+				{
+					gameOver();
+				}
 			}
 		}
 		else
 		{
-		//	Stats::g_statManager.sort(Stats::Stat::Kills);
-			if (Stats::g_statManager.getMax(Stats::Stat::Kills) >= m_gameSettings.value)
-			{
-				m_finished = true;
-				m_newState = new State::PostState(m_gameSettings);
-			}
+			processGameOver();
 		}
 
 		if (m_newState || m_finished)
@@ -111,5 +118,27 @@ namespace State{
 	using namespace Constants;
 	void MainState::onActivate()
 	{
+	}
+
+	// ************************************************* //
+
+	void MainState::gameOver()
+	{
+		m_gameOver = true;
+		m_gameEndTime = m_gameTime;
+
+		m_lightInfo = Graphic::g_lightSystem.createLight();
+		m_lightInfo->radius = 100.f;
+		m_lightInfo->color = sf::Color(255, 255, 255);
+		m_lightInfo->position = sf::Vector2f(0.f, 0.f);
+	}
+
+	void MainState::processGameOver()
+	{
+		m_lightInfo->radius += 10;
+		if (m_gameTime - m_gameEndTime < 60 * 5) return;
+
+		m_finished = true;
+		m_newState = new State::PostState(m_gameSettings);
 	}
 }

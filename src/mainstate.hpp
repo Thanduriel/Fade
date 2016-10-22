@@ -3,6 +3,7 @@
 #include "gamestate.hpp"
 #include "world.hpp"
 #include "pawn.hpp"
+#include "lightsys.hpp"
 
 namespace State{
 
@@ -24,6 +25,7 @@ namespace State{
 	{
 		WinCondition winCondition;
 		int value;
+		int itemSpawns;
 
 		std::vector<PlayerInfo> playerInfos;
 	};
@@ -39,6 +41,12 @@ namespace State{
 		virtual void draw(sf::RenderWindow& _window) override;
 		virtual void onActivate() override;
 	private:
+		void gameOver();
+		void processGameOver();
+		bool m_gameOver;
+		int m_gameEndTime;
+		Graphic::LightInfoHandle m_lightInfo;
+
 		int m_gameTime; //in frames
 		Game::World m_world;
 		GameSettings m_gameSettings;

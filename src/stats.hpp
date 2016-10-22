@@ -9,6 +9,8 @@ namespace Stats{
 		Deaths,
 		Kills,
 		Id, //the id is set before sorting
+		ShotsFired,
+		ShotsHit,
 		Count
 		//todo: powerups
 	};

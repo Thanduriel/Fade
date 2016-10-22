@@ -34,7 +34,7 @@ namespace State{
 			m_newState = new State::OptionState(m_window);
 		}));
 		//controls
-		m_gui.emplace_back(new GUI::GuiElement("Controls", left - 100, 500, [&]()
+		m_gui.emplace_back(new GUI::GuiElement("Items", left - 100, 500, [&]()
 		{
 		//	m_newState = new State::OptionState(m_window);
 		}));

@@ -35,10 +35,10 @@ namespace State{
 		sf::Font font;
 		sf::Text title;
 		GUI::Gui m_gui;
-		uint32_t m_state, m_size, m_walls, m_endCondition, m_endValue;
+		uint32_t m_state, m_size, m_walls, m_endCondition, m_endValue, m_itemSpawn;
 		std::vector < sf::String > m_worldSizes, m_nWalls;
 		PlayerContainer m_connectedPlayers;
 		std::vector < sf::Text > m_connectedPlayerNames;
-		sf::Text m_controlsText;
+		sf::Text m_controlsText, m_lobbyControlsText;
 	};
 }

@@ -26,6 +26,8 @@ namespace Game{
 		sf::Vector2f getDistantPosition(float _minDist);
 
 		void spawnItem();
+		//events will spawn [_amount, _amount * 2] items
+		void setItemSpawn(int _amount) { m_itemSpawnFreq = _amount; };
 
 		// removes walls and generates _count new ones
 		// amount is currently limited by the light fragment shader to 3
@@ -44,5 +46,6 @@ namespace Game{
 		std::vector < class Wall* > m_walls;
 		sf::Clock clock;
 		int m_frameCount;
+		int m_itemSpawnFreq;
 	};
 }

@@ -11,6 +11,12 @@
 
 
 //possible choices for the corresponding settings
+
+const std::array<std::string, 4> ITEMSPAWN =
+{
+	"0", "1..2", "2..4", "3..6"
+};
+
 const std::array<std::string, 2> ENDCONDITIONS =
 {
 	"time", "kills"
@@ -18,13 +24,14 @@ const std::array<std::string, 2> ENDCONDITIONS =
 
 const std::array<std::array<int, 4>, 2> ENDVALUE =
 {
-	2, 5, 7, 10,
+	1, 2, 3, 5,
 	1, 3, 5, 11
 };
 enum Button
 {
 	WorldSize,
 	NumWalls,
+	ItemSpawn,
 	EndCondition,
 	EndValue,
 	Play,
@@ -40,7 +47,8 @@ namespace State{
 	LobbyState::LobbyState(sf::RenderWindow& _window) :
 		m_window(_window),
 		m_endCondition(0),
-		m_endValue(0)
+		m_endValue(0),
+		m_itemSpawn(2)
 	{
 		font = *g_resourceManager.getFont("suburbia");
 
@@ -56,29 +64,42 @@ namespace State{
 
 		m_controlsText.setFont(font);
 		m_controlsText.setCharacterSize(50);
-		m_controlsText.setString("A         : use item \nB         : switch light \nlback : shoot");
+		m_controlsText.setString("B         : switch light \nrback : use item \nlback : shoot");
 		m_controlsText.setPosition(g_windowSizeX - 590, g_windowSizeY - 200);
 		m_controlsText.setScale(1., 1.);
 		m_controlsText.setFillColor(sf::Color(150,150,150));
 
+		m_lobbyControlsText.setFont(font);
+		m_lobbyControlsText.setCharacterSize(50);
+		m_lobbyControlsText.setString("start : join game\nX         : change color");
+		m_lobbyControlsText.setPosition(40, g_windowSizeY - 200 + 50);
+		m_lobbyControlsText.setScale(1., 1.);
+		m_lobbyControlsText.setFillColor(sf::Color(150, 150, 150));
+
 		m_gui.reserve(Button::Count);
 
 		//size
-		m_gui.emplace_back(new GUI::ExtGuiElement("World:", left, 300, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("World:", left, 280, [&]()
 		{
 			if (++m_size == m_worldSizes.size())
 				m_size = 0;
 			rescaleView(m_size);
 		}, rightOff));
 		//walls
-		m_gui.emplace_back(new GUI::ExtGuiElement("Walls:", left, 400, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("Walls:", left, 360, [&]()
 		{
 			if (++m_walls == m_nWalls.size())
 				m_walls = 0;
 			Constants::g_numWalls = m_walls * 3;
 		}, rightOff));
+		//item spawns
+		m_gui.emplace_back(new GUI::ExtGuiElement("Item spawns:", left, 440, [&]()
+		{
+			if (++m_itemSpawn == ITEMSPAWN.size())
+				m_itemSpawn = 0;
+		}, rightOff));
 		//end condition
-		m_gui.emplace_back(new GUI::ExtGuiElement("End Condition:	", left, 500, [&]()
+		m_gui.emplace_back(new GUI::ExtGuiElement("End Condition:	", left, 520, [&]()
 		{
 			if (++m_endCondition == ENDCONDITIONS.size())
 				m_endCondition = 0;
@@ -95,6 +116,8 @@ namespace State{
 			GameSettings config;
 			config.winCondition = m_endCondition ? WinCondition::Kills : WinCondition::Time;
 			config.value = ENDVALUE[m_endCondition][m_endValue] * (m_endCondition ? 1 : 60);
+			config.itemSpawns = m_itemSpawn;
+
 			for (auto& player : m_connectedPlayers)
 				if(player.get()) config.playerInfos.emplace_back(player->getCId(), player->getPlayerColor());
 			m_newState = new State::MainState(config, m_connectedPlayers);
@@ -175,6 +198,7 @@ namespace State{
 		_window.draw(title);
 		m_gui.draw(_window);
 		_window.draw(m_controlsText);
+		_window.draw(m_lobbyControlsText);
 
 		for (size_t i = 0; i < m_connectedPlayers.size(); ++i)
 		{
@@ -200,10 +224,11 @@ namespace State{
 
 	void LobbyState::refreshGuiElement()
 	{
-		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[WorldSize].get())->setText2(m_worldSizes[m_size]);
-		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[NumWalls].get())->setText2(m_nWalls[m_walls]);
-		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndCondition].get())->setText2(ENDCONDITIONS[m_endCondition]);
-		reinterpret_cast<GUI::ExtGuiElement*>(m_gui[EndValue].get())->setText2(std::to_string(ENDVALUE[m_endCondition][m_endValue])
+		static_cast<GUI::ExtGuiElement*>(m_gui[WorldSize].get())->setText2(m_worldSizes[m_size]);
+		static_cast<GUI::ExtGuiElement*>(m_gui[NumWalls].get())->setText2(m_nWalls[m_walls]);
+		static_cast<GUI::ExtGuiElement*>(m_gui[ItemSpawn].get())->setText2(ITEMSPAWN[m_itemSpawn]);
+		static_cast<GUI::ExtGuiElement*>(m_gui[EndCondition].get())->setText2(ENDCONDITIONS[m_endCondition]);
+		static_cast<GUI::ExtGuiElement*>(m_gui[EndValue].get())->setText2(std::to_string(ENDVALUE[m_endCondition][m_endValue])
 			+ (m_endCondition ? "" : "min"));
 	}
 

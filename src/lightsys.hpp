@@ -24,6 +24,7 @@ namespace Graphic{
 	class LightInfoHandle
 	{
 	public:
+		LightInfoHandle() : m_lightInfo(nullptr){}
 		//can only be moved
 		LightInfoHandle(LightInfoHandle& _info) = delete;
 		LightInfoHandle& operator=(LightInfoHandle& _info) = delete;

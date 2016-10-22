@@ -23,6 +23,14 @@ namespace State{
 
 		sf::Vector2f basePos = sf::Vector2f(Constants::g_windowSizeX * 0.5f - (_gameSettings.playerInfos.size()-1) * 200.f * 0.5f, 350.f);
 
+		m_headerText.setFont(m_font);
+		m_headerText.setPosition(basePos + sf::Vector2f(-430.f, 80.f));
+		m_headerText.setScale(1.f, 1.f);
+		m_headerText.setColor(sf::Color::White);
+		m_headerText.setCharacterSize(50);
+		m_headerText.setString("\nKills: \nDeaths: \nShots fired: \naccuracy: ");
+
+
 		m_playerStatTexts.resize(_gameSettings.playerInfos.size());
 		for (size_t i = 0; i < m_playerStatTexts.size(); ++i)
 		{
@@ -32,15 +40,21 @@ namespace State{
 				*g_resourceManager.getTexture("player_main.png"), 0));
 			m_players.back()->switchColor(_gameSettings.playerInfos[i].playerColor);
 
+			int shotsFired = g_statManager.Get(i, Stat::ShotsFired);
+
+			static std::string tab = "   ";
+
 			m_playerStatTexts[i].setFont(m_font);
 			m_playerStatTexts[i].setPosition(pos + sf::Vector2f(-75.f, 80.f));
 			m_playerStatTexts[i].setScale(1.f, 1.f);
 			m_playerStatTexts[i].setColor(sf::Color::White);
 			m_playerStatTexts[i].setCharacterSize(50);
-			m_playerStatTexts[i].setString(std::to_string(i) + " : "
-				+ std::to_string(g_statManager.Get(i, Stat::Kills))
-				+ ".."
+			m_playerStatTexts[i].setString(tab + std::to_string(i) + "\n"
+				+ tab + std::to_string(g_statManager.Get(i, Stat::Kills))
+				+ "\n" + tab
 				+ std::to_string(g_statManager.Get(i, Stat::Deaths))
+				+ "\n" + tab + std::to_string(shotsFired)
+				+ "\n" + tab + std::to_string((int)(100.f * g_statManager.Get(i, Stat::ShotsHit) / (float)(shotsFired ? shotsFired : 1)))
 				+ (g_statManager.Get(i, Stat::Kills) == g_statManager.getMax(Stat::Kills) ?
 				"\n\nWINNER!" : ""));
 
@@ -88,6 +102,7 @@ namespace State{
 	void PostState::draw(sf::RenderWindow& _window)
 	{
 		_window.draw(m_title);
+		_window.draw(m_headerText);
 		for (auto& gui : m_gui)
 			gui->draw(_window);
 
