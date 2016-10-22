@@ -28,7 +28,7 @@ namespace State{
 		m_headerText.setScale(1.f, 1.f);
 		m_headerText.setColor(sf::Color::White);
 		m_headerText.setCharacterSize(50);
-		m_headerText.setString("\nKills: \nDeaths: \nShots fired: \naccuracy: ");
+		m_headerText.setString("\nKills: \nDeaths: \nShots fired: \naccuracy: \nitems used: ");
 
 
 		m_playerStatTexts.resize(_gameSettings.playerInfos.size());
@@ -55,6 +55,7 @@ namespace State{
 				+ std::to_string(g_statManager.Get(i, Stat::Deaths))
 				+ "\n" + tab + std::to_string(shotsFired)
 				+ "\n" + tab + std::to_string((int)(100.f * g_statManager.Get(i, Stat::ShotsHit) / (float)(shotsFired ? shotsFired : 1)))
+				+ "\n" + tab + std::to_string(g_statManager.Get(i, Stat::ItemsUsed))
 				+ (g_statManager.Get(i, Stat::Kills) == g_statManager.getMax(Stat::Kills) ?
 				"\n\nWINNER!" : ""));
 

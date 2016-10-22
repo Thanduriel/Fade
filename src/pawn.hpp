@@ -17,6 +17,9 @@ namespace Game{
 		Orange,
 		Blue,
 		Beige,
+		Yellow,
+		Greeen,
+		Red,
 		Count
 	};
 
@@ -27,10 +30,10 @@ namespace Game{
 		sf::Color(20, 220, 120),
 		sf::Color(160, 160, 255),
 		sf::Color(230, 160, 20),
-		sf::Color(225, 225, 200)
-		//	sf::Color(255, 255, 0),
-		//	sf::Color(255, 0, 255),
-		//	sf::Color(0, 255, 255)
+		sf::Color(225, 225, 200),
+		sf::Color::Yellow,
+		sf::Color(0,255,0),
+		sf::Color(255,140,140)
 	};
 
 	class Pawn : public Actor

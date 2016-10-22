@@ -11,6 +11,7 @@ namespace Stats{
 		Id, //the id is set before sorting
 		ShotsFired,
 		ShotsHit,
+		ItemsUsed,
 		Count
 		//todo: powerups
 	};

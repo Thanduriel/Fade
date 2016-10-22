@@ -129,8 +129,9 @@ namespace State{
 	{
 		m_gameOver = true;
 		m_gameEndTime = m_gameTime;
-		m_gameEndSound.play();
+	//	m_gameEndSound.play();
 
+		Graphic::g_lightSystem.setWalls(nullptr, 0);
 		m_lightInfo = Graphic::g_lightSystem.createLight();
 		m_lightInfo->radius = 100.f;
 		m_lightInfo->color = sf::Color(255, 255, 255);

@@ -69,7 +69,7 @@ namespace Game{
 			if (_event.joystickButton.button == 4)
 				m_pawn->altFire();
 			else if (_event.joystickButton.button == 1)
-				m_pawn->setLightState((Pawn::LightState)(m_pawn->lightState()+1 % Pawn::Count));
+				m_pawn->setLightState((Pawn::LightState)((m_pawn->lightState()+1) % Pawn::Count));
 			}
 	}
 

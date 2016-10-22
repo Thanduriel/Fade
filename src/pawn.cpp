@@ -187,6 +187,8 @@ namespace Game{
 		m_item->use();
 		m_item = nullptr;
 		m_soundAltFire.play();
+
+		Stats::g_statManager.Add(m_cid, Stats::ItemsUsed);
 	}
 
 	void Pawn::takeItem(Item& _itm)
