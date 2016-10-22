@@ -50,5 +50,7 @@ namespace State{
 		int m_gameTime; //in frames
 		Game::World m_world;
 		GameSettings m_gameSettings;
+
+		sf::Sound m_gameEndSound;
 	};
 }

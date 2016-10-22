@@ -6,6 +6,7 @@
 #include "camera.hpp"
 #include "constants.hpp"
 #include "stats.hpp"
+#include "resourcemanager.hpp"
 
 namespace State{
 	MainState::MainState(const GameSettings& _gameSettings,
@@ -16,6 +17,8 @@ namespace State{
 		m_gameOver(false)
 	{
 		Stats::g_statManager.Reset();
+
+		m_gameEndSound.setBuffer(*g_resourceManager.getSound("sound_newWorld"));
 
 		m_world.setItemSpawn(_gameSettings.itemSpawns);
 		for (auto& playerInfo : _gameSettings.playerInfos) m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
@@ -126,6 +129,7 @@ namespace State{
 	{
 		m_gameOver = true;
 		m_gameEndTime = m_gameTime;
+		m_gameEndSound.play();
 
 		m_lightInfo = Graphic::g_lightSystem.createLight();
 		m_lightInfo->radius = 100.f;

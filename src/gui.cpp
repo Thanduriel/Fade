@@ -64,6 +64,8 @@ namespace GUI
 	{
 		m_currentElement = begin();
 		(*m_currentElement)->focus();
+
+		m_buttonSound.setBuffer(*g_resourceManager.getSound("sound_item"));
 	}
 
 	void Gui::draw(sf::RenderWindow& _window)
@@ -104,6 +106,7 @@ namespace GUI
 			else if (_event.key.code == sf::Keyboard::Return)
 			{
 				(*m_currentElement)->click();
+				m_buttonSound.play();
 			}
 		}
 		case sf::Event::MouseButtonPressed:
@@ -113,7 +116,10 @@ namespace GUI
 		case sf::Event::JoystickButtonPressed:
 		{
 			if (_event.joystickButton.joystickId == 0 && _event.joystickButton.button == 0)
+			{
 				(*m_currentElement)->click();
+				m_buttonSound.play();
+			}
 			break;
 		}
 		default:
@@ -130,6 +136,7 @@ namespace GUI
 			(*m_currentElement--)->unfocus();
 			(*m_currentElement)->focus();
 		}
+		m_buttonSound.play();
 	}
 
 	void Gui::next()
@@ -137,5 +144,7 @@ namespace GUI
 		(*m_currentElement++)->unfocus();
 		if (m_currentElement == end()) m_currentElement--;
 		(*m_currentElement)->focus();
+
+		m_buttonSound.play();
 	}
 }

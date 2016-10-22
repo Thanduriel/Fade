@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <stdint.h>
 #include <functional>
 #include <vector>
@@ -71,5 +72,7 @@ namespace GUI
 
 	   bool m_controllerMove; //controller y-axis
 	   ElContainer::iterator m_currentElement;
+
+	   sf::Sound m_buttonSound;
    };
 }
