@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
+#include <Windows.h>
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -34,6 +35,11 @@ namespace Stats{
 	StatManager g_statManager;
 }
 
+void ErrorMsg(std::string error, std::string title)
+{
+	MessageBoxA(NULL, error.c_str(), title.c_str(), MB_ICONERROR | MB_OK);
+}
+
 int main()
 {
 	using namespace Game;
@@ -46,6 +52,13 @@ int main()
 	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
 	Constants::g_windowSizeX = desktop.width;
 	Constants::g_windowSizeY = desktop.height;
+
+	if (desktop.width < 1920 || desktop.height < 1080) ErrorMsg("Warning: Resolutions bellow full hd are not fully supported.", "");
+	else
+	{
+		Constants::g_windowSizeX = 1920;
+		Constants::g_windowSizeY = 1080;
+	}
 	Graphic::g_lightSystem.refreshSize();
 #ifdef _DEBUG
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
@@ -108,10 +121,24 @@ int main()
 
 		//couts fps
 		static int c = 0;
+		static int lowFrames = 0;
+		static bool messageShown = false;
 		++c;
 		if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) 
 		{
 			window.setTitle(std::to_string(c));
+			
+			if (c < 50)
+			{
+				lowFrames++;
+				if (lowFrames > 5 && !messageShown)
+				{
+					ErrorMsg("Warning: Low frame rate detected. Try a larger map or fewer walls to improve performance.", "");
+					messageShown = true;
+				}
+			}
+			else lowFrames = 0;
+
 			frameTimeClock.restart();
 			c = 0;
 		}
