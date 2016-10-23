@@ -81,7 +81,7 @@ int main()
 		clock.restart();
 		if (track->getStatus() == sf::Music::Status::Playing && states.size() > 2)
 			track->stop();
-		else if (track->getStatus() == sf::Music::Status::Stopped && states.size() < 3)
+		else if (track->getStatus() == sf::Music::Status::Stopped && states.size() < 2)
 			track->play();
 
 		Game::GameState& state = *states.back();

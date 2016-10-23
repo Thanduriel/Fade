@@ -138,7 +138,7 @@ namespace State{
 
 		m_nWalls.push_back("None");
 		m_nWalls.push_back("Few");
-		m_nWalls.push_back("Moderate");
+		m_nWalls.push_back("Some");
 		m_nWalls.push_back("Many");
 		m_walls = 0;
 
@@ -160,7 +160,7 @@ namespace State{
 		refreshGuiElement();
 
 		//test
-		for (int i = 1; i < 5; ++i) switchPlayer(i);
+	//	for (int i = 1; i < 5; ++i) switchPlayer(i);
 	}
 
 	void LobbyState::process()

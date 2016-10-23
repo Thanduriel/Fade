@@ -29,23 +29,23 @@ namespace State{
 			m_newState = new State::LobbyState(m_window);
 		}));
 		//options
-		m_gui.emplace_back(new GUI::GuiElement("Options", left - 100, 400, [&]()
+		m_gui.emplace_back(new GUI::GuiElement("Items", left - 100, 400, [&]()
 		{
 			m_newState = new State::OptionState(m_window);
 		}));
 		//controls
-		m_gui.emplace_back(new GUI::GuiElement("Items", left - 100, 500, [&]()
+	/*	m_gui.emplace_back(new GUI::GuiElement("Items", left - 100, 500, [&]()
 		{
 		//	m_newState = new State::OptionState(m_window);
-		}));
+		}));*/
 
 		//credits
-		m_gui.emplace_back(new GUI::GuiElement("Credits", left - 100, 600, [&]()
+		m_gui.emplace_back(new GUI::GuiElement("Credits", left - 100, 500, [&]()
 		{
 			m_newState = new State::CreditState();
 		}));
 		//quit
-		m_gui.emplace_back(new GUI::GuiElement("Quit", left - 100, 700, [&]()
+		m_gui.emplace_back(new GUI::GuiElement("Quit", left - 100, 600, [&]()
 		{
 			m_finished = true;
 		}));
