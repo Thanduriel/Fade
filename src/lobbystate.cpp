@@ -160,7 +160,7 @@ namespace State{
 		refreshGuiElement();
 
 		//test
-	//	for (int i = 1; i < 5; ++i) switchPlayer(i);
+		for (int i = 1; i < 3; ++i) switchPlayer(i);
 	}
 
 	void LobbyState::process()

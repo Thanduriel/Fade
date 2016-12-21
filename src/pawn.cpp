@@ -5,6 +5,7 @@
 #include "constants.hpp"
 #include "lightsys.hpp"
 #include "stats.hpp"
+#include <Windows.h>
 
 using namespace sf;
 
@@ -17,12 +18,13 @@ namespace Game{
 		m_fadeFactor(Constants::c_playerBaseFadeFactor),
 		m_alpha(1.f),
 		m_cdMax(Constants::c_baseReloadSpeed),//130
+		m_cd(m_cdMax),
 		m_damage(16.f),
 		m_item(nullptr),
 		m_projType(ProjType::Standard),
 		m_speedFactor(1.f),
 		m_lightState(Pawn::OnlyFire),
-		m_ammo(5),
+		m_ammo(Constants::c_fastReloadCount),
 		m_playerColor(PlayerColor::White)
 	{
 		m_isStatic = false;
@@ -58,14 +60,14 @@ namespace Game{
 	// ************************************************ //
 	void Pawn::process()
 	{
-		if (m_isDead)
+	/*	if (m_isDead)
 		{
-			if (alphaVal() < 0.1f)
+			if (alphaVal() < Constants::c_deathTreshhold)
 			{
 				destroy();
 			}
 			return;
-		}
+		}*/
 
 
 		Actor::process();
@@ -146,7 +148,7 @@ namespace Game{
 
 	void Pawn::onDeath()
 	{
-		m_soundExplode.play();
+		m_soundExplode.play(); 
 		//red circle
 		m_alpha = 1.f;
 		m_fadeFactor = Constants::c_playerBaseFadeFactor + 0.019f;
@@ -155,6 +157,8 @@ namespace Game{
 		m_lightInfo->color.b = 50;
 		m_canCollide = false;
 		m_lightState = Off;
+
+		m_velocity = Vector2f(0.f, 0.f);
 
 		Stats::g_statManager.Add(m_cid, Stats::Deaths);
 		Stats::g_statManager.Add(m_lastHitId, Stats::Kills);
@@ -173,7 +177,7 @@ namespace Game{
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
 			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
-				dir, m_projType, m_cid);
+ 				dir, m_projType, m_cid);
 			m_soundFire.play();
 
 			--m_ammo;

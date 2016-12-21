@@ -8,13 +8,13 @@ namespace Game{
 	class Controller
 	{
 	public:
-		Controller() : m_playerColor(PlayerColor::White) {}
+		Controller() : m_playerColor(PlayerColor::White), m_pawn(nullptr) {}
 
 		virtual void process(){};
 		virtual void processEvent(sf::Event& _event){};
 
 		void possess(Pawn* _pawn) { m_pawn = _pawn; }
-		bool hasPawn() { return m_pawn != 0; }
+		bool hasPawn() { return m_pawn != nullptr; }
 		Pawn* getPawn() { return m_pawn; }
 		uint32_t getId() { return m_id; }
 

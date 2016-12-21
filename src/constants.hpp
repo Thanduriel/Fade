@@ -18,6 +18,7 @@ namespace Constants{
 	const float c_projectileRadius = 5.f;
 	const float c_fastReloadCount = 7.f; // amount of ammo reloaded before it diminishes; only int values make sence
 	const int	c_baseReloadSpeed = 40; // time for one fast reload projectile in frames
+	const float c_deathTreshhold = 0.05f;
 
 	const int c_wallThickness = 25;
 	const int c_wallMaxLength = 500;

@@ -2,6 +2,7 @@
 #include "math.hpp"
 #include "constants.hpp"
 #include "utils.hpp"
+#include <Windows.h>
 
 #include <iostream>
 using namespace sf;
@@ -14,8 +15,11 @@ namespace Game{
 
 		if (m_pawn->isDead())
 		{
-			if (m_pawn->alphaVal() < 0.0001f)
+			if (m_pawn->alphaVal() < Constants::c_deathTreshhold)
+			{
+				m_pawn->destroy();
 				m_pawn = nullptr;
+			}
 			return;
 		}
 

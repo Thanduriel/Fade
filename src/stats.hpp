@@ -12,6 +12,7 @@ namespace Stats{
 		ShotsFired,
 		ShotsHit,
 		ItemsUsed,
+		IsActive, // is this id in use
 		Count
 		//todo: powerups
 	};

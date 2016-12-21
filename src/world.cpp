@@ -46,8 +46,8 @@ namespace Game{
 		}*/
 
 #ifdef _DEBUG
-		addNewPlayer(-1, Game::PlayerColor::White);
-		addNewPlayer(0, Game::PlayerColor::Blue);
+//		addNewPlayer(-1, Game::PlayerColor::White);
+//		addNewPlayer(0, Game::PlayerColor::Blue);
 #endif
 		//test stuff
 		/*

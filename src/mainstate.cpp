@@ -21,7 +21,11 @@ namespace State{
 		m_gameEndSound.setBuffer(*g_resourceManager.getSound("sound_newWorld"));
 
 		m_world.setItemSpawn(_gameSettings.itemSpawns);
-		for (auto& playerInfo : _gameSettings.playerInfos) m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
+		for (auto& playerInfo : _gameSettings.playerInfos)
+		{
+			m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
+			Stats::g_statManager.Add(playerInfo.cid, Stats::Stat::IsActive);
+		}
 	}
 
 	void MainState::process()

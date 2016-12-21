@@ -50,18 +50,19 @@ int main()
     track->play();
 
 	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
-	Constants::g_windowSizeX = desktop.width;
-	Constants::g_windowSizeY = desktop.height;
 
 	if (desktop.width < 1920 || desktop.height < 1080) ErrorMsg("Warning: Resolutions bellow full hd are not fully supported.", "");
 	else
 	{
-		Constants::g_windowSizeX = 1920;
-		Constants::g_windowSizeY = 1080;
+		desktop.width = 1920;
+		desktop.height = 1080;
 	}
+	Constants::g_windowSizeX = desktop.width;
+	Constants::g_windowSizeY = desktop.height;
+
 	Graphic::g_lightSystem.refreshSize();
 #ifdef _DEBUG
-	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
+	sf::RenderWindow window(desktop, "Fade", sf::Style::Default); //::Default
 #else
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Fullscreen);
 #endif
@@ -131,7 +132,7 @@ int main()
 			if (c < 50)
 			{
 				lowFrames++;
-				if (lowFrames > 5 && !messageShown)
+				if (lowFrames > 6 && !messageShown)
 				{
 					ErrorMsg("Warning: Low frame rate detected. Try a larger map or fewer walls to improve performance.", "");
 					messageShown = true;
