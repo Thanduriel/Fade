@@ -50,7 +50,7 @@ namespace State{
 		m_endValue(0),
 		m_itemSpawn(2)
 	{
-		font = *g_resourceManager.getFont("suburbia");
+		font = *g_resourceManager->getFont("suburbia");
 
 		uint32_t left = Constants::g_windowSizeX / 2 - 450;
 		Vector2f rightOff = Vector2f(600.f, 0.f);
@@ -58,22 +58,22 @@ namespace State{
 		title.setFont(font);
 		title.setCharacterSize(200);
 		title.setString("FADE");
-		title.setPosition(left + 150, 50);
-		title.setScale(1., 1.);
-		title.setColor(sf::Color::White);
+		title.setPosition(sf::Vector2f(left + 150.f, 50.f));
+		title.setScale(sf::Vector2f(1.f, 1.f));
+		title.setFillColor(sf::Color::White);
 
 		m_controlsText.setFont(font);
 		m_controlsText.setCharacterSize(50);
 		m_controlsText.setString("B         : switch light \nrback : use item \nlback : shoot");
-		m_controlsText.setPosition(g_windowSizeX - 590, g_windowSizeY - 200);
-		m_controlsText.setScale(1., 1.);
+		m_controlsText.setPosition(sf::Vector2f(g_windowSizeX - 590.f, g_windowSizeY - 200.f));
+		m_controlsText.setScale(sf::Vector2f(1.f, 1.f));
 		m_controlsText.setFillColor(sf::Color(150,150,150));
 
 		m_lobbyControlsText.setFont(font);
 		m_lobbyControlsText.setCharacterSize(50);
 		m_lobbyControlsText.setString("start : join game\nX         : change color");
-		m_lobbyControlsText.setPosition(40, g_windowSizeY - 200 + 50);
-		m_lobbyControlsText.setScale(1., 1.);
+		m_lobbyControlsText.setPosition(sf::Vector2f(40.f, g_windowSizeY - 200.f + 50.f));
+		m_lobbyControlsText.setScale(sf::Vector2f(1.f, 1.f));
 		m_lobbyControlsText.setFillColor(sf::Color(150, 150, 150));
 
 		m_gui.reserve(Button::Count);
@@ -148,11 +148,12 @@ namespace State{
 		m_connectedPlayerNames.resize(8);
 		for (size_t i = 0; i < m_connectedPlayerNames.size(); ++i)
 		{
-			if (sf::Joystick::isConnected(i)) switchPlayer(i);
+			if (sf::Joystick::isConnected(static_cast<unsigned>(i))) 
+				switchPlayer(static_cast<int>(i));
 
 			m_connectedPlayerNames[i].setString(std::to_string(i));
-			m_connectedPlayerNames[i].setPosition(calcScreenPos(i) + sf::Vector2f(60.f, -38.f));
-			m_connectedPlayerNames[i].setScale(1.f, 1.f);
+			m_connectedPlayerNames[i].setPosition(calcScreenPos(static_cast<int>(i)) + sf::Vector2f(60.f, -38.f));
+			m_connectedPlayerNames[i].setScale(sf::Vector2f(1.f, 1.f));
 			m_connectedPlayerNames[i].setFillColor(sf::Color::Cyan);
 			m_connectedPlayerNames[i].setFont(font);
 			m_connectedPlayerNames[i].setCharacterSize(76);
@@ -244,7 +245,7 @@ namespace State{
 		else
 		{
 			m_connectedPlayers[_cid] = std::make_unique<Game::Pawn>(calcScreenPos(_cid),
-				*g_resourceManager.getTexture("player_main.png"), _cid);
+				*g_resourceManager->getTexture("player_main.png"), _cid);
 		}
 	}
 }

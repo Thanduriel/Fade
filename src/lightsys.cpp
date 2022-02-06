@@ -7,8 +7,8 @@
 
 using namespace sf;
 
-namespace Graphic{
-	LightSystem g_lightSystem;
+namespace Graphic {
+	std::unique_ptr<LightSystem> g_lightSystem = nullptr;
 
 	void LightInfo::setPosition(const sf::Vector2f& _vec)
 	{
@@ -49,6 +49,7 @@ namespace Graphic{
 	LightSystem::LightSystem():
 		m_vertices(Points)
 	{
+		g_resourceManager->getShader("light", true);
 	}
 
 	LightInfoHandle LightSystem::createLight()
@@ -71,7 +72,7 @@ namespace Graphic{
 		m_offScreen.clear();
 
 		sf::RenderStates states;
-		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
+		Shader* shader = g_resourceManager->getShader(DefaultShader::Light);
 		states.shader = shader;
 
 		//every light is encoded in one point vertex
@@ -100,12 +101,13 @@ namespace Graphic{
 
 	void LightSystem::refreshSize()
 	{
-		m_offScreen.create(Constants::g_windowSizeX, Constants::g_windowSizeY);
+		if (!m_offScreen.create(Constants::g_windowSizeX, Constants::g_windowSizeY))
+			std::cerr << "Could not create the frame buffer\n";
 
-		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
+		Shader* shader = g_resourceManager->getShader(DefaultShader::Light);
 
-		shader->setParameter("windowSizeX", Constants::g_windowSizeX);
-		shader->setParameter("windowSizeY", Constants::g_windowSizeY);
+		shader->setUniform("windowSizeX", static_cast<float>(Constants::g_windowSizeX));
+		shader->setUniform("windowSizeY", static_cast<float>(Constants::g_windowSizeY));
 	}
 
 	void LightSystem::setWalls(sf::Glsl::Vec2* _arr, size_t _size, float _worldToScreenRatio)
@@ -116,8 +118,9 @@ namespace Graphic{
 			_arr[i] *= _worldToScreenRatio;
 			_arr[i].y = Constants::g_windowSizeY - _arr[i].y;
 		}
-		Shader* shader = g_resourceManager.getShader(DefaultShader::Light);
-		if(_size)shader->setUniformArray("wallInfos", _arr, _size);
+		Shader* shader = g_resourceManager->getShader(DefaultShader::Light);
+		if(_size)
+			shader->setUniformArray("wallInfos", _arr, _size);
 		shader->setUniform("numWalls_x3", (int)_size);
 	}
 }

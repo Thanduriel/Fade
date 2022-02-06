@@ -8,7 +8,7 @@ namespace Game{
 	class Controller
 	{
 	public:
-		Controller() : m_playerColor(PlayerColor::White), m_pawn(nullptr) {}
+		Controller() : m_playerColor(PlayerColor::White), m_pawn(nullptr), m_id(-1) {}
 
 		virtual void process(){};
 		virtual void processEvent(sf::Event& _event){};

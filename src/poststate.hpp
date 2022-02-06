@@ -10,7 +10,7 @@ namespace State
 	class PostState : public Game::GameState
 	{
 	public:
-		PostState(const class GameSettings& _gameSettings);
+		PostState(const struct GameSettings& _gameSettings);
 
 		virtual void process() override;
 		virtual void processEvents(sf::Event& _event);

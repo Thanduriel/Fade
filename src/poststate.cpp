@@ -10,23 +10,23 @@ using namespace Stats;
 namespace State{
 	PostState::PostState(const GameSettings& _gameSettings)
 	{
-		m_font = *g_resourceManager.getFont("suburbia");
+		m_font = *g_resourceManager->getFont("suburbia");
 
-		uint32_t left = Constants::g_windowSizeX / 2 - 600;
+		const uint32_t left = Constants::g_windowSizeX / 2 - 600;
 
 		m_title.setFont(m_font);
 		m_title.setCharacterSize(200);
 		m_title.setString("game over");
-		m_title.setPosition(left, 50);
-		m_title.setScale(1., 1.);
-		m_title.setColor(sf::Color::White);
+		m_title.setPosition(sf::Vector2f(static_cast<float>(left), 50.f));
+		m_title.setScale(sf::Vector2f(1.f, 1.f));
+		m_title.setFillColor(sf::Color::White);
 
 		sf::Vector2f basePos = sf::Vector2f(Constants::g_windowSizeX * 0.5f - (_gameSettings.playerInfos.size()-1) * 200.f * 0.5f, 350.f);
 
 		m_headerText.setFont(m_font);
 		m_headerText.setPosition(basePos + sf::Vector2f(-430.f, 80.f));
-		m_headerText.setScale(1.f, 1.f);
-		m_headerText.setColor(sf::Color::White);
+		m_headerText.setScale(sf::Vector2f(1.f, 1.f));
+		m_headerText.setFillColor(sf::Color::White);
 		m_headerText.setCharacterSize(50);
 		m_headerText.setString("\nKills: \nDeaths: \nShots fired: \naccuracy: \nitems used: ");
 
@@ -38,7 +38,7 @@ namespace State{
 			sf::Vector2f pos(i * 200.f, 0.f);
 			pos += basePos;
 			m_players.emplace_back(std::make_unique<Game::Pawn>(pos,
-				*g_resourceManager.getTexture("player_main.png"), 0));
+				*g_resourceManager->getTexture("player_main.png"), 0));
 			m_players.back()->switchColor(_gameSettings.playerInfos[i].playerColor);
 
 			int shotsFired = g_statManager.Get(id, Stat::ShotsFired);
@@ -47,8 +47,8 @@ namespace State{
 
 			m_playerStatTexts[i].setFont(m_font);
 			m_playerStatTexts[i].setPosition(pos + sf::Vector2f(-75.f, 80.f));
-			m_playerStatTexts[i].setScale(1.f, 1.f);
-			m_playerStatTexts[i].setColor(sf::Color::White);
+			m_playerStatTexts[i].setScale(sf::Vector2f(1.f, 1.f));
+			m_playerStatTexts[i].setFillColor(sf::Color::White);
 			m_playerStatTexts[i].setCharacterSize(50);
 			m_playerStatTexts[i].setString(tab + std::to_string(i) + "\n"
 				+ tab + std::to_string(g_statManager.Get(id, Stat::Kills))
@@ -61,7 +61,7 @@ namespace State{
 				"\n\nWINNER!" : ""));
 
 			if (g_statManager.Get(id, Stat::Kills) == g_statManager.getMax(Stat::Kills))
-				m_playerStatTexts[i].setColor(sf::Color::Green);
+				m_playerStatTexts[i].setFillColor(sf::Color::Green);
 		}
 	}
 
@@ -79,7 +79,7 @@ namespace State{
 		{
 			if (_event.key.code == sf::Keyboard::Escape)
 				m_finished = true;
-			else if (_event.key.code == sf::Keyboard::Return)
+			else if (_event.key.code == sf::Keyboard::Enter)
 				m_finished = true;
 
 			break;

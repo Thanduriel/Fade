@@ -12,16 +12,16 @@ namespace State{
 	MenuState::MenuState(sf::RenderWindow& _window)
 		: m_window(_window)
     {
-        font = *g_resourceManager.getFont("suburbia");
+        font = *g_resourceManager->getFont("suburbia");
 
-		uint32_t left = Constants::g_windowSizeX / 2 - 100;
+		const uint32_t left = Constants::g_windowSizeX / 2 - 100;
 
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(left-200,50);
-        title.setScale(1., 1.);
-        title.setColor(sf::Color::White);
+        title.setPosition(sf::Vector2f(left-200.f,50.f));
+        title.setScale(sf::Vector2f(1.f, 1.f));
+        title.setFillColor(sf::Color::White);
 
 		//play
 		m_gui.emplace_back(new GUI::GuiElement("Play", left - 100, 300, [&]()

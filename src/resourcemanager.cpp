@@ -1,11 +1,10 @@
 #include "resourcemanager.hpp"
 #include "config.hpp"
 
-ResourceManager g_resourceManager;
+std::unique_ptr<ResourceManager> g_resourceManager = nullptr;
 
 ResourceManager::ResourceManager()
 {
-	 getShader("light", true);
 }
 
 

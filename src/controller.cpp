@@ -34,15 +34,13 @@ namespace Game{
 				m_fireCd = 12;
 			}
 
-			Vector2f jDir;
-			jDir.x = sf::Joystick::getAxisPosition(m_id, sf::Joystick::X);
-			jDir.y = sf::Joystick::getAxisPosition(m_id, sf::Joystick::Y);
+			const Vector2f jDir(sf::Joystick::getAxisPosition(m_id, sf::Joystick::X),
+				sf::Joystick::getAxisPosition(m_id, sf::Joystick::Y));
 
-			Vector2f lookDir;
-			lookDir.x = sf::Joystick::getAxisPosition(m_id, sf::Joystick::U);
-			lookDir.y = sf::Joystick::getAxisPosition(m_id, sf::Joystick::R);
+			const Vector2f lookDir(sf::Joystick::getAxisPosition(m_id, sf::Joystick::U),
+				sf::Joystick::getAxisPosition(m_id, sf::Joystick::V));
 
-			m_pawn->setDirAngle(atan2(lookDir.y, lookDir.x));
+			m_pawn->setDirAngle(std::atan2(lookDir.y, lookDir.x));
 
 			if (abs(jDir.x) > 40.f || abs(jDir.y) > 40.f)
 				movDir = normalize(jDir);

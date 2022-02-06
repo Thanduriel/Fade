@@ -12,13 +12,14 @@ namespace State{
 	MainState::MainState(const GameSettings& _gameSettings,
 		const std::vector < std::unique_ptr< Game::Pawn >>& _players) :
 		m_gameSettings(_gameSettings),
+		m_gameEndTime(0),
 		m_gameTime(0),
 		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY),
 		m_gameOver(false)
 	{
 		Stats::g_statManager.Reset();
 
-		m_gameEndSound.setBuffer(*g_resourceManager.getSound("sound_newWorld"));
+		m_gameEndSound.setBuffer(*g_resourceManager->getSound("sound_newWorld"));
 
 		m_world.setItemSpawn(_gameSettings.itemSpawns);
 		for (auto& playerInfo : _gameSettings.playerInfos)
@@ -119,7 +120,7 @@ namespace State{
 		
 		//lightsystem is drawn in screen space
 		//thus it changes the view to defaultView!
-		Graphic::g_lightSystem.draw(_window);
+		Graphic::g_lightSystem->draw(_window);
 	}
 
 	using namespace Constants;
@@ -135,8 +136,8 @@ namespace State{
 		m_gameEndTime = m_gameTime;
 	//	m_gameEndSound.play();
 
-		Graphic::g_lightSystem.setWalls(nullptr, 0);
-		m_lightInfo = Graphic::g_lightSystem.createLight();
+		Graphic::g_lightSystem->setWalls(nullptr, 0);
+		m_lightInfo = Graphic::g_lightSystem->createLight();
 		m_lightInfo->radius = 100.f;
 		m_lightInfo->color = sf::Color(255, 255, 255);
 		m_lightInfo->position = sf::Vector2f(0.f, 0.f);

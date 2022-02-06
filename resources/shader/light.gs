@@ -6,6 +6,8 @@ uniform float windowSizeY;
 uniform vec2 wallInfos[27];
 uniform int numWalls_x3;
 
+in vec4 vs_out_LightColor[1];
+
 out vec2 simpleWallInfos[27];
 out vec2 gs_out_LightPosition;
 out vec4 gs_out_LightColor;
@@ -38,10 +40,10 @@ void main()
 {
 	float ratio = windowSizeX / windowSizeY;
 	
-    // Retrieve the passed vertex position
-    vec2 pos = gl_in[0].gl_Position.xy;
+	// Retrieve the passed vertex position
+	vec2 pos = gl_in[0].gl_Position.xy;
 	gs_out_LightPosition = toWindowSpace(pos);
-	gs_out_LightColor = gl_in[0].gl_FrontColor;
+	gs_out_LightColor = vs_out_LightColor[0];//gl_in[0].gl_FrontColor;
 	
 	float radius = gl_in[0].gl_TexCoord[0].x;
 	gs_out_lightRadius = radius;
@@ -89,23 +91,23 @@ void main()
 		}
 	}
 	
-    // Bottom left vertex
-    gl_Position = vec4(-radius, -radius, 0.f, 1.f); gl_Position.y *= ratio;
+	// Bottom left vertex
+	gl_Position = vec4(-radius, -radius, 0.f, 1.f); gl_Position.y *= ratio;
 	gl_Position += vec4(pos, 0.f, 0.f);
-    EmitVertex();
+	EmitVertex();
 		
 	gl_Position = vec4(radius, -radius, 0.f, 1.f); gl_Position.y *= ratio;
 	gl_Position += vec4(pos, 0.f, 0.f);
-    EmitVertex();
+	EmitVertex();
 
 	gl_Position = vec4(-radius, radius, 0.f, 1.f); gl_Position.y *= ratio;
 	gl_Position += vec4(pos, 0.f, 0.f);
-    EmitVertex();
+	EmitVertex();
 
 	gl_Position = vec4(radius, radius, 0.f, 1.f); gl_Position.y *= ratio;
 	gl_Position += vec4(pos, 0.f, 0.f);
-    EmitVertex();	
+	EmitVertex();	
 		
-    // And finalize the primitive
-    EndPrimitive();
+	// And finalize the primitive
+	EndPrimitive();
 }

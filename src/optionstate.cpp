@@ -30,7 +30,7 @@ namespace State{
 	OptionState::OptionState(sf::RenderWindow& _window) :
 		m_window(_window)
     {
-        font = *g_resourceManager.getFont("suburbia");
+        font = *g_resourceManager->getFont("suburbia");
 
         uint32_t left = Constants::g_windowSizeX / 2 - 450;
 		Vector2f rightOff = Vector2f(600.f, 0.f);
@@ -38,9 +38,9 @@ namespace State{
         title.setFont(font);
         title.setCharacterSize(200);
         title.setString("FADE");
-        title.setPosition(left + 150,50);
-        title.setScale(1., 1.);
-        title.setColor(sf::Color::White);
+        title.setPosition(sf::Vector2f(left + 150.f,50.f));
+        title.setScale(sf::Vector2f(1.f, 1.f));
+        title.setFillColor(sf::Color::White);
 		
 
 
@@ -58,7 +58,7 @@ namespace State{
 			m_itemTexts[i].setString(DESCRIPTIONS[i]);
 			m_itemTexts[i].setCharacterSize(40);
 			m_itemTexts[i].setPosition(m_items[i]->position() + Vector2f(50.f, -56.f * 0.5f));
-			m_itemTexts[i].setScale(1.f, 1.f);
+			m_itemTexts[i].setScale(sf::Vector2f(1.f, 1.f));
 			m_itemTexts[i].setFillColor(sf::Color::White);
 			m_itemTexts[i].setFont(font);
 		}

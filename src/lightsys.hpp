@@ -8,7 +8,7 @@ namespace Graphic{
 
 	struct LightInfo
 	{
-		LightInfo() : isInUse(false){}
+		LightInfo() : isInUse(false), radius(0.f) {}
 		void setPosition(const sf::Vector2f& _vec);
 		sf::Color color;
 		sf::Vector2f position;
@@ -28,7 +28,7 @@ namespace Graphic{
 		//can only be moved
 		LightInfoHandle(LightInfoHandle& _info) = delete;
 		LightInfoHandle& operator=(LightInfoHandle& _info) = delete;
-		LightInfoHandle& operator=(LightInfoHandle&& _info)
+		LightInfoHandle& operator=(LightInfoHandle&& _info) noexcept
 		{
 			m_lightInfo = _info.m_lightInfo;
 			_info.m_lightInfo = nullptr;
@@ -66,5 +66,5 @@ namespace Graphic{
 		sf::VertexArray m_vertices;
 	};
 
-	extern LightSystem g_lightSystem;
+	extern std::unique_ptr<LightSystem> g_lightSystem;
 }

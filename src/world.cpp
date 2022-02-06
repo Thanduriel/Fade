@@ -17,17 +17,18 @@ namespace Game{
 
 	World::World(int _sizeX, int _sizeY)
 	{
-		Texture* texture = g_resourceManager.getTexture("ground.png");
+		Texture* texture = g_resourceManager->getTexture("ground.png");
 		texture->setRepeated(true);
 		m_ground.setTexture(*texture);
 
 		using namespace Constants;
-		resize(g_worldScale * g_windowSizeX, g_worldScale * g_windowSizeY);
+		resize(static_cast<int>(g_worldScale * g_windowSizeX), 
+			static_cast<int>(g_worldScale * g_windowSizeY));
 		generateWalls(g_numWalls);
 
 		// m_gameObjects[0] should always be a dummy that objects can collide with 
 		// when reaching the map boundaries
-		m_collisionDummy = std::make_unique<Actor>(Vector2f(-100.f, -100.f), *g_resourceManager.getTexture("wall.png"));
+		m_collisionDummy = std::make_unique<Actor>(Vector2f(-100.f, -100.f), *g_resourceManager->getTexture("wall.png"));
 
 		// determine number of connected joysticks/gamepads with Axis
 	/*	for (uint32_t i(0); i<5; i++)
@@ -165,9 +166,9 @@ namespace Game{
 		m_ground.setTextureRect(rect);
 
 		//center camera on the world
-		Graphic::g_camera.setCenter((float)_sizeX*0.5f, (float)_sizeY * 0.5f);
+		Graphic::g_camera.setCenter(sf::Vector2f(_sizeX*0.5f, _sizeY * 0.5f));
 		//
-		//Graphic::g_lightSystem.resize();
+		//Graphic::g_lightSystem->resize();
 
 	}
 
@@ -179,8 +180,8 @@ namespace Game{
 		sf::Vector2f pos;
 		bool isValid;
 		do{
-			pos.x = util::rand(m_sizeX - 50, 50);
-			pos.y = util::rand(m_sizeY - 50, 50);
+			pos.x = static_cast<float>(util::rand(m_sizeX - 50, 50));
+			pos.y = static_cast<float>(util::rand(m_sizeY - 50, 50));
 
 			isValid = true;
 			for (auto& actor : m_gameObjects)
@@ -218,22 +219,27 @@ namespace Game{
 		m_walls.clear();
 		m_wallInfos.clear();
 		m_wallInfos.reserve(_count * 3);
+
+		const float wallThickness = Constants::c_wallThickness;
 		for (int i = 0; i < _count; ++i)
 		{
-			Vector2f size;
+			Vector2f size(wallThickness, 
+				static_cast<float>(util::rand(c_wallMaxLength, c_wallMinLength)));
+			Vector2i sizeHalf(static_cast<int>(size.x / 2), static_cast<int>(size.y / 2));
+
 			Vector2f center;
 			const int playerSize = 54; // a player should fit between the wall and the map borders
 			if (i % 2/*util::rand(1)*/)
 			{
-				size = Vector2f((float)Constants::c_wallThickness, (float)util::rand(c_wallMaxLength, c_wallMinLength));
-				center = Vector2f(util::rand(m_sizeX - (int)size.x / 2 - playerSize, (int)size.x / 2 + playerSize),
-					util::rand(m_sizeY - (int)size.y / 2, (int)size.y / 2));
+				center = Vector2f(static_cast<float>(util::rand(m_sizeX - sizeHalf.x - playerSize, sizeHalf.x + playerSize)),
+					static_cast<float>(util::rand(m_sizeY - sizeHalf.y, sizeHalf.y)));
 			}
 			else
 			{
-				size = Vector2f((float)util::rand(c_wallMaxLength, c_wallMinLength), (float)c_wallThickness);
-				center = Vector2f(util::rand(m_sizeX - (int)size.x / 2, (int)size.x / 2),
-					util::rand(m_sizeY - (int)size.y / 2 - playerSize, (int)size.y / 2 + playerSize));
+				size = Vector2f(size.y, size.x);
+				sizeHalf = Vector2i(sizeHalf.y, sizeHalf.x);
+				center = Vector2f(static_cast<float>(util::rand(m_sizeX - sizeHalf.x, sizeHalf.x)),
+					static_cast<float>(util::rand(m_sizeY - sizeHalf.y - playerSize, sizeHalf.y + playerSize)));
 			}
 
 			Wall* wall = new Wall(center, size);
@@ -244,7 +250,7 @@ namespace Game{
 			m_wallInfos.push_back(center); // center
 		}
 
-		Graphic::g_lightSystem.setWalls(m_wallInfos.data(), m_wallInfos.size(), (float)Constants::g_windowSizeX / (float)m_sizeX);
+		Graphic::g_lightSystem->setWalls(m_wallInfos.data(), m_wallInfos.size(), (float)Constants::g_windowSizeX / (float)m_sizeX);
 	}
 
 	// *************************************************** //
@@ -253,7 +259,7 @@ namespace Game{
 	{
 		sf::Vector2f pos = getDistantPosition(50.f);
 
-		Item* item;
+		Item* item = nullptr;
 		switch (util::rand(6))
 		{
 		case 0: item = new Mine(pos); break;
@@ -274,7 +280,7 @@ namespace Game{
 	Pawn* World::spawnPlayer(int _cid)
 	{
 		Pawn* player = new Pawn(getDistantPosition(200.f),
-			*g_resourceManager.getTexture("player_main.png"), _cid);
+			*g_resourceManager->getTexture("player_main.png"), _cid);
 		m_gameObjects.emplace_back(player);
 
 		return player;

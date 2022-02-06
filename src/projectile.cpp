@@ -10,10 +10,10 @@ namespace Game{
 	ProjectileFactory g_projectileFactory;
 
 	Projectile::Projectile(const sf::Vector2f& _pos, const sf::Vector2f& _vel, float _dmg, int _cid):
-		Actor(_pos, *g_resourceManager.getTexture("projectile.png"), _cid),
+		Actor(_pos, *g_resourceManager->getTexture("projectile.png"), _cid),
 		m_damage(_dmg),
 		m_lifeTime(360),
-		m_lightInfo(Graphic::g_lightSystem.createLight())
+		m_lightInfo(Graphic::g_lightSystem->createLight())
 	{
 		m_isStatic = false;
 		m_isDead = true;

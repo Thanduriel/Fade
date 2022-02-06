@@ -29,9 +29,10 @@ namespace Stats{
 
 		int getMax(Stat _stat) { int max = 0; for (auto& st : m_playerStats) if (st[_stat] > max) max = st[_stat]; return max; }
 
-		int getPlayerCount(){ return m_playerStats.size(); }
+		int getPlayerCount(){ return static_cast<int>(m_playerStats.size()); }
 		void sort(Stat _pred) {
-			for (size_t i = 0; i < m_playerStats.size(); ++i) m_playerStats[i][Stat::Id] = i;
+			for (size_t i = 0; i < m_playerStats.size(); ++i) 
+				m_playerStats[i][Stat::Id] = static_cast<int>(i);
 			std::sort(m_playerStats.begin(), m_playerStats.end(),
 				[=](const PlayerStat& _first, const PlayerStat& _second){return _first[_pred] < _second[_pred]; });
 		}

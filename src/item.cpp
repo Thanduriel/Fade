@@ -10,7 +10,7 @@ namespace Game{
 		Actor(_pos, _texture),
 		m_cd(0xfffffff),
 		m_pawn(nullptr),
-		m_lightInfo(Graphic::g_lightSystem.createLight())
+		m_lightInfo(Graphic::g_lightSystem->createLight())
 	{
 		m_boundingRad = 10.f;
 
@@ -18,7 +18,7 @@ namespace Game{
 		m_lightInfo->radius = 80.f;
 		m_lightInfo->setPosition(_pos);
 
-		m_soundAppear.setBuffer(*g_resourceManager.getSound("sound_itemAppear"));
+		m_soundAppear.setBuffer(*g_resourceManager->getSound("sound_itemAppear"));
 		m_soundAppear.play();
 
 		m_collisionType = CollisionType::Item;
@@ -48,7 +48,7 @@ namespace Game{
 	using namespace Constants;
 
 	Mine::Mine(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_mine.png")),
+		Item(_pos, *g_resourceManager->getTexture("powerup_mine.png")),
 		m_state(Pickable)
 	{
 		m_activeTime = c_mineChargeTime;
@@ -74,7 +74,7 @@ namespace Game{
 	void Mine::endUse()
 	{
 		m_sprite.setColor(sf::Color(255, 210, 255, 255));
-		m_sprite.scale(2.2f, 2.2f);
+		m_sprite.scale(sf::Vector2f(2.2f, 2.2f));
 		m_state = Active;
 		m_canCollide = true;
 	}
@@ -82,7 +82,7 @@ namespace Game{
 	// *********************************************************** //
 
 	Sentinel::Sentinel(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("sentinel.png"))
+		Item(_pos, *g_resourceManager->getTexture("sentinel.png"))
 	{
 		m_activeTime = c_sentinelChargeTime;
 	}
@@ -103,7 +103,7 @@ namespace Game{
 		if (m_state == Ticking)
 		{
 			m_sprite.setColor(sf::Color(255, 255, 12, 255));
-			m_lightInfo = Graphic::g_lightSystem.createLight();
+			m_lightInfo = Graphic::g_lightSystem->createLight();
 			m_lightInfo->color = sf::Color(255, 255, 255, 255);
 			m_lightInfo->setPosition(m_position);
 			m_lightInfo->radius = 256.f;
@@ -115,7 +115,7 @@ namespace Game{
 		{
 			m_lightInfo.release();
 			m_sprite.setColor(sf::Color(255, 210, 255, 255));
-			m_sprite.scale(2.2f, 2.2f);
+			m_sprite.scale(sf::Vector2f(2.2f, 2.2f));
 			destroy();
 		}
 	}
@@ -123,7 +123,7 @@ namespace Game{
 	// *********************************************************** //
 
 	ClusterGun::ClusterGun(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_particle_gun.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_particle_gun.png"))
 	{
 		m_activeTime = c_clusterGunActiveTime;
 	}
@@ -143,7 +143,7 @@ namespace Game{
 	// *********************************************************** //
 
 	LightAura::LightAura(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_aura.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_aura.png"))
 	{
 		m_activeTime = c_lightAuraActiveTime;
 	}
@@ -164,7 +164,7 @@ namespace Game{
 	// *********************************************************** //
 
 	HealthBoost::HealthBoost(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_health.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_health.png"))
 	{
 		m_activeTime = 1;
 	}
@@ -184,7 +184,7 @@ namespace Game{
 	// *********************************************************** //
 
 	SpeedBoost::SpeedBoost(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_laser.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_laser.png"))
 	{
 		m_activeTime = c_speedBonusActiveTime;
 	}
@@ -205,7 +205,7 @@ namespace Game{
 	// *********************************************************** //
 
 	Shield::Shield(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager.getTexture("powerup_shield.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_shield.png"))
 	{
 		m_activeTime = c_shieldActiveTime;
 	}

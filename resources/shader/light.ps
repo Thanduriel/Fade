@@ -57,7 +57,7 @@ void main()
 	{
 		if( lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
 			simpleWallInfos[i].x, simpleWallInfos[i].y, simpleWallInfos[i+1].x, simpleWallInfos[i+1].y))
-			return;
+			discard;
 	/*	if( lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
 			wallInfos[i].x, wallInfos[i].y, wallInfos[i].x, wallInfos[i+1].y)
 		|| lineSeg(gs_out_LightPosition.x, gs_out_LightPosition.y, gl_FragCoord.x, gl_FragCoord.y,
@@ -68,7 +68,7 @@ void main()
 			wallInfos[i+1].x, wallInfos[i+1].y, wallInfos[i+1].x, wallInfos[i].y)) return; */
 	}
 //	if(distance(p, vec2(400.f,200.f)) < 50.f) return;
-    // multiply it by the color
-    gl_FragColor = gs_out_LightColor;
-	gl_FragColor.w *=  (gs_out_lightRadius - distance(gs_out_LightPosition, gl_FragCoord.xy))/gs_out_lightRadius;
+	// multiply it by the color
+	gl_FragColor = gs_out_LightColor;
+	gl_FragColor.w *= (gs_out_lightRadius - distance(gs_out_LightPosition, gl_FragCoord.xy))/gs_out_lightRadius;
 }

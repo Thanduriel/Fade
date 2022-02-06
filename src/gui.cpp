@@ -9,37 +9,37 @@ namespace GUI
 
 	GuiElement::GuiElement(const sf::String& _name, uint32_t _x, uint32_t _y, std::function<void()> _onClick)
 		:m_onClick(_onClick)
-    {
-        m_font = *g_resourceManager.getFont("suburbia");
+	{
+		m_font = *g_resourceManager->getFont("suburbia");
 
-        m_cfront = sf::Color::Black;
-        m_cback = sf::Color::White;
+		m_cfront = sf::Color::Black;
+		m_cback = sf::Color::White;
 
-        m_text.setFont(m_font);
-        m_text.setCharacterSize(75);
-        m_text.setString(_name);
-        m_text.setPosition(_x, _y);
-        m_text.setScale(1., 1.);
-    }
+		m_text.setFont(m_font);
+		m_text.setCharacterSize(75);
+		m_text.setString(_name);
+		m_text.setPosition(sf::Vector2f(static_cast<float>(_x), static_cast<float>(_y)));
+		m_text.setScale(sf::Vector2f(1.f, 1.f));
+	}
 
-    void GuiElement::draw(sf::RenderWindow& _window)
-    {
-        m_text.setColor(m_cfront);
-        _window.draw(m_text);
+	void GuiElement::draw(sf::RenderWindow& _window)
+	{
+		m_text.setFillColor(m_cfront);
+		_window.draw(m_text);
 
-    }
+	}
 
-    void GuiElement::process()
-    {
-        m_cfront.r += ceil(0.1*((float) (m_cback.r-m_cfront.r)));
-        m_cfront.g += ceil(0.1*((float) (m_cback.g-m_cfront.g)));
-        m_cfront.b += ceil(0.1*((float) (m_cback.b-m_cfront.b)));
-    }
+	void GuiElement::process()
+	{
+		m_cfront.r += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.r-m_cfront.r))));
+		m_cfront.g += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.g-m_cfront.g))));
+		m_cfront.b += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.b-m_cfront.b))));
+	}
 
-    void GuiElement::activate(sf::Event::KeyEvent *sf_key_event)
-    {
+	void GuiElement::activate(sf::Event::KeyEvent *sf_key_event)
+	{
 
-    }
+	}
 
 	// ********************************************** //
 
@@ -60,12 +60,17 @@ namespace GUI
 
 	// ********************************************** //
 
+	Gui::Gui()
+		: m_controllerMove(false),
+		m_currentElement(end())
+	{}
+
 	void Gui::init()
 	{
 		m_currentElement = begin();
 		(*m_currentElement)->focus();
 
-		m_buttonSound.setBuffer(*g_resourceManager.getSound("sound_item"));
+		m_buttonSound.setBuffer(*g_resourceManager->getSound("sound_item"));
 	}
 
 	void Gui::draw(sf::RenderWindow& _window)
@@ -103,11 +108,12 @@ namespace GUI
 			{
 				next();
 			}
-			else if (_event.key.code == sf::Keyboard::Return)
+			else if (_event.key.code == sf::Keyboard::Enter)
 			{
 				(*m_currentElement)->click();
 				m_buttonSound.play();
 			}
+			break;
 		}
 		case sf::Event::MouseButtonPressed:
 		{

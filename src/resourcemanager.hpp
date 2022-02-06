@@ -43,5 +43,5 @@ private:
 };
 
 
-extern ResourceManager g_resourceManager;
+extern std::unique_ptr<ResourceManager> g_resourceManager;
 

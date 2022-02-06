@@ -12,9 +12,10 @@ using namespace sf;
 namespace Game{
 	Pawn::Pawn(const sf::Vector2f& _position, sf::Texture& _texture, int _cid) :
 		Actor(_position, _texture, _cid),
-		m_lightInfo(Graphic::g_lightSystem.createLight()),
-		m_weaponSprite(*g_resourceManager.getTexture("player_outer_halfring.png")),
-		m_healthBarSprite(*g_resourceManager.getTexture("player_inner_ring.png")),
+		m_lastHitId(_cid),
+		m_lightInfo(Graphic::g_lightSystem->createLight()),
+		m_weaponSprite(*g_resourceManager->getTexture("player_outer_halfring.png")),
+		m_healthBarSprite(*g_resourceManager->getTexture("player_inner_ring.png")),
 		m_fadeFactor(Constants::c_playerBaseFadeFactor),
 		m_alpha(1.f),
 		m_cdMax(Constants::c_baseReloadSpeed),//130
@@ -30,19 +31,20 @@ namespace Game{
 		m_isStatic = false;
 		m_collisionType = CollisionType::Player;
 
-		m_soundFire.setBuffer(*g_resourceManager.getSound("sound_shot"));
-		m_soundAltFire.setBuffer(*g_resourceManager.getSound("sound_altShot"));
-		m_soundCollision.setBuffer(*g_resourceManager.getSound("sound_collision"));
-		m_soundExplode.setBuffer(*g_resourceManager.getSound("sound_explode"));
-		m_soundTakeItem.setBuffer(*g_resourceManager.getSound("sound_item_collect"));
+		m_soundFire.setBuffer(*g_resourceManager->getSound("sound_shot"));
+		m_soundAltFire.setBuffer(*g_resourceManager->getSound("sound_altShot"));
+		m_soundCollision.setBuffer(*g_resourceManager->getSound("sound_collision"));
+		m_soundExplode.setBuffer(*g_resourceManager->getSound("sound_explode"));
+		m_soundTakeItem.setBuffer(*g_resourceManager->getSound("sound_item_collect"));
 
-		m_weaponSprite.setOrigin(sf::Vector2f(m_weaponSprite.getTextureRect().width, m_weaponSprite.getTextureRect().height * 0.5f));
+		m_weaponSprite.setOrigin(sf::Vector2f(float(m_weaponSprite.getTextureRect().width)
+			, m_weaponSprite.getTextureRect().height * 0.5f));
 		m_healthBarSprite.rotate(180.f);
 		m_healthBarSprite.setColor(sf::Color(138, 240, 12, 255));
 
 	//	m_sprite.setScale(Constants::c_scaleFactor, c_scaleFactor);
-		m_healthBarSprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
-		m_weaponSprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
+		m_healthBarSprite.setScale(sf::Vector2f(Constants::c_scaleFactor, Constants::c_scaleFactor));
+		m_weaponSprite.setScale(sf::Vector2f(Constants::c_scaleFactor, Constants::c_scaleFactor));
 		m_weaponSprite.setColor(sf::Color(228, 10, 255, 255));
 
 		m_healthRect = m_healthBarSprite.getTextureRect();
@@ -81,7 +83,7 @@ namespace Game{
 		if (m_cd <= 0)
 		{
 			++m_ammo;
-			m_cd = (int)(m_cdMax * std::max(m_ammo / Constants::c_fastReloadCount, 1.f));
+			m_cd = static_cast<int>(m_cdMax * std::max(static_cast<float>(m_ammo) / Constants::c_fastReloadCount, 1.f));
 		}
 
 		if (m_item)
@@ -107,16 +109,17 @@ namespace Game{
 		//health bar size depends on current health
 		m_healthBarSprite.setPosition(m_position);
 //		m_healthBarSprite.setColor(sf::Color(138, 240, 12, a));
-		m_healthRect.height = m_healthRectDef * m_health / m_healthMax;
+		m_healthRect.height = static_cast<int>(m_healthRectDef * (m_health / m_healthMax));
 		m_healthBarSprite.setTextureRect(m_healthRect);
 
 		_window.draw(m_healthBarSprite);
 
 		// weapon points in the direction the player is facing
 		m_weaponSprite.setPosition(m_position);
-		m_weaponRect.width = m_weaponRectDef 
-			* std::min((float)m_ammo + (m_cdMax - m_cd) / (float)m_cdMax,
-			Constants::c_fastReloadCount) / Constants::c_fastReloadCount + 1.f;
+		m_weaponRect.width = static_cast<int>(m_weaponRectDef 
+			* std::min(m_ammo + (m_cdMax - m_cd) / static_cast<float>(m_cdMax),
+			static_cast<float>(Constants::c_fastReloadCount)) 
+			/ Constants::c_fastReloadCount + 1.f);
 	//	m_weaponRect.left = m_weaponRectDef - m_weaponRect.width;
 		m_weaponSprite.setTextureRect(m_weaponRect);
 	//	m_weaponSprite.setColor(sf::Color(228, 10, 255, a));

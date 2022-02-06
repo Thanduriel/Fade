@@ -9,7 +9,7 @@ using namespace sf;
 namespace Game{
 
 	Wall::Wall(const sf::Vector2f& _pos, const sf::Vector2f& _size):
-		Actor(_pos, *g_resourceManager.getTexture("wall.png"))
+		Actor(_pos, *g_resourceManager->getTexture("wall.png"))
 	{
 		m_hasComplexShape = true;
 		m_collisionType = CollisionType::World;

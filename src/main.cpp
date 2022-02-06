@@ -20,10 +20,6 @@
 
 #include <sstream>
 
-// #define ELPP_NO_DEFAULT_LOG_FILE
-
-// INITIALIZE_EASYLOGGINGPP
-
 namespace Constants{
 	int g_windowSizeX;
 	int g_windowSizeY;
@@ -45,13 +41,14 @@ int main()
 	using namespace Game;
 	using namespace Constants;
 
-	sf::Music *track;
-	track = g_resourceManager.getTrack("menu");
-    track->play();
+	g_resourceManager = std::make_unique<ResourceManager>();
+	sf::Music* track = g_resourceManager->getTrack("menu");
+	track->play();
 
 	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
 
-	if (desktop.width < 1920 || desktop.height < 1080) ErrorMsg("Warning: Resolutions bellow full hd are not fully supported.", "");
+	if (desktop.width < 1920 || desktop.height < 1080) 
+		ErrorMsg("Warning: Resolutions bellow 1920x1080 are not fully supported.", "");
 	else
 	{
 		desktop.width = 1920;
@@ -60,19 +57,19 @@ int main()
 	Constants::g_windowSizeX = desktop.width;
 	Constants::g_windowSizeY = desktop.height;
 
-	Graphic::g_lightSystem.refreshSize();
-#ifdef _DEBUG
-	sf::RenderWindow window(desktop, "Fade", sf::Style::Default); //::Default
+#ifndef NDEBUG
+	sf::RenderWindow window(desktop, "Fade", sf::Style::Default);
 #else
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Fullscreen);
 #endif
 	window.setMouseCursorVisible(false);
+	Graphic::g_lightSystem = std::make_unique<Graphic::LightSystem>();
+	Graphic::g_lightSystem->refreshSize();
 
 	sf::Clock clock, frameTimeClock;
 	sf::Time elapsed;
-	std::vector< std::unique_ptr< Game::GameState > > states;
+	std::vector<std::unique_ptr< Game::GameState >> states;
 	states.emplace_back(new State::MenuState(window));
-	uint32_t current_state(0);
 
 	while (window.isOpen())
 	{
@@ -101,8 +98,10 @@ int main()
 		if (state.isFinished())
 		{
 			states.pop_back();
-			if (states.size()) states.back()->onActivate();
-			else window.close();
+			if (states.size()) 
+				states.back()->onActivate();
+			else
+				window.close();
 		}
 
 		if (newState)
@@ -120,7 +119,7 @@ int main()
 		}
 		//window.setTitle(s.str());
 
-		//couts fps
+		//counts fps
 		static int c = 0;
 		static int lowFrames = 0;
 		static bool messageShown = false;
@@ -147,7 +146,9 @@ int main()
 		if (elapsed.asMicroseconds() < 16667)
 			sf::sleep((sf::microseconds(16667) - elapsed));
 	}
-	track = NULL;
+	Graphic::g_lightSystem.reset(nullptr);
+	g_resourceManager.reset(nullptr);
+	track = nullptr;
 
 	return 0;
 }

@@ -10,18 +10,19 @@ namespace Game{
 		m_position(_position),
 		m_velocity(0.f, 0.f),
 		m_dirAngle(0.f),
-		m_isStatic(true),
-		m_canCollide(true),
 		m_health(100.f),
 		m_healthMax(100.f),
+		m_boundingRad(15.f), //this value is only used by the dummy
+		m_hasComplexShape(false),
+		m_isStatic(true),
+		m_canCollide(true),
+		m_collisionType(CollisionType::None),
 		m_isDestroyed(false),
 		m_isDead(false),
-		m_isReflective(false),
-		m_hasComplexShape(false),
-		m_boundingRad(15.f) //this value is only used by the dummy
+		m_isReflective(false)
 	{
 		m_sprite.setColor(sf::Color(255, 255, 255, 255));
-		m_sprite.setScale(Constants::c_scaleFactor, Constants::c_scaleFactor);
+		m_sprite.setScale(sf::Vector2f(Constants::c_scaleFactor, Constants::c_scaleFactor));
 	}
 
 	void Actor::draw(sf::RenderWindow& _window)
