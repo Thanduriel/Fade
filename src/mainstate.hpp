@@ -5,7 +5,7 @@
 #include "pawn.hpp"
 #include "lightsys.hpp"
 
-namespace State{
+namespace State {
 
 	enum class WinCondition
 	{
@@ -33,8 +33,7 @@ namespace State{
 	class MainState: public Game::GameState
 	{
 	public:
-		MainState(const GameSettings& _gameSettings,
-			const std::vector < std::unique_ptr< Game::Pawn >>& _players);
+		MainState(const GameSettings& _gameSettings);
 
 		virtual void process() override;
         virtual void processEvents(sf::Event& _event);
@@ -43,11 +42,12 @@ namespace State{
 	private:
 		void gameOver();
 		void processGameOver();
-		bool m_gameOver;
-		int m_gameEndTime;
-		Graphic::LightInfoHandle m_lightInfo;
 
 		int m_gameTime; //in frames
+		int m_gameEndTime;
+		bool m_gameOver;
+		Graphic::LightInfoHandle m_lightInfo;
+
 		Game::World m_world;
 		GameSettings m_gameSettings;
 

@@ -41,7 +41,7 @@ namespace State{
 				*g_resourceManager->getTexture("player_main.png"), 0));
 			m_players.back()->switchColor(_gameSettings.playerInfos[i].playerColor);
 
-			int shotsFired = g_statManager.Get(id, Stat::ShotsFired);
+			int shotsFired = g_statManager.get(id, Stat::ShotsFired);
 
 			static std::string tab = "   ";
 
@@ -51,16 +51,16 @@ namespace State{
 			m_playerStatTexts[i].setFillColor(sf::Color::White);
 			m_playerStatTexts[i].setCharacterSize(50);
 			m_playerStatTexts[i].setString(tab + std::to_string(i) + "\n"
-				+ tab + std::to_string(g_statManager.Get(id, Stat::Kills))
+				+ tab + std::to_string(g_statManager.get(id, Stat::Kills))
 				+ "\n" + tab
-				+ std::to_string(g_statManager.Get(id, Stat::Deaths))
+				+ std::to_string(g_statManager.get(id, Stat::Deaths))
 				+ "\n" + tab + std::to_string(shotsFired)
-				+ "\n" + tab + std::to_string((int)(100.f * g_statManager.Get(id, Stat::ShotsHit) / (float)(shotsFired ? shotsFired : 1)))
-				+ "\n" + tab + std::to_string(g_statManager.Get(id, Stat::ItemsUsed))
-				+ (g_statManager.Get(id, Stat::Kills) == g_statManager.getMax(Stat::Kills) ?
+				+ "\n" + tab + std::to_string((int)(100.f * g_statManager.get(id, Stat::ShotsHit) / (float)(shotsFired ? shotsFired : 1)))
+				+ "\n" + tab + std::to_string(g_statManager.get(id, Stat::ItemsUsed))
+				+ (g_statManager.get(id, Stat::Kills) == g_statManager.getMax(Stat::Kills) ?
 				"\n\nWINNER!" : ""));
 
-			if (g_statManager.Get(id, Stat::Kills) == g_statManager.getMax(Stat::Kills))
+			if (g_statManager.get(id, Stat::Kills) == g_statManager.getMax(Stat::Kills))
 				m_playerStatTexts[i].setFillColor(sf::Color::Green);
 		}
 	}

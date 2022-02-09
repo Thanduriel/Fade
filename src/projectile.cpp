@@ -36,7 +36,7 @@ namespace Game{
 			return;
 		}
 		//other player got hit
-		if (_oth.getCId() >= 0) Stats::g_statManager.Add(m_cid, Stats::ShotsHit);
+		if (_oth.getCId() >= 0) Stats::g_statManager.add(m_cid, Stats::Stat::ShotsHit);
 		_oth.damage(m_damage);
 		destroy();
 	}

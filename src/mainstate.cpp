@@ -9,15 +9,14 @@
 #include "resourcemanager.hpp"
 
 namespace State{
-	MainState::MainState(const GameSettings& _gameSettings,
-		const std::vector < std::unique_ptr< Game::Pawn >>& _players) :
-		m_gameSettings(_gameSettings),
-		m_gameEndTime(0),
+	MainState::MainState(const GameSettings& _gameSettings) :
 		m_gameTime(0),
+		m_gameEndTime(0),
+		m_gameOver(false),
 		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY),
-		m_gameOver(false)
+		m_gameSettings(_gameSettings)
 	{
-		Stats::g_statManager.Reset();
+		Stats::g_statManager.reset();
 
 		m_gameEndSound.setBuffer(*g_resourceManager->getSound("sound_newWorld"));
 
@@ -25,7 +24,7 @@ namespace State{
 		for (auto& playerInfo : _gameSettings.playerInfos)
 		{
 			m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
-			Stats::g_statManager.Add(playerInfo.cid, Stats::Stat::IsActive);
+			Stats::g_statManager.add(playerInfo.cid, Stats::Stat::IsActive);
 		}
 	}
 

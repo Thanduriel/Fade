@@ -37,11 +37,11 @@ namespace Game{
 		virtual void stopSounds(){};
 		virtual void onDeath(){};
 		virtual void onDamage(){};
-		virtual void collision(Actor& _oth){};
+		virtual void collision(Actor&){};
 
 		// only used when hasComplexShape() true
 		// @return Whether a collision actually occured
-		virtual bool testComplexCollision(Actor& _oth){ return true; };
+		virtual bool testComplexCollision(Actor&){ return true; };
 
 		//apply damage to this actor
 		void damage(float _amount);

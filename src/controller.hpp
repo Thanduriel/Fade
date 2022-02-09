@@ -8,15 +8,15 @@ namespace Game{
 	class Controller
 	{
 	public:
-		Controller() : m_playerColor(PlayerColor::White), m_pawn(nullptr), m_id(-1) {}
+		Controller() : m_pawn(nullptr), m_id(-1), m_playerColor(PlayerColor::White) {}
 
-		virtual void process(){};
-		virtual void processEvent(sf::Event& _event){};
+		virtual void process(){}
+		virtual void processEvent(sf::Event&) {}
 
 		void possess(Pawn* _pawn) { m_pawn = _pawn; }
-		bool hasPawn() { return m_pawn != nullptr; }
-		Pawn* getPawn() { return m_pawn; }
-		uint32_t getId() { return m_id; }
+		bool hasPawn() const { return m_pawn != nullptr; }
+		Pawn* getPawn() const { return m_pawn; }
+		uint32_t getId() const { return m_id; }
 
 		void setPlayerColor(PlayerColor _color) { m_playerColor = _color; }
 		PlayerColor getPlayerColor() const { return m_playerColor; }

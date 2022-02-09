@@ -59,7 +59,7 @@ namespace Game{
 		m_pawn->setVelocity(Constants::c_playerBaseSpeed * movDir * m_pawn->speedFactor());
 	}
 
-	void PlayerController::processEvent(sf::Event &_event)
+	void PlayerController::processEvent(sf::Event& _event)
 	{
 		if (!m_pawn) return;
 

@@ -38,7 +38,7 @@ void ErrorMsg(const std::string& error, const std::string& title)
 #ifdef _MSC_VER
 	MessageBoxA(NULL, error.c_str(), title.c_str(), MB_ICONERROR | MB_OK);
 #endif
-	std::cerr << error;
+	std::cerr << "[" << title << "] " << error << "\n";
 }
 
 int main()
@@ -126,8 +126,10 @@ int main()
 
 		//temporary stat display
 		std::stringstream s;
-		for (int i = 0; i < 4; ++i){
-			s << i << ": " << Stats::g_statManager.Get(i, Stats::Kills) << "/" << Stats::g_statManager.Get(i, Stats::Deaths) << "   ";
+		for (int i = 0; i < 4; ++i)
+		{
+			s << i << ": " << Stats::g_statManager.get(i, Stats::Stat::Kills) 
+				<< "/" << Stats::g_statManager.get(i, Stats::Stat::Deaths) << "   ";
 		}
 		//window.setTitle(s.str());
 

@@ -120,7 +120,7 @@ namespace State{
 
 			for (auto& player : m_connectedPlayers)
 				if(player.get()) config.playerInfos.emplace_back(player->getCId(), player->getPlayerColor());
-			m_newState = new State::MainState(config, m_connectedPlayers);
+			m_newState = new State::MainState(config);
 		}));
 		// back
 		m_gui.emplace_back(new GUI::ExtGuiElement("Back", left + 150, 850, [&]()

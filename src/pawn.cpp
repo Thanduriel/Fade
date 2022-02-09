@@ -21,11 +21,11 @@ namespace Game{
 		m_cdMax(Constants::c_baseReloadSpeed),//130
 		m_cd(m_cdMax),
 		m_damage(16.f),
-		m_item(nullptr),
 		m_projType(ProjType::Standard),
 		m_speedFactor(1.f),
-		m_lightState(Pawn::OnlyFire),
 		m_ammo(Constants::c_fastReloadCount),
+		m_item(nullptr),
+		m_lightState(Pawn::OnlyFire),
 		m_playerColor(PlayerColor::White)
 	{
 		m_isStatic = false;
@@ -163,8 +163,8 @@ namespace Game{
 
 		m_velocity = Vector2f(0.f, 0.f);
 
-		Stats::g_statManager.Add(m_cid, Stats::Deaths);
-		Stats::g_statManager.Add(m_lastHitId, Stats::Kills);
+		Stats::g_statManager.add(m_cid, Stats::Stat::Deaths);
+		Stats::g_statManager.add(m_lastHitId, Stats::Stat::Kills);
 	}
 
 	void Pawn::onDamage()
@@ -184,7 +184,7 @@ namespace Game{
 			m_soundFire.play();
 
 			--m_ammo;
-			Stats::g_statManager.Add(m_cid, Stats::ShotsFired);
+			Stats::g_statManager.add(m_cid, Stats::Stat::ShotsFired);
 		}
 	}
 
@@ -195,7 +195,7 @@ namespace Game{
 		m_item = nullptr;
 		m_soundAltFire.play();
 
-		Stats::g_statManager.Add(m_cid, Stats::ItemsUsed);
+		Stats::g_statManager.add(m_cid, Stats::Stat::ItemsUsed);
 	}
 
 	void Pawn::takeItem(Item& _itm)

@@ -22,8 +22,8 @@ namespace Game{
 		m_ground.setTexture(*texture);
 
 		using namespace Constants;
-		resize(static_cast<int>(g_worldScale * g_windowSizeX), 
-			static_cast<int>(g_worldScale * g_windowSizeY));
+		resize(static_cast<int>(g_worldScale * _sizeX),
+			static_cast<int>(g_worldScale * _sizeY));
 		generateWalls(g_numWalls);
 
 		// m_gameObjects[0] should always be a dummy that objects can collide with 
@@ -103,9 +103,11 @@ namespace Game{
 			for (size_t j = i+1; j < m_gameObjects.size(); ++j)
 			{
 				auto& second = *m_gameObjects[j];
-				if (!COLLISIONTABLE[(int)first.collisionType()][(int)second.collisionType()]) continue;
+				if (!COLLISIONTABLE[(int)first.collisionType()][(int)second.collisionType()]) 
+					continue;
 				//todo remove this line should be obsolete
-				if (first.isStatic() && second.isStatic() || !second.canCollide()) continue;
+				if ((first.isStatic() && second.isStatic()) || !second.canCollide()) 
+					continue;
 
 				float r2 = first.boundingRad() + second.boundingRad();
 				r2 *= r2;
@@ -304,7 +306,10 @@ namespace Game{
 	void World::removePlayer(int _id)
 	{
 		auto it = std::find_if(m_controllers.begin(), m_controllers.end(),
-			[=](const std::unique_ptr<Controller>& _controller){return _controller->getId() == _id; });
+			[=](const std::unique_ptr<Controller>& _controller)
+			{
+				return static_cast<int>(_controller->getId()) == _id;
+			});
 
 		if (it != m_controllers.end() && (*it)->hasPawn())
 		{

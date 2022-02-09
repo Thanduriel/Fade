@@ -8,7 +8,7 @@ namespace Graphic{
 
 	struct LightInfo
 	{
-		LightInfo() : isInUse(false), radius(0.f) {}
+		LightInfo() : radius(0.f), isInUse(false) {}
 		void setPosition(const sf::Vector2f& _vec);
 		sf::Color color;
 		sf::Vector2f position;

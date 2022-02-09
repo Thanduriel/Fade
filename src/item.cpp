@@ -6,11 +6,12 @@
 #include "constants.hpp"
 
 namespace Game{
-	Item::Item(const sf::Vector2f& _pos, sf::Texture& _texture):
+	Item::Item(const sf::Vector2f& _pos, sf::Texture& _texture, int _activeTime = 0):
 		Actor(_pos, _texture),
-		m_cd(0xfffffff),
+		m_activeTime(_activeTime),
 		m_pawn(nullptr),
-		m_lightInfo(Graphic::g_lightSystem->createLight())
+		m_lightInfo(Graphic::g_lightSystem->createLight()),
+		m_cd(0xfffffff)
 	{
 		m_boundingRad = 10.f;
 
@@ -82,9 +83,8 @@ namespace Game{
 	// *********************************************************** //
 
 	Sentinel::Sentinel(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("sentinel.png"))
+		Item(_pos, *g_resourceManager->getTexture("sentinel.png"), c_sentinelChargeTime)
 	{
-		m_activeTime = c_sentinelChargeTime;
 	}
 
 	void Sentinel::collision(Actor& _oth)
@@ -123,9 +123,8 @@ namespace Game{
 	// *********************************************************** //
 
 	ClusterGun::ClusterGun(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("powerup_particle_gun.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_particle_gun.png"), c_clusterGunActiveTime)
 	{
-		m_activeTime = c_clusterGunActiveTime;
 	}
 
 	void ClusterGun::use()
@@ -143,9 +142,8 @@ namespace Game{
 	// *********************************************************** //
 
 	LightAura::LightAura(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("powerup_aura.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_aura.png"), c_lightAuraActiveTime)
 	{
-		m_activeTime = c_lightAuraActiveTime;
 	}
 
 	void LightAura::use()
@@ -164,9 +162,8 @@ namespace Game{
 	// *********************************************************** //
 
 	HealthBoost::HealthBoost(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("powerup_health.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_health.png"), 1)
 	{
-		m_activeTime = 1;
 	}
 
 	void HealthBoost::use()
@@ -184,9 +181,8 @@ namespace Game{
 	// *********************************************************** //
 
 	SpeedBoost::SpeedBoost(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("powerup_laser.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_laser.png"), c_speedBonusActiveTime)
 	{
-		m_activeTime = c_speedBonusActiveTime;
 	}
 
 	void SpeedBoost::use()
@@ -205,9 +201,8 @@ namespace Game{
 	// *********************************************************** //
 
 	Shield::Shield(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("powerup_shield.png"))
+		Item(_pos, *g_resourceManager->getTexture("powerup_shield.png"), c_shieldActiveTime)
 	{
-		m_activeTime = c_shieldActiveTime;
 	}
 
 	void Shield::use()

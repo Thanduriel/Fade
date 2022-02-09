@@ -19,16 +19,16 @@ namespace Game
 	class GameState
 	{
 	public:
-		GameState() : m_newState(nullptr), m_finished(false){ onActivate(); }
+		GameState() : m_finished(false), m_newState(nullptr) { onActivate(); }
 		virtual ~GameState(){};
 
 		//
 		virtual void process() = 0;
 		virtual void processEvents(sf::Event& _event)
 		{
-			if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Escape
-				|| _event.type == sf::Event::JoystickButtonPressed 
-				&& _event.joystickButton.joystickId == 0 && _event.joystickButton.button == 1)
+			if ((_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Escape)
+				|| (_event.type == sf::Event::JoystickButtonPressed
+				&& _event.joystickButton.joystickId == 0 && _event.joystickButton.button == 1))
 				m_finished = true;
 		}
 		virtual void draw(sf::RenderWindow& _window) = 0;

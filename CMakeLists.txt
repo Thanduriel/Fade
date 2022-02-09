@@ -16,7 +16,6 @@ if(MSVC)
 	# no console in release builds
 	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 else()
-	message("testtesttest")
 	target_compile_options(Fade PUBLIC "$<$<CONFIG:DEBUG>:-Wall;-pedantic;-Wextra>")
 	target_compile_options(Fade PUBLIC "$<$<CONFIG:RELEASE>:-Wall;-pedantic;-Wextra;-O3;-march=native>")
 endif()

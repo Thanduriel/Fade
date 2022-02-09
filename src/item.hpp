@@ -9,15 +9,15 @@ namespace Game{
 	class Item : public Actor
 	{
 	public:
-		Item(const sf::Vector2f& _pos, sf::Texture& _texture);
+		Item(const sf::Vector2f& _pos, sf::Texture& _texture, int _activeTime);
 		void collision(Actor& _oth) override;
-		virtual void use(){ m_cd = m_activeTime; };
-		virtual void endUse(){};
+		virtual void use() { m_cd = m_activeTime; }
+		virtual void endUse() {}
 		void process() override;
 	protected:
 		//sets the active timer to the given value
 		// use this if you want to have an item with more timed states
-		void SetTimer(int _cd) { m_cd = _cd; };
+		void SetTimer(int _cd) { m_cd = _cd; }
 
 		int m_activeTime;
 		Pawn* m_pawn;
