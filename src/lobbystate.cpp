@@ -122,7 +122,7 @@ namespace State{
 				if(player.get()) config.playerInfos.emplace_back(player->getCId(), player->getPlayerColor());
 			m_newState = new State::MainState(config, m_connectedPlayers);
 		}));
-		//back
+		// back
 		m_gui.emplace_back(new GUI::ExtGuiElement("Back", left + 150, 850, [&]()
 		{
 			m_finished = true;
@@ -133,7 +133,7 @@ namespace State{
 		m_worldSizes.push_back("Medium");
 		m_worldSizes.push_back("Large");
 		m_worldSizes.push_back("Auto");
-		m_size = 1; //medium seems to be the appropriate default
+		m_size = 1; // medium seems to be the appropriate default
 		rescaleView(1);
 
 		m_nWalls.push_back("None");

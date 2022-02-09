@@ -2,7 +2,6 @@
 #include "math.hpp"
 #include "constants.hpp"
 #include "utils.hpp"
-#include <Windows.h>
 
 #include <iostream>
 using namespace sf;
@@ -28,7 +27,7 @@ namespace Game{
 
 		if (sf::Joystick::isConnected(m_id))
 		{
-			if (sf::Joystick::isButtonPressed(m_id, 5) && m_fireCd <= 0)
+			if (sf::Joystick::isButtonPressed(m_id, 5)  && m_fireCd <= 0)
 			{
 				m_pawn->fire();
 				m_fireCd = 12;
@@ -94,6 +93,6 @@ namespace Game{
 			if (dir.x != 0.f || dir.y != 0.f) dir = normalize(dir);
 			m_pawn->setVelocity(Constants::c_playerBaseSpeed * dir * m_pawn->speedFactor());
 		}
-		if(!(counter % 20))m_pawn->fire();
+		if (!(counter % 20)) m_pawn->fire();
 	}
 }

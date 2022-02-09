@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-enum DefaultShader
+enum struct DefaultShader
 {
 	Light
 };
@@ -33,7 +33,7 @@ public:
 	sf::SoundBuffer* getSound(const std::string& _fileName);
 	sf::Shader* getShader(const std::string& _fileName, bool _geometry = false);
 
-	sf::Shader* getShader(DefaultShader _shader) { return m_shaders[_shader].data.get();  };
+	sf::Shader* getShader(DefaultShader _shader) { return m_shaders[static_cast<int>(_shader)].data.get(); };
 private:
 	std::vector < Resource< sf::Texture > > m_textures;
 	std::vector < Resource< sf::Font > > m_fonts;

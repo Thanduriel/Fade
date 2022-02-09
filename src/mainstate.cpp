@@ -59,9 +59,9 @@ namespace State{
 		}
 
 		if (m_newState || m_finished)
-        {
-        	m_world.stopSounds();
-        }
+		{
+			m_world.stopSounds();
+		}
 	}
 
 	void MainState::processEvents(sf::Event& _event)

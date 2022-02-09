@@ -17,20 +17,22 @@ namespace Stats{
 		//todo: powerups
 	};
 
-	typedef public std::array<int, Stat::Count> PlayerStat;
+	using PlayerStat = std::array<int, Stat::Count>;
 
 	class StatManager
 	{
 	public:
 		StatManager() : m_isSorted(false){}
 
-		int Get(int _id, Stat _stat) { return m_playerStats.size() > _id ? m_playerStats[_id][_stat] : 0; };
+		int Get(int _id, Stat _stat) const { return m_playerStats.size() > _id ? m_playerStats[_id][_stat] : 0; };
 		void Add(int _id, Stat _stat) { if (_id < 0) return; if (_id >= m_playerStats.size()) m_playerStats.resize(_id+1); ++m_playerStats[_id][_stat]; }
 
-		int getMax(Stat _stat) { int max = 0; for (auto& st : m_playerStats) if (st[_stat] > max) max = st[_stat]; return max; }
+		int getMax(Stat _stat) const { int max = 0; for (auto& st : m_playerStats) if (st[_stat] > max) max = st[_stat]; return max; }
 
-		int getPlayerCount(){ return static_cast<int>(m_playerStats.size()); }
-		void sort(Stat _pred) {
+		int getPlayerCount() const { return static_cast<int>(m_playerStats.size()); }
+		
+		void sort(Stat _pred) 
+		{
 			for (size_t i = 0; i < m_playerStats.size(); ++i) 
 				m_playerStats[i][Stat::Id] = static_cast<int>(i);
 			std::sort(m_playerStats.begin(), m_playerStats.end(),

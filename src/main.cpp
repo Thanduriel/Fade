@@ -4,11 +4,6 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-#include <Windows.h>
-#include <vector>
-#include <memory>
-#include <iostream>
-
 // #include "easylogging++.hpp"
 #include "gamestate.hpp"
 #include "mainstate.hpp"
@@ -19,6 +14,13 @@
 #include "stats.hpp"
 
 #include <sstream>
+#include <vector>
+#include <memory>
+#include <iostream>
+
+#ifdef _MSC_VER
+#include <Windows.h>
+#endif
 
 namespace Constants{
 	int g_windowSizeX;
@@ -31,9 +33,12 @@ namespace Stats{
 	StatManager g_statManager;
 }
 
-void ErrorMsg(std::string error, std::string title)
+void ErrorMsg(const std::string& error, const std::string& title)
 {
+#ifdef _MSC_VER
 	MessageBoxA(NULL, error.c_str(), title.c_str(), MB_ICONERROR | MB_OK);
+#endif
+	std::cerr << error;
 }
 
 int main()
@@ -48,7 +53,7 @@ int main()
 	sf::VideoMode desktop = sf::VideoMode().getDesktopMode();
 
 	if (desktop.width < 1920 || desktop.height < 1080) 
-		ErrorMsg("Warning: Resolutions bellow 1920x1080 are not fully supported.", "");
+		ErrorMsg("Warning: Resolutions below 1920x1080 are not fully supported.", "");
 	else
 	{
 		desktop.width = 1920;
@@ -62,6 +67,8 @@ int main()
 #else
 	sf::RenderWindow window(desktop, "Fade", sf::Style::Fullscreen);
 #endif
+	window.setVerticalSyncEnabled(true);
+	window.setFramerateLimit(60);
 	window.setMouseCursorVisible(false);
 	Graphic::g_lightSystem = std::make_unique<Graphic::LightSystem>();
 	Graphic::g_lightSystem->refreshSize();
@@ -70,6 +77,11 @@ int main()
 	sf::Time elapsed;
 	std::vector<std::unique_ptr< Game::GameState >> states;
 	states.emplace_back(new State::MenuState(window));
+
+	//counts fps
+	int c = 0;
+	int lowFrames = 0;
+	bool messageShown = false;
 
 	while (window.isOpen())
 	{
@@ -119,10 +131,6 @@ int main()
 		}
 		//window.setTitle(s.str());
 
-		//counts fps
-		static int c = 0;
-		static int lowFrames = 0;
-		static bool messageShown = false;
 		++c;
 		if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) 
 		{
@@ -142,9 +150,6 @@ int main()
 			frameTimeClock.restart();
 			c = 0;
 		}
-		//	if (elapsed.asMilliseconds() > 16.667) window.setTitle(std::to_string(elapsed.asMilliseconds()));//std::cout << elapsed.asMilliseconds() << std::endl;
-		if (elapsed.asMicroseconds() < 16667)
-			sf::sleep((sf::microseconds(16667) - elapsed));
 	}
 	Graphic::g_lightSystem.reset(nullptr);
 	g_resourceManager.reset(nullptr);

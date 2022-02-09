@@ -68,7 +68,7 @@ namespace Game{
 		};
 
 		void setLightState(LightState _state){ m_lightState = _state; }
-		LightState lightState(){ return m_lightState; }
+		LightState lightState() const { return m_lightState; }
 
 		PlayerColor getPlayerColor() const { return m_playerColor; }
 		void switchColor(PlayerColor _col) { m_playerColor = _col; setColor(PLAYERCOLORS[m_playerColor]); }

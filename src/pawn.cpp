@@ -5,7 +5,7 @@
 #include "constants.hpp"
 #include "lightsys.hpp"
 #include "stats.hpp"
-#include <Windows.h>
+#include <cmath>
 
 using namespace sf;
 

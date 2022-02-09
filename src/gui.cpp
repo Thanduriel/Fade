@@ -1,10 +1,9 @@
 #include "gui.hpp"
 #include "resourcemanager.hpp"
+#include <cmath>
 
 namespace GUI
 {
-
-
 	// ******************************************************** //
 
 	GuiElement::GuiElement(const sf::String& _name, uint32_t _x, uint32_t _y, std::function<void()> _onClick)
@@ -31,9 +30,9 @@ namespace GUI
 
 	void GuiElement::process()
 	{
-		m_cfront.r += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.r-m_cfront.r))));
-		m_cfront.g += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.g-m_cfront.g))));
-		m_cfront.b += static_cast<sf::Uint8>(ceil(0.1f*((float) (m_cback.b-m_cfront.b))));
+		m_cfront.r += static_cast<sf::Uint8>(std::ceil(0.1f*((float) (m_cback.r-m_cfront.r))));
+		m_cfront.g += static_cast<sf::Uint8>(std::ceil(0.1f*((float) (m_cback.g-m_cfront.g))));
+		m_cfront.b += static_cast<sf::Uint8>(std::ceil(0.1f*((float) (m_cback.b-m_cfront.b))));
 	}
 
 	void GuiElement::activate(sf::Event::KeyEvent *sf_key_event)

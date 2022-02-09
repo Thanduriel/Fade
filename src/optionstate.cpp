@@ -14,13 +14,13 @@ namespace Graphic{
 //possible choices for the corresponding settings
 const std::array<std::string, 7> DESCRIPTIONS =
 {
-	"Places a mine at the players location.\nAfter a short delay any collision causes the mine to explode.", 
+	"Places a mine at the players location.\nAfter a short delay any collision will cause the mine to explode.", 
 	"Places a sentinel at the players location.\nAfter a short delay the sentinel lights up for some time.",
 	"Temporarily the user shoots 3 projectiles instead of one.",
 	"Temporarily the user light radius is vastly higher.",
 	"Regenerates health back to full.",
 	"Temporarily increases the users movement speed.",
-	"The user temporarily reflects projectiles that would normally hit him."
+	"The user temporarily reflects projectiles that would normally hit."
 };
 
 
@@ -29,18 +29,18 @@ using namespace sf;
 namespace State{
 	OptionState::OptionState(sf::RenderWindow& _window) :
 		m_window(_window)
-    {
-        font = *g_resourceManager->getFont("suburbia");
+	{
+		font = *g_resourceManager->getFont("suburbia");
 
-        uint32_t left = Constants::g_windowSizeX / 2 - 450;
+		uint32_t left = Constants::g_windowSizeX / 2 - 450;
 		Vector2f rightOff = Vector2f(600.f, 0.f);
 
-        title.setFont(font);
-        title.setCharacterSize(200);
-        title.setString("FADE");
-        title.setPosition(sf::Vector2f(left + 150.f,50.f));
-        title.setScale(sf::Vector2f(1.f, 1.f));
-        title.setFillColor(sf::Color::White);
+		title.setFont(font);
+		title.setCharacterSize(200);
+		title.setString("FADE");
+		title.setPosition(sf::Vector2f(left + 150.f,50.f));
+		title.setScale(sf::Vector2f(1.f, 1.f));
+		title.setFillColor(sf::Color::White);
 		
 
 
@@ -62,30 +62,30 @@ namespace State{
 			m_itemTexts[i].setFillColor(sf::Color::White);
 			m_itemTexts[i].setFont(font);
 		}
-    }
+	}
 
-    void OptionState::process()
-    {
-        for (auto& gui : m_gui)
-            gui->process();
-    }
+	void OptionState::process()
+	{
+		for (auto& gui : m_gui)
+			gui->process();
+	}
 
-    void OptionState::processEvents(sf::Event& _event)
-    {
+	void OptionState::processEvents(sf::Event& _event)
+	{
 		GameState::processEvents(_event);
 		m_gui.processEvents(_event);
-    }
+	}
 
-    void OptionState::draw(sf::RenderWindow& _window)
-    {
-        _window.draw(title);
-        for (auto& gui : m_gui)
-            gui->draw(_window);
+	void OptionState::draw(sf::RenderWindow& _window)
+	{
+		_window.draw(title);
+		for (auto& gui : m_gui)
+			gui->draw(_window);
 
 		for (auto& itm : m_items) itm->draw(_window);
 
 		for (auto& text : m_itemTexts) _window.draw(text);
-    }
+	}
 
 	// *********************************************** //
 

@@ -51,11 +51,11 @@ namespace Game{
 		//set angle in radients
 		void setDirAngle(float _angle) { m_dirAngle = _angle; };
 
-		const sf::Vector2f& position() { return m_position; }
-		const sf::Vector2f& velocity() { return m_velocity; }
+		const sf::Vector2f& position() const { return m_position; }
+		const sf::Vector2f& velocity() const { return m_velocity; }
 		float boundingRad() { return m_boundingRad; }
-		bool isStatic() { return m_isStatic; }
-		bool canCollide() { return m_canCollide; }
+		bool isStatic() const { return m_isStatic; }
+		bool canCollide() const { return m_canCollide; }
 		CollisionType collisionType() { return m_collisionType; }
 
 		bool hasComplexShape() { return m_hasComplexShape; }
@@ -63,9 +63,9 @@ namespace Game{
 		void destroy() { m_isDestroyed = true; onDestroy(); }
 		bool isDestroyed() { return m_isDestroyed; }
 
-		bool isDead() { return m_isDead; }
+		bool isDead() const { return m_isDead; }
 		void setReflective(bool _reflective) { m_isReflective = _reflective; }
-		bool isReflective() { return m_isReflective; }
+		bool isReflective() const { return m_isReflective; }
 
 		void setColor(sf::Color _color) { m_sprite.setColor(_color); };
 	protected:

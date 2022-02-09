@@ -1,10 +1,10 @@
 #include <stdint.h>
-#include <Windows.h>
+#include <random>
 
 namespace util{
 	inline unsigned int rnd()
 	{
-		static unsigned int num = GetTickCount();
+		static uint32_t num = std::random_device()();
 		num ^= num << 13;
 		num ^= num >> 17;
 		num ^= num << 5;
