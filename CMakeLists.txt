@@ -8,7 +8,7 @@ file(GLOB_RECURSE fade_SRC
 
 add_executable(Fade ${fade_SRC})
 set_target_properties(Fade PROPERTIES
-	CXX_STANDARD 17
+	CXX_STANDARD 14
 	CXX_STANDARD_REQUIRED YES
 )
 
