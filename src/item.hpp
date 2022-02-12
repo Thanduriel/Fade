@@ -38,9 +38,10 @@ namespace Game{
 		void use() override;
 		void endUse() override;
 	private:
-		enum{
+		enum struct State {
 			Pickable, Ticking, Active
-		}m_state;
+		};
+		State m_state;
 	};
 
 	class Sentinel : public Item
@@ -51,9 +52,10 @@ namespace Game{
 		void use() override;
 		void endUse() override;
 	private:
-		enum{
+		enum struct State {
 			Pickable, Ticking, Active
-		}m_state;
+		};
+		State m_state;
 	};
 
 	// lets the player shoot multiple projectiles at once

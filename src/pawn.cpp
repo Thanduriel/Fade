@@ -25,7 +25,7 @@ namespace Game{
 		m_speedFactor(1.f),
 		m_ammo(Constants::c_fastReloadCount),
 		m_item(nullptr),
-		m_lightState(Pawn::OnlyFire),
+		m_lightState(LightState::OnlyFire),
 		m_playerColor(PlayerColor::White)
 	{
 		m_isStatic = false;
@@ -98,7 +98,7 @@ namespace Game{
 	{
 		m_lightInfo->setPosition(m_position);
 
-		if(m_lightState != On) m_alpha *= m_fadeFactor;
+		if(m_lightState != LightState::On) m_alpha *= m_fadeFactor;
 		uint8_t a = (uint8_t)(m_alpha * 255.f);
 
 		m_lightInfo->color.a = a;
@@ -159,12 +159,12 @@ namespace Game{
 		m_lightInfo->color.g = 50;
 		m_lightInfo->color.b = 50;
 		m_canCollide = false;
-		m_lightState = Off;
+		m_lightState = LightState::Off;
 
 		m_velocity = Vector2f(0.f, 0.f);
 
-		Stats::g_statManager.add(m_cid, Stats::Stat::Deaths);
-		Stats::g_statManager.add(m_lastHitId, Stats::Stat::Kills);
+		Stats::g_statManager->add(m_cid, Stats::Stat::Deaths);
+		Stats::g_statManager->add(m_lastHitId, Stats::Stat::Kills);
 	}
 
 	void Pawn::onDamage()
@@ -176,15 +176,17 @@ namespace Game{
 	{
 		if (m_ammo > 0)
 		{
-			if (m_lightState == OnlyFire || m_lightState == On) m_alpha = 1.f;
+			if (m_lightState == LightState::OnlyFire || m_lightState == LightState::On) 
+				m_alpha = 1.f;
 			//spawn projectile
 			Vector2f dir = normalize(Vector2f(cos(m_dirAngle), sin(m_dirAngle)));
-			g_projectileFactory.spawn(m_position + dir * (m_boundingRad + Constants::c_projectileRadius + 6.f),
+			g_projectileFactory.spawn(m_position 
+				+ dir * (m_boundingRad + Constants::c_projectileRadius + maxSpeed() + 1.f), // +6.f
  				dir, m_projType, m_cid);
 			m_soundFire.play();
 
 			--m_ammo;
-			Stats::g_statManager.add(m_cid, Stats::Stat::ShotsFired);
+			Stats::g_statManager->add(m_cid, Stats::Stat::ShotsFired);
 		}
 	}
 
@@ -195,7 +197,12 @@ namespace Game{
 		m_item = nullptr;
 		m_soundAltFire.play();
 
-		Stats::g_statManager.add(m_cid, Stats::Stat::ItemsUsed);
+		Stats::g_statManager->add(m_cid, Stats::Stat::ItemsUsed);
+	}
+
+	float Pawn::maxSpeed() const 
+	{ 
+		return m_speedFactor * Constants::c_playerBaseSpeed; 
 	}
 
 	void Pawn::takeItem(Item& _itm)

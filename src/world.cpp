@@ -10,6 +10,7 @@
 #include "item.hpp"
 #include "utils.hpp"
 #include "camera.hpp"
+#include "input/gamepadinputmanager.hpp"
 
 using namespace sf;
 
@@ -222,7 +223,7 @@ namespace Game{
 		m_wallInfos.clear();
 		m_wallInfos.reserve(_count * 3);
 
-		const float wallThickness = Constants::c_wallThickness;
+		const float wallThickness = static_cast<float>(Constants::c_wallThickness);
 		for (int i = 0; i < _count; ++i)
 		{
 			Vector2f size(wallThickness, 
@@ -292,7 +293,8 @@ namespace Game{
 
 	void World::addNewPlayer(int _id, PlayerColor _color)
 	{
-		Controller* controller = _id >= 0 ? (Controller*)new PlayerController(_id)
+		Controller* controller = _id >= 0 
+			? (Controller*) new PlayerController(_id, std::unique_ptr<Input::InputInterface>(new Input::GamePadInputInterface(CONFIG_SECTION("inputs" + std::to_string(_id)), _id)))
 			: new AiController();
 		controller->possess(spawnPlayer(_id));
 		m_controllers.emplace_back(controller);

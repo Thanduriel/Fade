@@ -16,7 +16,7 @@ namespace State{
 		m_world(Constants::g_windowSizeX, Constants::g_windowSizeY),
 		m_gameSettings(_gameSettings)
 	{
-		Stats::g_statManager.reset();
+		Stats::g_statManager->reset();
 
 		m_gameEndSound.setBuffer(*g_resourceManager->getSound("sound_newWorld"));
 
@@ -24,7 +24,7 @@ namespace State{
 		for (auto& playerInfo : _gameSettings.playerInfos)
 		{
 			m_world.addNewPlayer(playerInfo.cid, playerInfo.playerColor);
-			Stats::g_statManager.add(playerInfo.cid, Stats::Stat::IsActive);
+			Stats::g_statManager->add(playerInfo.cid, Stats::Stat::IsActive);
 		}
 	}
 
@@ -45,8 +45,8 @@ namespace State{
 			}
 			else
 			{
-				//	Stats::g_statManager.sort(Stats::Stat::Kills);
-				if (Stats::g_statManager.getMax(Stats::Stat::Kills) >= m_gameSettings.value)
+				//	Stats::g_statManager->sort(Stats::Stat::Kills);
+				if (Stats::g_statManager->getMax(Stats::Stat::Kills) >= m_gameSettings.value)
 				{
 					gameOver();
 				}

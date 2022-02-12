@@ -16,7 +16,7 @@ namespace GUI
 	public:
 		GuiElement(const sf::String& _name, uint32_t _x, uint32_t _y, 
 			std::function<void()> _onClick = [](){});
-		virtual ~GuiElement(){};
+		virtual ~GuiElement() {}
 
 		virtual void draw(sf::RenderWindow& _window);
 		void process();
@@ -30,7 +30,7 @@ namespace GUI
 
 		void unfocus(){m_cback = sf::Color::White;};
 		void focus(){m_cfront = m_cback = sf::Color::Yellow;};
-		void setText(const sf::String& _name){m_text.setString(_name);};
+		void setText(const sf::String& _name){m_text.setString(_name);}
 		void setPosition(sf::Vector2f _pos) { m_text.setPosition(_pos); }
 	protected:
 		sf::Color m_cfront, m_cback;
@@ -55,7 +55,7 @@ namespace GUI
 		sf::Text m_text2;
 	};
 
-	typedef std::vector<std::unique_ptr<GuiElement>> ElContainer;
+	using ElContainer = std::vector<std::unique_ptr<GuiElement>>;
 
 	class Gui : public ElContainer
 	{

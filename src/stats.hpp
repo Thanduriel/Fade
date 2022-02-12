@@ -2,6 +2,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <memory>
 
 namespace Stats{
 
@@ -40,6 +41,6 @@ namespace Stats{
 		bool m_isSorted;
 	};
 
-	extern StatManager g_statManager; //defined in main.cpp
+	extern std::unique_ptr<StatManager> g_statManager; //defined in main.cpp
 
 }

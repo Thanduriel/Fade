@@ -1,10 +1,6 @@
-// yalasg.cpp : Defines the entry point fo{r the console application.
-//
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
 
-// #include "easylogging++.hpp"
 #include "gamestate.hpp"
 #include "mainstate.hpp"
 #include "menustate.hpp"
@@ -12,6 +8,7 @@
 #include "creditstate.hpp"
 #include "resourcemanager.hpp"
 #include "stats.hpp"
+#include "config.hpp"
 
 #include <sstream>
 #include <vector>
@@ -22,7 +19,15 @@
 #include <Windows.h>
 #endif
 
-namespace Constants{
+// CRT's memory leak detection
+#ifndef NDEBUG 
+#if defined(_MSC_VER)
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#endif
+#endif
+
+namespace Constants {
 	int g_windowSizeX;
 	int g_windowSizeY;
 	float g_worldScale;
@@ -30,7 +35,7 @@ namespace Constants{
 }
 
 namespace Stats{
-	StatManager g_statManager;
+	std::unique_ptr<StatManager> g_statManager;
 }
 
 void ErrorMsg(const std::string& error, const std::string& title)
@@ -43,6 +48,12 @@ void ErrorMsg(const std::string& error, const std::string& title)
 
 int main()
 {
+#ifndef NDEBUG 
+#if defined(_MSC_VER)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//	_CrtSetBreakAlloc(14473);
+#endif
+#endif
 	using namespace Game;
 	using namespace Constants;
 
@@ -72,6 +83,7 @@ int main()
 	window.setMouseCursorVisible(false);
 	Graphic::g_lightSystem = std::make_unique<Graphic::LightSystem>();
 	Graphic::g_lightSystem->refreshSize();
+	Stats::g_statManager = std::make_unique<Stats::StatManager>();
 
 	sf::Clock clock, frameTimeClock;
 	sf::Time elapsed;
@@ -124,15 +136,6 @@ int main()
 
 		elapsed = clock.getElapsedTime();
 
-		//temporary stat display
-		std::stringstream s;
-		for (int i = 0; i < 4; ++i)
-		{
-			s << i << ": " << Stats::g_statManager.get(i, Stats::Stat::Kills) 
-				<< "/" << Stats::g_statManager.get(i, Stats::Stat::Deaths) << "   ";
-		}
-		//window.setTitle(s.str());
-
 		++c;
 		if (frameTimeClock.getElapsedTime().asMicroseconds() >= 1000000) 
 		{
@@ -153,12 +156,12 @@ int main()
 			c = 0;
 		}
 	}
+	states.clear();
 	Graphic::g_lightSystem.reset(nullptr);
 	g_resourceManager.reset(nullptr);
+	Stats::g_statManager.reset(nullptr);
 	track = nullptr;
+	Config::instance().save();
 
 	return 0;
 }
-
-
-

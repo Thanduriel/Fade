@@ -50,15 +50,15 @@ namespace Game{
 
 	Mine::Mine(const sf::Vector2f& _pos) :
 		Item(_pos, *g_resourceManager->getTexture("powerup_mine.png")),
-		m_state(Pickable)
+		m_state(State::Pickable)
 	{
 		m_activeTime = c_mineChargeTime;
 	}
 
 	void Mine::collision(Actor& _oth)
 	{
-		if (m_state == Pickable) Item::collision(_oth);
-		else if (m_state == Active)
+		if (m_state == State::Pickable) Item::collision(_oth);
+		else if (m_state == State::Active)
 		{
 			_oth.damage(150.f);
 			destroy();
@@ -69,21 +69,22 @@ namespace Game{
 	{
 		Item::use();
 		m_sprite.setColor(sf::Color(0, 0, 255, 255));
-		m_state = Ticking;
+		m_state = State::Ticking;
 	}
 
 	void Mine::endUse()
 	{
 		m_sprite.setColor(sf::Color(255, 210, 255, 255));
 		m_sprite.scale(sf::Vector2f(2.2f, 2.2f));
-		m_state = Active;
+		m_state = State::Active;
 		m_canCollide = true;
 	}
 
 	// *********************************************************** //
 
 	Sentinel::Sentinel(const sf::Vector2f& _pos) :
-		Item(_pos, *g_resourceManager->getTexture("sentinel.png"), c_sentinelChargeTime)
+		Item(_pos, *g_resourceManager->getTexture("sentinel.png"), c_sentinelChargeTime),
+		m_state(State::Pickable)
 	{
 	}
 
@@ -95,12 +96,12 @@ namespace Game{
 	void Sentinel::use()
 	{
 		Item::use();
-		m_state = Ticking;
+		m_state = State::Ticking;
 	}
 
 	void Sentinel::endUse()
 	{
-		if (m_state == Ticking)
+		if (m_state == State::Ticking)
 		{
 			m_sprite.setColor(sf::Color(255, 255, 12, 255));
 			m_lightInfo = Graphic::g_lightSystem->createLight();
@@ -108,10 +109,10 @@ namespace Game{
 			m_lightInfo->setPosition(m_position);
 			m_lightInfo->radius = 256.f;
 
-			m_state = Active;
+			m_state = State::Active;
 			SetTimer(c_sentinelActiveTime);
 		}
-		else if (m_state == Active)
+		else if (m_state == State::Active)
 		{
 			m_lightInfo.release();
 			m_sprite.setColor(sf::Color(255, 210, 255, 255));

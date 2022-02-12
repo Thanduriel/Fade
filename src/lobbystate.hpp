@@ -7,7 +7,7 @@
 #include "pawn.hpp"
 
 namespace State{
-	typedef std::vector < std::unique_ptr< Game::Pawn >> PlayerContainer;
+	using PlayerContainer = std::vector < std::unique_ptr< Game::Pawn >>;
 
 	class LobbyState : public Game::GameState
 	{

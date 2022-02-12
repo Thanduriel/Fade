@@ -27,21 +27,21 @@ namespace Game{
 
 		if (sf::Joystick::isConnected(m_id))
 		{
-			if (sf::Joystick::isButtonPressed(m_id, 5)  && m_fireCd <= 0)
+			if (m_inputs->isKeyPressed(Input::Action::Fire) && m_fireCd <= 0)
 			{
 				m_pawn->fire();
 				m_fireCd = 12;
 			}
 
-			const Vector2f jDir(sf::Joystick::getAxisPosition(m_id, sf::Joystick::X),
-				sf::Joystick::getAxisPosition(m_id, sf::Joystick::Y));
+			const Vector2f jDir(m_inputs->getAxis(Input::Axis::MoveLeftRight),
+				m_inputs->getAxis(Input::Axis::MoveUpDown));
 
-			const Vector2f lookDir(sf::Joystick::getAxisPosition(m_id, sf::Joystick::U),
-				sf::Joystick::getAxisPosition(m_id, sf::Joystick::V));
+			const Vector2f lookDir(m_inputs->getAxis(Input::Axis::FireLeftRight),
+				m_inputs->getAxis(Input::Axis::FireUpDown));
 
 			m_pawn->setDirAngle(std::atan2(lookDir.y, lookDir.x));
 
-			if (abs(jDir.x) > 40.f || abs(jDir.y) > 40.f)
+			if (abs(jDir.x) > 0.4f || abs(jDir.y) > 0.4f)
 				movDir = normalize(jDir);
 		}
 		else
@@ -56,7 +56,7 @@ namespace Game{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) movDir.x -= 1.f;
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) movDir.x += 1.f;
 		}
-		m_pawn->setVelocity(Constants::c_playerBaseSpeed * movDir * m_pawn->speedFactor());
+		m_pawn->setVelocity(m_pawn->maxSpeed() * movDir);
 	}
 
 	void PlayerController::processEvent(sf::Event& _event)
@@ -67,10 +67,11 @@ namespace Game{
 			{
 		//	if (_event.joystickButton.button == 5)
 		//		m_pawn->fire();
-			if (_event.joystickButton.button == 4)
+			if (m_inputs->isKeyPressed(Input::Action::AltFire))
 				m_pawn->altFire();
-			else if (_event.joystickButton.button == 1)
-				m_pawn->setLightState((Pawn::LightState)((m_pawn->lightState()+1) % Pawn::Count));
+			else if (m_inputs->isKeyPressed(Input::Action::SwitchLight))
+				m_pawn->setLightState(static_cast<Pawn::LightState>(
+					(static_cast<int>(m_pawn->lightState())+1) % static_cast<int>(Pawn::LightState::Count)));
 			}
 	}
 

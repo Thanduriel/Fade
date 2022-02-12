@@ -54,13 +54,14 @@ namespace Game{
 		void setProjType(ProjType _type){ m_projType = _type; }
 
 		Graphic::LightInfo& getLightInfo() { return *m_lightInfo.get(); }
-		float speedFactor() { return m_speedFactor; }
+		float speedFactor() const { return m_speedFactor; }
 		void setSpeedFactor(float _factor) { m_speedFactor = _factor; }
-		float alphaVal() { return m_alpha; }
+		float maxSpeed() const;
+		float alphaVal() const { return m_alpha; }
 
 		void takeItem(Item& _itm);
 
-		enum LightState{
+		enum struct LightState {
 			Off,
 			On,
 			OnlyFire,
