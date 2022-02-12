@@ -1,3 +1,5 @@
+#version 330
+
 out vec4 vs_out_LightColor;
 
 void main()
