@@ -74,6 +74,7 @@ namespace Graphic {
 		sf::RenderStates states;
 		Shader* shader = g_resourceManager->getShader(DefaultShader::Light);
 		states.shader = shader;
+		states.blendMode = sf::BlendAlpha;
 
 		//every light is encoded in one point vertex
 		m_vertices.clear();
@@ -113,7 +114,7 @@ namespace Graphic {
 	void LightSystem::setWalls(sf::Glsl::Vec2* _arr, size_t _size, float _worldToScreenRatio)
 	{
 		//transform to gpu pixel coords
-		for (int i = 0; i < _size; ++i)
+		for (size_t i = 0; i < _size; ++i)
 		{
 			_arr[i] *= _worldToScreenRatio;
 			_arr[i].y = Constants::g_windowSizeY - _arr[i].y;

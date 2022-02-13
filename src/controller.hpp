@@ -12,7 +12,7 @@ namespace Game{
 		Controller() : m_pawn(nullptr), m_id(-1), m_playerColor(PlayerColor::White) {}
 		virtual ~Controller() = default;
 
-		virtual void process(){}
+		virtual void process();
 		virtual void processEvent(sf::Event&) {}
 
 		void possess(Pawn* _pawn) { m_pawn = _pawn; }

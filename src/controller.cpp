@@ -8,7 +8,7 @@ using namespace sf;
 
 namespace Game{
 
-	void PlayerController::process()
+	void Controller::process()
 	{
 		if (!m_pawn) return;
 
@@ -16,11 +16,29 @@ namespace Game{
 		{
 			if (m_pawn->alphaVal() < Constants::c_deathTreshhold)
 			{
-				m_pawn->destroy();
+				if (Constants::c_keepDeadBodies)
+				{
+					sf::Color col = PLAYERCOLORS[static_cast<size_t>(m_pawn->getPlayerColor())];
+					constexpr sf::Uint8 desaturation = 64;
+					col.r = col.r > desaturation ? col.r - desaturation : 0;
+					col.g = col.g > desaturation ? col.g - desaturation : 0;
+					col.b = col.b > desaturation ? col.b - desaturation : 0;
+					m_pawn->setColor(col);
+				}
+				else
+				{
+					m_pawn->destroy();
+				}
 				m_pawn = nullptr;
 			}
 			return;
 		}
+	}
+
+	void PlayerController::process()
+	{
+		Controller::process();
+		if (!m_pawn) return;
 
 		sf::Vector2f movDir(0.f, 0.f);
 		m_fireCd--;
@@ -79,13 +97,8 @@ namespace Game{
 
 	void AiController::process()
 	{
+		Controller::process();
 		if (!m_pawn) return;
-		if (m_pawn->isDead())
-		{
-			if (m_pawn->alphaVal() < 0.2f)
-				m_pawn = nullptr;
-			return;
-		}
 
 		static int counter = 0;
 		++counter;

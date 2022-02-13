@@ -31,25 +31,9 @@ namespace Game{
 		// when reaching the map boundaries
 		m_collisionDummy = std::make_unique<Actor>(Vector2f(-100.f, -100.f), *g_resourceManager->getTexture("wall.png"));
 
-		// determine number of connected joysticks/gamepads with Axis
-	/*	for (uint32_t i(0); i<5; i++)
-		{
-			if (sf::Joystick::isConnected(i))
-			{
-				if (sf::Joystick::isConnected(i) &&
-					sf::Joystick::hasAxis(i, sf::Joystick::X) &&
-					sf::Joystick::hasAxis(i, sf::Joystick::Y) &&
-					sf::Joystick::hasAxis(i, sf::Joystick::U) &&
-					sf::Joystick::hasAxis(i, sf::Joystick::R))
-				{
-					addNewPlayer(i);
-				}
-			}
-		}*/
-
-#ifdef _DEBUG
-//		addNewPlayer(-1, Game::PlayerColor::White);
-//		addNewPlayer(0, Game::PlayerColor::Blue);
+#ifndef NDEBUG
+		addNewPlayer(-1, Game::PlayerColor::Green);
+		addNewPlayer(1, Game::PlayerColor::Blue);
 #endif
 		//test stuff
 		/*
@@ -121,7 +105,7 @@ namespace Game{
 				}
 			}
 
-			//check map boundries
+			//check map boundaries
 			if (first.isStatic()) continue;
 			Vector2f newPos = first.position();
 
@@ -146,6 +130,9 @@ namespace Game{
 	void World::draw(sf::RenderWindow& _window)
 	{
 		_window.draw(m_ground);
+		std::stable_sort(m_gameObjects.begin(), m_gameObjects.end(),
+			[](const std::unique_ptr<Actor>& lhs, const std::unique_ptr<Actor>& rhs)
+			{ return lhs->getDrawOrder() < rhs->getDrawOrder(); });
 		for (auto& actor : m_gameObjects) actor->draw(_window);
 	}
 

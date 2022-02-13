@@ -45,7 +45,6 @@ namespace State{
 			}
 			else
 			{
-				//	Stats::g_statManager->sort(Stats::Stat::Kills);
 				if (Stats::g_statManager->getMax(Stats::Stat::Kills) >= m_gameSettings.value)
 				{
 					gameOver();

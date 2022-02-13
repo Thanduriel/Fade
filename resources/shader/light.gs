@@ -6,14 +6,14 @@ uniform float windowSizeY;
 uniform vec2 wallInfos[27];
 uniform int numWalls_x3;
 
-in vec4 vs_out_LightColor[1];
-
 out vec2 simpleWallInfos[27];
 out vec2 gs_out_LightPosition;
 out vec4 gs_out_LightColor;
 out float gs_out_lightRadius;
 
 layout (points) in;
+
+in vec4 vs_out_LightColor[1];
 
 // The output will consist of triangle strips with four vertices each
 layout (triangle_strip, max_vertices = 4) out;

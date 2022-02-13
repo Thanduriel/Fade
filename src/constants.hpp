@@ -20,7 +20,10 @@ namespace Constants{
 	const float c_projectileRadius = CONFIG_SECTION("game").get("projectileRadius", 5.f);
 	const int c_fastReloadCount = CONFIG_SECTION("game").get("fastReloadCount", 7); // amount of ammo reloaded before it diminishes
 	const int	c_baseReloadSpeed = CONFIG_SECTION("game").get("baseReloadSpeed",40); // time for one fast reload projectile in frames
+	const float c_playerBaseDamage = CONFIG_SECTION("game").get("playerBaseDamage", 13.f);
+	const float c_playerBaseHealth = CONFIG_SECTION("game").get("playerBaseHealth", 100.f);
 	const float c_deathTreshhold = CONFIG_SECTION("game").get("deathThreshold", 0.05f);
+	const int c_keepDeadBodies = CONFIG_SECTION("game").get("keepDeadBodies", 1);
 
 	const int c_wallThickness = CONFIG_SECTION("game").get("wallThickness", 25);
 	const int c_wallMaxLength = CONFIG_SECTION("game").get("wallMaxLength", 500);
@@ -32,7 +35,8 @@ namespace Constants{
 
 	const int c_mineChargeTime = CONFIG_SECTION("items").get("mineChargeTime", 60 * 4);
 
-	const int c_clusterGunActiveTime = CONFIG_SECTION("items").get("clusterGunActivTime", 60 * 10);
+	const int c_clusterGunActiveTime = CONFIG_SECTION("items").get("clusterGunActiveTime", 60 * 10);
+	const float c_clusterGunDamage = CONFIG_SECTION("items").get("clusterGunDamage", 9.f);
 
 	const int c_lightAuraActiveTime = CONFIG_SECTION("items").get("lightAuraActiveTime", 60 * 10);
 	const int c_lightAuraExtraRadius = CONFIG_SECTION("items").get("lightAuraExtraRadius", 200);

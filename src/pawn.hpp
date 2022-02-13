@@ -10,7 +10,7 @@
 
 namespace Game{
 
-	enum PlayerColor
+	enum struct PlayerColor
 	{
 		White,
 		Green,
@@ -23,7 +23,7 @@ namespace Game{
 		Count
 	};
 
-	const std::array<sf::Color, Count> PLAYERCOLORS =
+	const std::array<sf::Color, static_cast<size_t>(PlayerColor::Count)> PLAYERCOLORS =
 	{
 		//	sf::Color(255, 0, 90),
 		sf::Color(255, 255, 255),
@@ -72,8 +72,8 @@ namespace Game{
 		LightState lightState() const { return m_lightState; }
 
 		PlayerColor getPlayerColor() const { return m_playerColor; }
-		void switchColor(PlayerColor _col) { m_playerColor = _col; setColor(PLAYERCOLORS[m_playerColor]); }
-		void switchColor() { m_playerColor = (PlayerColor)((m_playerColor + 1) % PLAYERCOLORS.size()); setColor(PLAYERCOLORS[m_playerColor]); }
+		void switchColor(PlayerColor _col);
+		void switchColor();
 	private:
 		int m_lastHitId; //cid of the last actor a collision occurred with
 
@@ -93,7 +93,6 @@ namespace Game{
 		int m_cdMax;
 		int m_cd; //cooldown in frames (16.67ms)
 
-		float m_damage;
 		ProjType m_projType;
 		float m_speedFactor;
 		int m_ammo;

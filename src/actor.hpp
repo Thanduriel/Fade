@@ -40,7 +40,7 @@ namespace Game{
 		virtual void collision(Actor&){};
 
 		// only used when hasComplexShape() true
-		// @return Whether a collision actually occured
+		// @return Whether a collision actually occurred
 		virtual bool testComplexCollision(Actor&){ return true; };
 
 		//apply damage to this actor
@@ -48,7 +48,7 @@ namespace Game{
 		void addHealth(float _amount) { m_health = std::min(m_health + _amount, m_healthMax); };
 
 		void setPosition(const sf::Vector2f& _pos) { m_position = _pos; }
-		//set angle in radients
+		//set angle in radiants
 		void setDirAngle(float _angle) { m_dirAngle = _angle; };
 
 		const sf::Vector2f& position() const { return m_position; }
@@ -68,8 +68,10 @@ namespace Game{
 		bool isReflective() const { return m_isReflective; }
 
 		void setColor(sf::Color _color) { m_sprite.setColor(_color); };
+
+		float getDrawOrder() const { return m_drawOrder; }
 	protected:
-		int m_cid; //id of the related controller; -1 for world objects
+		int m_cid; //id of the associated controller; -1 for world objects
 
 		Graphic::CenteredSprite m_sprite;
 		sf::Vector2f m_position;
@@ -87,5 +89,7 @@ namespace Game{
 		bool m_isDestroyed;
 		bool m_isDead;
 		bool m_isReflective; // reflects projectiles
+
+		float m_drawOrder;
 	};
 }
