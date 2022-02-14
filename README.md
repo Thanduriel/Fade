@@ -3,7 +3,7 @@
 Fade is a local-multiplayer twin-stick-shooter with a twist: The battlefield is shrouded in darkness by default and only lights up partially through player actions. Primarly players light up when they shoot or when they are hit. Additionally a varity of power-ups can help in spotting and killing enemies.
 
 ## Build
-Building requires C++ 14 compiler.
+Building requires C++ 17 compiler (tested with msvc-16.11, gcc-10.3).
 The only dependency is SFML. Uses a version found on the system with `find_package` if available. Otherwise a local version is expected at `dependencies/SFML`. The local version is integrated as submodule so just run 
 ```sh
 $ git clone --recursive https://github.com/Thanduriel/Fade.git
