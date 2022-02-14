@@ -60,7 +60,7 @@ namespace Game{
 	}
 
 
-	void Wall::collision(Actor& _oth)
+	void Wall::collision(Actor&)
 	{
 		//already happens in testComplexCollision()
 	/*	lineCollision(m_bbBegin, Vector2f(m_bbBegin.x, m_bbEnd.y), _oth);

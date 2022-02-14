@@ -2,6 +2,7 @@
 #include "config.hpp"
 
 std::unique_ptr<ResourceManager> g_resourceManager = nullptr;
+const std::string resourcePath = "./resources/";
 
 ResourceManager::ResourceManager()
 {

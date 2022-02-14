@@ -23,7 +23,7 @@ namespace Game{
 		m_soundAppear.play();
 
 		m_collisionType = CollisionType::Item;
-	};
+	}
 
 	void Item::collision(Actor& _oth)
 	{

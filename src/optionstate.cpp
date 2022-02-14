@@ -32,8 +32,7 @@ namespace State{
 	{
 		font = *g_resourceManager->getFont("suburbia");
 
-		uint32_t left = Constants::g_windowSizeX / 2 - 450;
-		Vector2f rightOff = Vector2f(600.f, 0.f);
+		const uint32_t left = Constants::g_windowSizeX / 2 - 450;
 
 		title.setFont(font);
 		title.setCharacterSize(200);

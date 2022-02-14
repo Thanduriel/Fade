@@ -4,6 +4,7 @@
 #include "stats.hpp"
 #include "mainstate.hpp"
 #include "constants.hpp"
+#include <cmath>
 
 using namespace Stats;
 

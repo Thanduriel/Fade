@@ -79,7 +79,7 @@ namespace Graphic {
 		//every light is encoded in one point vertex
 		m_vertices.clear();
 
-		for (int i = 0; i < m_lightInfos.size(); ++i)
+		for (size_t i = 0; i < m_lightInfos.size(); ++i)
 		{
 			LightInfo lightInfo = *m_lightInfos[i];
 			if (lightInfo.radius == 0.f) continue;

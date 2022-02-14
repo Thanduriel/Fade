@@ -8,13 +8,16 @@ file(GLOB_RECURSE fade_SRC
 
 add_executable(Fade ${fade_SRC})
 set_target_properties(Fade PROPERTIES
-	CXX_STANDARD 14
+	CXX_STANDARD 17
 	CXX_STANDARD_REQUIRED YES
 )
 
 if(MSVC)
 	# no console in release builds
 	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+	set_target_properties(
+		Fade PROPERTIES
+		VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 else()
 	target_compile_options(Fade PUBLIC "$<$<CONFIG:DEBUG>:-Wall;-pedantic;-Wextra>")
 	target_compile_options(Fade PUBLIC "$<$<CONFIG:RELEASE>:-Wall;-pedantic;-Wextra;-O3;-march=native>")

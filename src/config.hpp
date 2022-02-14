@@ -5,8 +5,6 @@
 #include <sstream>
 #include <iostream>
 
-const std::string resourcePath = "../resources/";
-
 namespace Details {
 	template<typename T>
 	inline T convert(const std::string& _value)

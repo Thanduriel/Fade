@@ -32,7 +32,7 @@ namespace Game{
 	class PlayerController : public Controller
 	{
 	public:
-		PlayerController(int _id, std::unique_ptr<Input::InputInterface>& _interface) 
+		PlayerController(int _id, std::unique_ptr<Input::InputInterface> _interface) 
 			: m_inputs(std::move(_interface)), m_fireCd(0)
 		{ 
 			m_id = _id; 
